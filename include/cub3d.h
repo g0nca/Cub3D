@@ -16,6 +16,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+
+typedef struct s_data
+{
+    char    *file_path;
+}               t_data;
+
+// parsing_input.c
+void    parsing_input(int ac, char **av, t_data *data);
+
+// errors.c
+void    print_error_and_exit_without_free(const char *message);
 
 int     main(int ac, char **av);
 

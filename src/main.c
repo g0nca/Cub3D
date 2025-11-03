@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/03 15:51:24 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/03 16:17:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int     main(int ac, char **av)
 {
-    (void)ac;
-    (void)av;
+    parsing_input(ac, av, NULL);
     printf("FEITO\n");
     return (0);
 }
