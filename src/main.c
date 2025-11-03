@@ -3,10 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/10/29 15:53:17 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/03 15:51:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/cub3d.h"
+
+int     main(int ac, char **av)
+{
+    (void)ac;
+    (void)av;
+    printf("FEITO\n");
+    return (0);
+}
