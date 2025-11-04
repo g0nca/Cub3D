@@ -12,6 +12,7 @@ OBJ_DIR = obj
 # Lista todos os ficheiros .c na pasta src (adiciona os teus ficheiros aqui)
 SRC = main.c \
 	  parse/parsing_input.c \
+	  utils/file_utils.c \
 	  utils/errors.c \
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
