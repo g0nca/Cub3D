@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ggomes-v <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 13:11:58 by ggomes-v          #+#    #+#              #
-#    Updated: 2024/11/13 13:12:15 by ggomes-v         ###   ########.fr        #
+#    Updated: 2025/11/04 14:05:41 by ggomes-v         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,6 @@ RM = rm -f
 OBJS = $(SRCS:.c=.o)
 ${NAME}:${OBJS}
 		${PRIC} ${NAME} ${OBJS}
-		cc get_next_line.c get_next_line.a
 		@echo "	╔═════════════════════════════════════╗"
 		@echo "	║ ✅ |${GREEN}All Files Compiled${RESET}     ║"
 		@echo "	╚═════════════════════════════════════╝"

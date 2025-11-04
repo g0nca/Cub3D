@@ -22,13 +22,24 @@
 #include <fcntl.h>
 #include <stdbool.h>
 #include "../libs/libft/libft.h"
+#include "../libs/get_next_line/get_next_line.h"
 
 #define PATH_MAX 4096
 
 typedef struct s_map
 {
-    
+    char    **map;
+    int     width;
+    int     height;
 }   t_map;
+
+
+typedef struct s_cub
+{
+    t_map   *map;
+    void    *mlx;
+    void    *win;
+}   t_cub;
 
 /* typedef struct s_data
 {
@@ -36,6 +47,10 @@ typedef struct s_map
     char    *file_path;
 }               t_data; */
 
+
+// parse/read_file.c
+t_map	*read_file_parse(char **av);
+t_map	*init_map_struct(void);
 
 // utils/file_utils.c
 int	ft_strcmp(const char *s1, const char *s2);

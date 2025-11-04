@@ -14,6 +14,7 @@ OBJ_DIR = obj
 # Lista todos os ficheiros .c na pasta src (adiciona os teus ficheiros aqui)
 SRC = main.c \
 	  parse/parsing_input.c \
+	  parse/read_file.c \
 	  utils/file_utils.c \
 	  utils/errors.c \
 
@@ -40,9 +41,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Compila o executável
-$(NAME): $(MLX_DIR)/libmlx.a $(OBJ) $(LIBFT) $(GNL)
+$(NAME): $(MLX_DIR)/libmlx.a $(OBJ) $(GNL) $(LIBFT) 
 	@echo "$(BLUE)A criar executável $(NAME)...$(RESET)"
-	@$(CC) $(OBJ) $(MLX) $(LIBFT) $(GNL) -o $(NAME)
+	@$(CC) $(OBJ) $(MLX) $(GNL) $(LIBFT) -o $(NAME)
 	@echo "$(GREEN)✓ $(NAME) compilado com sucesso!$(RESET)"
 
 $(GNL):

@@ -3,13 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 13:15:02 by ggomes-v          #+#    #+#             */
-/*   Updated: 2024/11/20 13:16:18 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/04 14:37:44 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "get_next_line.h"
+
+// O resto do teu código aqui
 
 char	*newline(char *str)
 {
@@ -83,7 +86,7 @@ char	*read_file(int fd, char *str)
 			return (NULL);
 		}
 		buffer[read_bytes] = '\0';
-		str = ft_strjoin(str, buffer);
+		str = ft_strjoinGNL(str, buffer);
 		//if (ft_strchr(str, '\n'))
 			//break;
 	}
@@ -114,7 +117,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-int main(void)
+/* int main(void)
 {
     int i;
     char *line;
@@ -136,4 +139,4 @@ int main(void)
     }
     close(fd);
     return (0);
-}
+} */
