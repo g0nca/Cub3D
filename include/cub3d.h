@@ -25,18 +25,23 @@
 
 #define PATH_MAX 4096
 
-typedef struct s_data
+typedef struct s_map
+{
+    
+}   t_map;
+
+/* typedef struct s_data
 {
     int     flag_exit;
     char    *file_path;
-}               t_data;
+}               t_data; */
 
 
 // utils/file_utils.c
 int	ft_strcmp(const char *s1, const char *s2);
 
 // parsing_input.c
-void    parsing_input(int ac, char **av, t_data *data);
+void    parsing_input(int ac, char **av);
 
 // errors.c
 void    print_error_and_exit_without_free(const char *message, int exit_flag);

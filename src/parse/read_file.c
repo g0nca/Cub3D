@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/04 13:39:52 by ggomes-v         ###   ########.fr       */
+/*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
+/*   Updated: 2025/11/04 13:40:24 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
-int     main(int ac, char **av)
+t_map	*read_file(char **av)
 {
-    t_map   *map;
-
-    parsing_input(ac, av);
-    map = read_file(av);
-    printf("FEITO\n");
-    return (0);
+	
 }
