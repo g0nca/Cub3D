@@ -1,8 +1,11 @@
 NAME = cub3d
 CC = cc
+
 CFLAGS = -Wall -Wextra -Werror -Iinclude -Iminilibx-linux
 MLX_DIR = minilibx-linux
 MLX = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
+LIBFT_DIR = libft
+LIBFT = $(LIBFT_DIR)/libft.a
 SRC_DIR = src
 OBJ_DIR = obj
 
@@ -34,22 +37,28 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Compila o executável
-$(NAME): $(MLX_DIR)/libmlx.a $(OBJ)
+$(NAME): $(MLX_DIR)/libmlx.a $(OBJ) $(LIBFT)
 	@echo "$(BLUE)A criar executável $(NAME)...$(RESET)"
-	@$(CC) $(OBJ) $(MLX) -o $(NAME)
+	@$(CC) $(OBJ) $(MLX) $(LIBFT) -o $(NAME)
 	@echo "$(GREEN)✓ $(NAME) compilado com sucesso!$(RESET)"
+
+$(LIBFT):
+	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
+	@echo "$(BOLD_GREEN)✅ libft.a built successfully!$(RESET)"
 
 # Limpa objetos
 clean:
 	@echo "$(RED)A remover objetos...$(RESET)"
 	@rm -rf $(OBJ_DIR)
 	@make -C $(MLX_DIR) clean
+	@$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
 	@echo "$(GREEN)Objetos removidos!$(RESET)"
 
 # Limpa tudo
 fclean: clean
 	@echo "$(RED)A remover executável...$(RESET)"
 	@rm -f $(NAME)
+	@$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory
 	@echo "$(GREEN)Limpeza completa!$(RESET)"
 
 # Recompila tudo

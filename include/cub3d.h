@@ -17,6 +17,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <limits.h>
+#include "../libft/libft.h"
+
+#define PATH_MAX 4096
 
 typedef struct s_data
 {
