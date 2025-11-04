@@ -19,4 +19,5 @@ void parsing_input(int ac, char **av, t_data *data)
     if (ac != 2)
         print_error_and_exit_without_free("Invalid number of arguments.");
     
+    
 }
