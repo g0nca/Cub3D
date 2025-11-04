@@ -21,7 +21,7 @@
 #include <limits.h>
 #include <fcntl.h>
 #include <stdbool.h>
-#include "../libft/libft.h"
+#include "../libs/libft/libft.h"
 
 #define PATH_MAX 4096
 
