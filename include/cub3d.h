@@ -47,6 +47,8 @@ typedef struct s_cub
     char    *file_path;
 }               t_data; */
 
+// free_all.c
+void	ft_free_all(t_cub *cub);
 
 // parse/read_file.c
 t_map	*read_file_parse(char **av);

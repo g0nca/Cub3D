@@ -17,6 +17,7 @@ SRC = main.c \
 	  parse/read_file.c \
 	  utils/file_utils.c \
 	  utils/errors.c \
+	  utils/free_all.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
