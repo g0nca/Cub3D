@@ -16,6 +16,15 @@ SRC = main.c \
 	  parse/parsing_input.c \
 	  utils/file_utils.c \
 	  utils/errors.c \
+	  utils/free_all.c \
+	  events/handle_keys.c \
+	  events/move_player.c \
+	  events/rotate_player.c \
+	  init/init_game.c \
+	  init/load_textures.c \
+	  render/draw_minimap.c \
+	  render/draw_player.c \
+	  render/raycasting.c \
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
