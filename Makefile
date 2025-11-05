@@ -14,9 +14,11 @@ OBJ_DIR = obj
 # Lista todos os ficheiros .c na pasta src (adiciona os teus ficheiros aqui)
 SRC = main.c \
 	  parse/parsing_input.c \
+	  parse/parsing_player.c \
 	  utils/file_utils.c \
 	  utils/errors.c \
 	  utils/free_all.c \
+	  utils/pixel_utils.c \
 	  events/handle_keys.c \
 	  events/move_player.c \
 	  events/rotate_player.c \

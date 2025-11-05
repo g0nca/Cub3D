@@ -30,6 +30,15 @@
 #define TILE_SIZE 20
 #define MINIMAP_SCALE 0.2
 
+// Define key codes
+#define KEY_W       119
+#define KEY_A       97
+#define KEY_S       115
+#define KEY_D       100
+#define KEY_ESC     65307
+#define KEY_LEFT    65361
+#define KEY_RIGHT   65363
+
 #define M_PI 3.14159265358979323846
 
 #define PATH_MAX 4096
@@ -69,13 +78,25 @@ typedef struct s_textures
     t_img   east;
 }   		t_textures;
 
+typedef struct s_ray
+{
+	double	ray_angle;
+	double	distance;
+	int		hit_vertical;
+	double	wall_x;
+}			t_ray;
+
 typedef struct s_game
 {
 	void		*mlx;
 	void		*win;
+	int			keys[256];
+	int			key_left;
+	int			key_right;
 	t_player	player;
 	t_map		map;
 	t_textures	textures;
+	t_img		screen;
 }	t_game;
 
 
@@ -86,7 +107,9 @@ typedef struct s_game
 }               t_data; */
 
 //events
-int handle_keys(int key, t_game *g);
+int handle_keys(t_game *g);
+int key_press(int key, t_game *g);
+int key_release(int key, t_game *g);
 void    move_strafe(t_game *g, int dir);
 void    move_forward_backward(t_game *g, int dir);
 void    rotate_player(t_game *g, int dir);
@@ -107,8 +130,13 @@ int	ft_strcmp(const char *s1, const char *s2);
 // parsing_input.c
 void    parsing_input(int ac, char **av);
 
+//parse
+int find_player_position(t_game *game);
+
 //utils
 void    free_images(t_game *g);
+void    clear_image(t_img *img, int color);
+void    put_pixel_to_img(t_img *img, int x, int y, int color);
 
 // errors.c
 void    print_error_and_exit_without_free(const char *message, int exit_flag);
