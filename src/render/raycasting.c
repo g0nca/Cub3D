@@ -6,7 +6,7 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:36 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/05 09:32:04 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/05 10:26:34 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,15 @@ static void draw_wall_stripe(t_game *g, int x, t_ray *ray)
         tex_x = texture->width - 1;
 
     // Desenha teto
-    for (int y = 0; y < draw_start; y++)
+    int y = 0;
+    while (y < draw_start)
+    {
         put_pixel_to_img(&g->screen, x, y, 0x87CEEB);
-
+        y++;
+    }
     // Desenha parede com textura
-    for (int y = draw_start; y < draw_end; y++)
+    y = draw_start;
+    while (y < draw_end)
     {
         int tex_y = (int)((y - draw_start) * texture->height / wall_height);
         if (tex_y < 0)
@@ -103,11 +107,15 @@ static void draw_wall_stripe(t_game *g, int x, t_ray *ray)
         int color = *(int *)(texture->addr + (tex_y * texture->line_len +
                     tex_x * (texture->bpp / 8)));
         put_pixel_to_img(&g->screen, x, y, color);
+        y++;
     }
-
     // Desenha chão
-    for (int y = draw_end; y < WIN_H; y++)
+    y = draw_end;
+    while (y < WIN_H)
+    {
         put_pixel_to_img(&g->screen, x, y, 0x8B4513);
+        y++;
+    }
 }
 
 void    render_3d_view(t_game *g)
@@ -116,11 +124,13 @@ void    render_3d_view(t_game *g)
     double angle_step = fov / WIN_W;
     double ray_angle = g->player.angle - fov / 2;
 
-    for (int x = 0; x < WIN_W; x++)
+    int x = 0;
+    while (x < WIN_W)
     {
         t_ray ray;
         cast_ray(g, &ray, ray_angle);
         draw_wall_stripe(g, x, &ray);
         ray_angle += angle_step;
+        x++;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 14:04:49 by joaomart          #+#    #+#             */
-/*   Updated: 2025/11/05 09:32:44 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/05 09:56:48 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ void    draw_player(t_game *g)
     }
 
     // Desenha linha de direção
-    for (int k = 0; k < 10; k++)
+    int k = 0;
+    while (k < 10)
     {
         int lx = px + (int)(cos(g->player.angle) * k);
         int ly = py + (int)(sin(g->player.angle) * k);
         put_pixel_to_img(&g->screen, lx, ly, 0xFFFF00);
+        k++;
     }
 }
