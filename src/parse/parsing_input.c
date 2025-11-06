@@ -38,13 +38,11 @@ static void     check_permissions(char **av)
 }
 static void     check_extension(int ac, char **av)
 {
-    int i;
     int len;
 
     if (ac != 2)
         print_error_and_exit_without_free("Invalid number of arguments.", 1);
     len = ft_strlen(av[1]);
-    i = 0;
     if (av[1][0] == '\0')
         print_error_and_exit_without_free("Empty File Name", 1);
     if (ft_strlen(av[1]) > PATH_MAX)
