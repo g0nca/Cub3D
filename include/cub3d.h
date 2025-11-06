@@ -28,7 +28,11 @@
 #define WIN_W 800
 #define WIN_H 600
 #define TILE_SIZE 20
-#define MINIMAP_SCALE 0.2
+
+#define MINIMAP_RADIUS 80      // Raio do minimapa circular
+#define MINIMAP_SCALE 15       // Escala do minimapa (pixels por tile)
+#define MINIMAP_X 100          // Posição X do centro do minimapa
+#define MINIMAP_Y 100          // Posição Y do centro do minimapa
 
 // Define key codes
 #define KEY_W       119
