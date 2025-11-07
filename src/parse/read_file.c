@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/06 16:56:34 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/07 12:50:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_map	*init_map_struct(void)
 	map->floor_color = NULL;
 	map->ceiling_color = NULL;
 	map->start = 0;
+	map->last_map_line = 0;
 	map->end = 0;
 	map->height = 0;
 	map->width = 0;
@@ -155,7 +156,7 @@ t_map	*save_info_to_map_struct(t_map *map, char *line, int info_status)
 		map->ceiling_color = ft_strdup(&line[i]);
 	return (map);
 }
-int	is_map_line(char *line)
+int		is_map_line(char *line)
 {
 	int i;
 
@@ -168,7 +169,7 @@ int	is_map_line(char *line)
 	}
 	return (0);
 }
-t_map *separate_map_info(t_map *map)
+t_map	*separate_map_info(t_map *map)
 {
 	int i;
 	int	info_status;
@@ -181,14 +182,18 @@ t_map *separate_map_info(t_map *map)
 		if (info_status >= 1 && info_status <= 6)
 			save_info_to_map_struct(map, map->map[i], info_status);
 		if (info_status == 0)
+		{
 			if (is_map_line(map->map[i]))
 			{
 				if (map->start == 0)
 					map->start = i;
+				if (map->start != 0)
+					map->last_map_line = i;
 				if (map->end <= i)
 					map->end = i;
 			}
-		//printf("MAP=%sInfo:%d\n", map->map[i], info_status);
+		}
+		printf("MAP=%sInfo:%d\n", map->map[i], info_status);
 		i++;
 	}
 	printf("Start:%d End:%d\n", map->start, map->end);
