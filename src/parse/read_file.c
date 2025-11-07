@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/07 14:31:09 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/07 16:04:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,60 @@ int		is_map_line(char *line)
 	}
 	return (0);
 }
+
+int		check_map(t_map *map, int *i)
+{
+	if (is_map_line(map->map[*i]))
+	{
+		if (map->start == 0)
+		{
+			map->start = *i;
+			map->last_map_line = *i;
+		}
+		else
+		{
+			if (*i != map->last_map_line + 1)
+			{
+				print_error_and_exit_without_free("Error : Invalid Map", 0, map);
+				return (-1);
+			}
+			map->last_map_line = *i;
+		}
+		map->end = *i;
+	}
+	else if (map->start != 0)
+	{
+		print_error_and_exit_without_free("Error : Invalid Map", 0, map);
+		return (-1);
+	}
+	return (0);
+}
+
+t_map	*save_only_map_lines(t_map *map)
+{
+	int		i;
+	int		j;
+	char	**only_map;
+	
+	if (map->start == 0 && map->end == 0)
+		return (map);
+	only_map = malloc(sizeof(char *) * (map->end - map->start + 2));
+	if (!only_map)
+		return (NULL);
+	i = map->start;
+	j = 0;
+	while (i <= map->end)
+	{
+		only_map[j] = ft_strdup(map->map[i]);
+		j++;
+		i++;
+	}
+	only_map[j] = NULL;
+	i = 0;
+	ft_free_map(map->map);
+	map->map = only_map;
+	return (map);
+}
 t_map	*separate_map_info(t_map *map)
 {
 	int i;
@@ -184,33 +238,12 @@ t_map	*separate_map_info(t_map *map)
 			save_info_to_map_struct(map, map->map[i], info_status);
 		if (info_status == 0)
 		{
-			if (is_map_line(map->map[i]))
-			{
-				if (map->start == 0)
-				{
-					map->start = i;
-					map->last_map_line = i;
-				}
-				else
-				{
-					if (i != map->last_map_line + 1)
-					{
-						print_error_and_exit_without_free("Error : Invalid Map", 0, map);
-						return (NULL);
-					}
-					map->last_map_line = i;
-				}
-				map->end = i;
-			}
-			else if (map->start != 0)
-			{
-				print_error_and_exit_without_free("Error : Invalid Map", 0, map);
-				return (NULL);
-			}
+			if (check_map(map, &i) == -1)
+				return (map);
 		}
+		
 		i++;
 	}
-	printf("Start:%d End:%d\n", map->start, map->end);
-	//check para verificar se todos os infos foram capturados
+	map = save_only_map_lines(map);
 	return (map);
 }

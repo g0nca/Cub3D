@@ -64,6 +64,7 @@ typedef struct s_cub
 
 // free_all.c
 void	ft_free_all(t_cub *cub);
+void	ft_free_map(char **map);
 
 // parse/read_file.c
 t_map	*read_file_parse(char **av);
@@ -71,6 +72,9 @@ t_map	*init_map_struct(void);
 t_map   *separate_map_info(t_map *map);
 t_map	*save_info_to_map_struct(t_map *map, char *line, int info_status);
 int		check_info(char *line);
+int		check_map(t_map *map, int *i);
+int		is_map_line(char *line);
+
 // utils/file_utils.c
 int	ft_strcmp(const char *s1, const char *s2);
 

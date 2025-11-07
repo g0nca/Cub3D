@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:27 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/07 14:34:34 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/07 15:55:35 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,25 @@ void	ft_free_all(t_cub *cub)
 	while (cub->map->map[i])
 	{
 		free(cub->map->map[i]);
+		cub->map->map[i] = NULL;
 		i++;
 	}
 	free(cub->map->map);
 	free(cub->map);
+}
+
+void	ft_free_map(char **map)
+{
+	int     i;
+
+	i = 0;
+	if (!map)
+		return ;
+	while (map[i])
+	{
+		free(map[i]);
+		map[i] = NULL;
+		i++;
+	}
+	free(map);
 }
