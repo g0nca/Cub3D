@@ -44,6 +44,7 @@ typedef struct s_map
     int     start;
     int     last_map_line;
     int     end;
+    int     exit_flag;
     int     width;
     int     height;
 }   t_map;
@@ -77,7 +78,7 @@ int	ft_strcmp(const char *s1, const char *s2);
 void    parsing_input(int ac, char **av);
 
 // errors.c
-void    print_error_and_exit_without_free(const char *message, int exit_flag);
+void    print_error_and_exit_without_free(const char *message, int exit_flag, t_map *map);
 
 int     main(int ac, char **av);
 

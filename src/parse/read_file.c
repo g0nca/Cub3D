@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/07 12:50:43 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/07 14:31:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_map	*init_map_struct(void)
 	map->ea_texture = NULL;
 	map->floor_color = NULL;
 	map->ceiling_color = NULL;
+	map->exit_flag = 0;
 	map->start = 0;
 	map->last_map_line = 0;
 	map->end = 0;
@@ -186,14 +187,27 @@ t_map	*separate_map_info(t_map *map)
 			if (is_map_line(map->map[i]))
 			{
 				if (map->start == 0)
+				{
 					map->start = i;
-				if (map->start != 0)
 					map->last_map_line = i;
-				if (map->end <= i)
-					map->end = i;
+				}
+				else
+				{
+					if (i != map->last_map_line + 1)
+					{
+						print_error_and_exit_without_free("Error : Invalid Map", 0, map);
+						return (NULL);
+					}
+					map->last_map_line = i;
+				}
+				map->end = i;
+			}
+			else if (map->start != 0)
+			{
+				print_error_and_exit_without_free("Error : Invalid Map", 0, map);
+				return (NULL);
 			}
 		}
-		printf("MAP=%sInfo:%d\n", map->map[i], info_status);
 		i++;
 	}
 	printf("Start:%d End:%d\n", map->start, map->end);

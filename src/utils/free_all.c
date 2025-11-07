@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:27 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/04 15:52:28 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/07 14:34:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@ void	ft_free_all(t_cub *cub)
 	int		i;
 
 	i = 0;
+
+	free(cub->map->no_texture);
+    free(cub->map->so_texture);
+    free(cub->map->we_texture);
+    free(cub->map->ea_texture);
+    free(cub->map->floor_color);
+    free(cub->map->ceiling_color);
 	while (cub->map->map[i])
 	{
 		free(cub->map->map[i]);
