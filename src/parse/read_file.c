@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/08 16:58:15 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/08 20:57:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,8 @@ t_map	*save_only_map_lines(t_map *map)
 	while (i <= map->end)
 	{
 		only_map[j] = ft_strdup(map->map[i]);
+		if (ft_strlen(only_map[j]) - 1 == '\n')
+			only_map[j][ft_strlen(only_map[j]) - 1] = '\0';
 		j++;
 		i++;
 	}

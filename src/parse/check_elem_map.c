@@ -16,11 +16,12 @@ bool    check_elements(t_map *map)
 {
     if (access(map->no_texture, F_OK) == -1)
         return (false);
-    /*if (access(map->so_texture, F_OK) == -1)
+    if (access(map->so_texture, F_OK) == -1)
         return (false);
     if (access(map->we_texture, F_OK) == -1)
         return (false);
     if (access(map->ea_texture, F_OK) == -1)
-        return (false);*/
+        return (false);
+
     return (true);
 }
