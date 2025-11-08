@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/07 16:04:56 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/08 16:58:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,21 @@ int		check_info(char *line)
 	}
 	return (0);
 }
+void	trim_newline(char *str)
+{
+	int i;
 
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+		{
+			str[i] = '\0';
+			return ;
+		}
+		i++;
+	}
+}
 t_map	*save_info_to_map_struct(t_map *map, char *line, int info_status)
 {
 	int i;
@@ -245,5 +259,9 @@ t_map	*separate_map_info(t_map *map)
 		i++;
 	}
 	map = save_only_map_lines(map);
+	trim_newline(map->no_texture);
+	trim_newline(map->so_texture);
+	trim_newline(map->we_texture);
+	trim_newline(map->ea_texture);
 	return (map);
 }

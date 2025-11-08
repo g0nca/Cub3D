@@ -75,6 +75,7 @@ int		check_info(char *line);
 int		check_map(t_map *map, int *i);
 int		is_map_line(char *line);
 bool    check_elements(t_map *map);
+void	trim_newline(char *str);
 
 // utils/file_utils.c
 int	ft_strcmp(const char *s1, const char *s2);

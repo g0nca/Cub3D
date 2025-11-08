@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/08 16:02:26 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/08 16:59:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,6 @@ int     main(int ac, char **av)
         free(cub);
         return (1);
     }
-    printf("Map Elements:%s\n", cub->map->no_texture);
-    printf("Map Elements:%s\n", cub->map->so_texture);
-    printf("Map Elements:%s\n", cub->map->we_texture);
-    printf("Map Elements:%s\n", cub->map->ea_texture);
     print_map_struct(cub);
     ft_free_all(cub);
     free(cub);
