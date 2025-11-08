@@ -15,6 +15,7 @@ OBJ_DIR = obj
 SRC = main.c \
 	  parse/parsing_input.c \
 	  parse/read_file.c \
+	  parse/check_elem_map.c \
 	  utils/file_utils.c \
 	  utils/errors.c \
 	  utils/free_all.c

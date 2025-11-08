@@ -74,6 +74,7 @@ t_map	*save_info_to_map_struct(t_map *map, char *line, int info_status);
 int		check_info(char *line);
 int		check_map(t_map *map, int *i);
 int		is_map_line(char *line);
+bool    check_elements(t_map *map);
 
 // utils/file_utils.c
 int	ft_strcmp(const char *s1, const char *s2);
