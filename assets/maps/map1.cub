@@ -3,7 +3,7 @@ NO       ./assets/textures/north.xpm
 WE ./assets/textures/west.xpm
 EA ./assets/textures/east.xpm
 
-F 220,100,0
+F 220,255,0
 C 225,30,0
 
 

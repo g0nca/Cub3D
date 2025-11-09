@@ -41,6 +41,8 @@ typedef struct s_map
     char    *ea_texture;
     char    *floor_color;
     char    *ceiling_color;
+    int     floor_rgb[3];
+    int     ceiling_rgb[3];
     int     start;
     int     last_map_line;
     int     end;

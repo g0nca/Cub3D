@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/08 20:57:42 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/08 21:36:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ t_map	*init_map_struct(void)
 	map->ea_texture = NULL;
 	map->floor_color = NULL;
 	map->ceiling_color = NULL;
+	map->floor_rgb[0] = -1;
+	map->floor_rgb[1] = -1;
+	map->floor_rgb[2] = -1;
+	map->ceiling_rgb[0] = -1;
+	map->ceiling_rgb[1] = -1;
+	map->ceiling_rgb[2] = -1;
 	map->exit_flag = 0;
 	map->start = 0;
 	map->last_map_line = 0;
