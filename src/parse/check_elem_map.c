@@ -82,6 +82,7 @@ bool    check_elements(t_map *map)
         return (false);
     if (access(map->ea_texture, F_OK) == -1)
         return (false);
+	
     floor_split = ft_split(map->floor_color, ',');
     ceiling_split = ft_split(map->ceiling_color, ',');
     if (!floor_split || !ceiling_split)

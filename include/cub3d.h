@@ -91,6 +91,7 @@ void    parsing_input(int ac, char **av);
 
 // errors.c
 void    print_error_and_exit_without_free(const char *message, int exit_flag, t_map *map);
+void    print_error_and_exit_FREE(const char *message, int exit_flag, t_map *map);
 
 int     main(int ac, char **av);
 

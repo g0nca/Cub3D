@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/10 14:02:01 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/10 15:07:59 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ static int		ft_line_count(char **av, t_map *map)
 		free(map);
 		return (-1);
 	}
-	line_count = 0;
+	line_count = 1;
 	line = get_next_line(fd);
 	if (!line)
 	{
 		free(line);
-		print_error_and_exit_without_free("Empty File", 1, map);
+		print_error_and_exit_FREE("Empty File", 1, map);
 	}
 	free(line);
 	while ((line = get_next_line(fd)) != NULL)
@@ -250,19 +250,13 @@ int		check_map(t_map *map, int *i)
 		else
 		{
 			if (*i != map->last_map_line + 1)
-			{
-				print_error_and_exit_without_free("Error : Invalid Map", 0, map);
-				return (-1);
-			}
+				print_error_and_exit_FREE("Invalid Map", 1, map);
 			map->last_map_line = *i;
 		}
 		map->end = *i;
 	}
 	else if (map->start != 0)
-	{
-		print_error_and_exit_without_free("Error : Invalid Map", 0, map);
-		return (-1);
-	}
+		print_error_and_exit_FREE("Invalid Map", 1, map);
 	return (0);
 }
 
