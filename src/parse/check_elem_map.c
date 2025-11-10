@@ -79,5 +79,6 @@ bool    check_elements(t_map *map)
         return (false);
     colors_check(floor_split, map, 1);
     colors_check(ceiling_split, map, 0);
+	
     return (true);
 }
