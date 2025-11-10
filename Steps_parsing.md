@@ -43,11 +43,11 @@
 * Podem aparecer em qualquer ordem - ✅
 * Podem ter espaços/tabs antes e depois do identificador - ✅
 * Formato: NO ./path/to/texture.xpm ou NO    ./path.xpm - ❌
-* **ATENÇÃO:** Verificar se o caminho da textura existe - ❌
-* **ATENÇÃO:** Verificar permissões de leitura das texturas - ❌
-* **ATENÇÃO:** Verificar extensão .xpm - ❌
-* **ATENÇÃO:** Verificar se não é um diretório - ❌
-* **ATENÇÃO:** Rejeitar múltiplos caminhos na mesma linha - ❌
+* **ATENÇÃO:** Verificar se o caminho da textura existe - ✅
+* **ATENÇÃO:** Verificar permissões de leitura das texturas - ✅
+* **ATENÇÃO:** Verificar extensão .xpm - ✅
+* **ATENÇÃO:** Verificar se não é um diretório - ✅
+* **ATENÇÃO:** Rejeitar múltiplos caminhos na mesma linha - ✅
 
 ### 3.2 Cores do Chão e Teto (F, C)
 
