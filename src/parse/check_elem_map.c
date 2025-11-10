@@ -95,10 +95,6 @@ void	check_texture(t_map *map, char *line)
 	len = ft_strlen(line);
 	if (ft_strcmp(&line[len - 4], ".xpm") != 0)
         print_error_and_exit_without_free("Invalid file extension \"Example.xpm\"", 1, NULL);
-	if (access(line, F_OK) == -1)
-		print_error_and_exit_FREE("Texture Not Found", 1, map);
-	if (access(line, R_OK) == -1)
-		print_error_and_exit_FREE("Permission denied", 1, map);
     if (stat(line, &info) == -1)
     {
         perror("stat");
@@ -106,6 +102,12 @@ void	check_texture(t_map *map, char *line)
     }
     if (S_ISDIR(info.st_mode))
         print_error_and_exit_without_free("Is a Directory", 1, map);
+	
+	if (access(line, F_OK) == -1)
+		print_error_and_exit_FREE("Texture Not Found", 1, map);
+	if (access(line, R_OK) == -1)
+		print_error_and_exit_FREE("Permission denied", 1, map);
+	
 }
 bool	verify_texture_elements(t_map *map)
 {
