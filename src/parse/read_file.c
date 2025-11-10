@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/10 13:59:44 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/10 14:02:01 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ int		check_info(char *line)
 	}
 	return (0);
 }
+
 void	trim_newline(char *str)
 {
 	int i;
