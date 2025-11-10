@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/10 11:56:47 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/10 13:59:44 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ static int		ft_line_count(char **av, t_map *map)
 		return (-1);
 	}
 	line_count = 0;
+	line = get_next_line(fd);
+	if (!line)
+	{
+		free(line);
+		print_error_and_exit_without_free("Empty File", 1, map);
+	}
+	free(line);
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		line_count++;
@@ -90,13 +97,14 @@ static int	copy_to_struct(char **av, t_map *map)
 	return (0);
 }
 
-t_map	*read_file_parse(char **av)
+t_map	*read_file_parse(char **av, t_cub *cub)
 {
 	t_map	*map;
 	int		line_count;
 	
 
 	map = init_map_struct();
+	map->cub_struct = cub;
 	line_count = ft_line_count(av, map);
 	if (line_count <= 0)
 	{
@@ -154,9 +162,43 @@ void	trim_newline(char *str)
 		i++;
 	}
 }
+
+void	save_texture_or_color2(t_map *map, char *value, int info_status)
+{
+
+	if (info_status == WE)
+	{
+		if (map->we_texture == NULL)
+			map->we_texture = ft_strdup(value);
+		else
+			map->exit_flag = 1;
+	}
+	else if (info_status == EA)
+	{
+		if (map->ea_texture == NULL)
+			map->ea_texture = ft_strdup(value);
+		else
+			map->exit_flag = 1;
+	}
+	else if (info_status == F)
+	{
+		if (map->floor_color == NULL)
+			map->floor_color = ft_strdup(value);
+		else
+			map->exit_flag = 1;
+	}
+	else if (info_status == C)
+	{
+		if (map->ceiling_color == NULL)
+			map->ceiling_color = ft_strdup(value);
+		else
+			map->exit_flag = 1;
+	}
+}
+
 t_map	*save_info_to_map_struct(t_map *map, char *line, int info_status)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (line[i] && line[i] != ' ')
@@ -164,19 +206,23 @@ t_map	*save_info_to_map_struct(t_map *map, char *line, int info_status)
 	while (line[i] && line[i] == ' ')
 		i++;
 	if (info_status == NO)
-		map->no_texture = ft_strdup(&line[i]);
+	{
+		if (map->no_texture == NULL)
+			map->no_texture = ft_strdup(&line[i]);
+		else
+			map->exit_flag = 1;
+	}
 	else if (info_status == SO)
-		map->so_texture = ft_strdup(&line[i]);
-	else if (info_status == WE)
-		map->we_texture = ft_strdup(&line[i]);
-	else if (info_status == EA)
-		map->ea_texture = ft_strdup(&line[i]);
-	else if (info_status == F)
-		map->floor_color = ft_strdup(&line[i]);
-	else if (info_status == C)
-		map->ceiling_color = ft_strdup(&line[i]);
+	{
+		if (map->so_texture == NULL)
+			map->so_texture = ft_strdup(&line[i]);
+		else
+			map->exit_flag = 1;
+	}
+	save_texture_or_color2(map, &line[i], info_status);
 	return (map);
 }
+
 int		is_map_line(char *line)
 {
 	int i;
@@ -263,7 +309,6 @@ t_map	*separate_map_info(t_map *map)
 			if (check_map(map, &i) == -1)
 				return (map);
 		}
-		
 		i++;
 	}
 	map = save_only_map_lines(map);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/08 16:59:58 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/10 12:51:56 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int     main(int ac, char **av)
     if (!cub)
         return (1);
     parsing_input(ac, av);
-    cub->map = read_file_parse(av);
+    cub->map = read_file_parse(av, cub);
     if (cub->map->exit_flag == 1 || check_elements(cub->map) == false)
     {
         print_error_and_exit_without_free("Loading Elements", 0, cub->map);

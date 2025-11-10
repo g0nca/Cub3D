@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:23 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/07 13:38:41 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/10 12:56:16 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@ void    print_error_and_exit_without_free(const char *message, int exit_flag, t_
 {
     printf("Error : %s\n", message);
     if (exit_flag == 1)
+    {
+        ft_free_map(map->map);
+        free(map->no_texture);
+        free(map->so_texture);
+        free(map->we_texture);
+        free(map->ea_texture);
+        free(map->floor_color);
+        free(map->ceiling_color);
+        free(map->cub_struct);
+        free(map);
         exit(EXIT_FAILURE);
+    }
     map->exit_flag = 1;
 }

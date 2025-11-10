@@ -49,6 +49,7 @@ typedef struct s_map
     int     exit_flag;
     int     width;
     int     height;
+    struct s_cub   *cub_struct;
 }   t_map;
 
 typedef struct s_cub
@@ -67,9 +68,10 @@ typedef struct s_cub
 // free_all.c
 void	ft_free_all(t_cub *cub);
 void	ft_free_map(char **map);
+void free_split_array(char **array);
 
 // parse/read_file.c
-t_map	*read_file_parse(char **av);
+t_map	*read_file_parse(char **av, t_cub *cub);
 t_map	*init_map_struct(void);
 t_map   *separate_map_info(t_map *map);
 t_map	*save_info_to_map_struct(t_map *map, char *line, int info_status);
@@ -78,6 +80,7 @@ int		check_map(t_map *map, int *i);
 int		is_map_line(char *line);
 bool    check_elements(t_map *map);
 void	trim_newline(char *str);
+void	save_texture_or_color2(t_map *map, char *value, int info_status);
 //void    colors_check(char **colors, t_map *map, int floor_or_ceiling);
 //void	save_color_values(char *colors, t_map *map, int floor_or_ceiling, int i);
 // utils/file_utils.c

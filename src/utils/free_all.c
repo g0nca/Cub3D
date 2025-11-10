@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:27 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/07 15:55:35 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/10 13:03:45 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
+
+void free_split_array(char **array)
+{
+    int i;
+    
+    if (!array)
+        return;
+    
+    i = 0;
+    while (array[i])
+    {
+        free(array[i]);
+        i++;
+    }
+    free(array);
+}
 
 void	ft_free_all(t_cub *cub)
 {
