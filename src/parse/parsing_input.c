@@ -52,5 +52,5 @@ static void     check_extension(int ac, char **av)
     if (len < 5)
         print_error_and_exit_without_free("Invalid file name", 1, NULL);
     if (ft_strcmp(&av[1][len - 4], ".cub") != 0)
-        print_error_and_exit_without_free("Invalid file extension", 1, NULL);
+        print_error_and_exit_without_free("Invalid file extension \"Example.cub\"", 1, NULL);
 }

@@ -81,6 +81,8 @@ int		is_map_line(char *line);
 bool    check_elements(t_map *map);
 void	trim_newline(char *str);
 void	save_texture_or_color2(t_map *map, char *value, int info_status);
+bool	verify_texture_elements(t_map *map);
+void	check_texture(t_map *map, char *line);
 //void    colors_check(char **colors, t_map *map, int floor_or_ceiling);
 //void	save_color_values(char *colors, t_map *map, int floor_or_ceiling, int i);
 // utils/file_utils.c

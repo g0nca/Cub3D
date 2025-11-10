@@ -68,22 +68,12 @@ static void colors_check(char **colors, t_map *map, int floor_or_ceiling,
         safe_exit_with_splits("Only 3 numbers are accepted", 
                               map, floor_split, ceiling_split);
 }
-
-bool    check_elements(t_map *map)
+bool	verify_color_elements(t_map *map)
 {
-    char **floor_split;
-    char **ceiling_split;
-    
-    if (access(map->no_texture, F_OK) == -1)
-        return (false);
-    if (access(map->so_texture, F_OK) == -1)
-        return (false);
-    if (access(map->we_texture, F_OK) == -1)
-        return (false);
-    if (access(map->ea_texture, F_OK) == -1)
-        return (false);
-	
-    floor_split = ft_split(map->floor_color, ',');
+	char	**floor_split;
+	char	**ceiling_split;
+
+	floor_split = ft_split(map->floor_color, ',');
     ceiling_split = ft_split(map->ceiling_color, ',');
     if (!floor_split || !ceiling_split)
     {
@@ -95,5 +85,42 @@ bool    check_elements(t_map *map)
     colors_check(ceiling_split, map, 0, floor_split, ceiling_split);
     free_split_array(floor_split);
     free_split_array(ceiling_split);
+	return (true);
+}
+void	check_texture(t_map *map, char *line)
+{
+	struct stat info;
+	int len;
+
+	len = ft_strlen(line);
+	if (ft_strcmp(&line[len - 4], ".xpm") != 0)
+        print_error_and_exit_without_free("Invalid file extension \"Example.xpm\"", 1, NULL);
+	if (access(line, F_OK) == -1)
+		print_error_and_exit_FREE("Texture Not Found", 1, map);
+	if (access(line, R_OK) == -1)
+		print_error_and_exit_FREE("Permission denied", 1, map);
+    if (stat(line, &info) == -1)
+    {
+        perror("stat");
+        return ;
+    }
+    if (S_ISDIR(info.st_mode))
+        print_error_and_exit_without_free("Is a Directory", 1, map);
+}
+bool	verify_texture_elements(t_map *map)
+{
+	check_texture(map, map->no_texture);
+	check_texture(map, map->so_texture);
+	check_texture(map, map->we_texture);
+	check_texture(map, map->ea_texture);
+	return (true);
+}
+bool    check_elements(t_map *map)
+{
+	if (verify_texture_elements(map) == false)
+		return (false);
+	if (verify_color_elements(map) == false)
+		return (false);
+    
     return (true);
 }
