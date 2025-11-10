@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/08 21:36:00 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/10 11:56:47 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,5 +271,7 @@ t_map	*separate_map_info(t_map *map)
 	trim_newline(map->so_texture);
 	trim_newline(map->we_texture);
 	trim_newline(map->ea_texture);
+	trim_newline(map->floor_color);
+	trim_newline(map->ceiling_color);
 	return (map);
 }

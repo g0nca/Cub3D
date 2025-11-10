@@ -78,7 +78,8 @@ int		check_map(t_map *map, int *i);
 int		is_map_line(char *line);
 bool    check_elements(t_map *map);
 void	trim_newline(char *str);
-
+//void    colors_check(char **colors, t_map *map, int floor_or_ceiling);
+//void	save_color_values(char *colors, t_map *map, int floor_or_ceiling, int i);
 // utils/file_utils.c
 int	ft_strcmp(const char *s1, const char *s2);
 
