@@ -6,7 +6,7 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/05 10:25:27 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/06 16:09:36 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,21 @@ int main(int ac, char **av)
 
     // Temporário - criar mapa de teste
     game.map.grid = malloc(sizeof(char *) * 16);
-    game.map.grid[0] = ft_strdup("11111");
-    game.map.grid[1] = ft_strdup("10001");
-    game.map.grid[2] = ft_strdup("10101");
-    game.map.grid[3] = ft_strdup("10N01");
-    game.map.grid[4] = ft_strdup("11011");
-    game.map.grid[5] = ft_strdup("11011");
-    game.map.grid[6] = ft_strdup("10001");
-    game.map.grid[7] = ft_strdup("10101");
-    game.map.grid[8] = ft_strdup("10001");
-    game.map.grid[9] = ft_strdup("11011");
-    game.map.grid[10] = ft_strdup("11011");
-    game.map.grid[11] = ft_strdup("10001");
-    game.map.grid[12] = ft_strdup("10101");
-    game.map.grid[13] = ft_strdup("10001");
-    game.map.grid[14] = ft_strdup("11111");
+    game.map.grid[0]  = ft_strdup("111111111111111");
+    game.map.grid[1]  = ft_strdup("100000000000001");
+    game.map.grid[2]  = ft_strdup("101111011111101");
+    game.map.grid[3]  = ft_strdup("101001010000101");
+    game.map.grid[4]  = ft_strdup("101001011110101");
+    game.map.grid[5]  = ft_strdup("101001000010101");
+    game.map.grid[6]  = ft_strdup("101111111010101");
+    game.map.grid[7]  = ft_strdup("100000001010001");
+    game.map.grid[8]  = ft_strdup("101111101011101");
+    game.map.grid[9]  = ft_strdup("101000101000101");
+    game.map.grid[10] = ft_strdup("101010101110101");
+    game.map.grid[11] = ft_strdup("101010100010101");
+    game.map.grid[12] = ft_strdup("101011111010101");
+    game.map.grid[13] = ft_strdup("1000N0000000001");
+    game.map.grid[14] = ft_strdup("111111111111111");
     game.map.grid[15] = NULL;
 
     init_game(&game);
