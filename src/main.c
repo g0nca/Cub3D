@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/11 14:00:25 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/11 14:02:00 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ int main(int ac, char **av)
         return (1);
     }
     game.map = *(cub->map);
-    init_game(&game);
     game.cub = *(cub);
     free(cub);
     cub = NULL;
+    init_game(&game);
     if (!find_player_position(&game))
     {
         game.player.x = 2.5;
