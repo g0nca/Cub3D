@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:49 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/11 11:55:27 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/11 15:45:48 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static void load_texture(void *mlx, t_img *img, char *path)
 
 void    init_images(t_game *g)
 {
-    load_texture(g->mlx, &g->textures.north, "./assets/textures/north.xpm");
-    load_texture(g->mlx, &g->textures.south, "./assets/textures/south.xpm");
-    load_texture(g->mlx, &g->textures.west, "./assets/textures/west.xpm");
-    load_texture(g->mlx, &g->textures.east, "./assets/textures/east.xpm");
+    load_texture(g->mlx, &g->textures.north, g->map.no_texture);
+    load_texture(g->mlx, &g->textures.south, g->map.so_texture);
+    load_texture(g->mlx, &g->textures.west, g->map.we_texture);
+    load_texture(g->mlx, &g->textures.east, g->map.ea_texture);
 }
