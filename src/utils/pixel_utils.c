@@ -1,22 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rotate_player.c                                    :+:      :+:    :+:   */
+/*   pixel_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/29 15:53:53 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/04 14:05:08 by joaomart         ###   ########.fr       */
+/*   Created: 2025/11/05 09:30:55 by joaomart          #+#    #+#             */
+/*   Updated: 2025/11/06 14:59:03 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-void    rotate_player(t_game *g, int dir)
+void	put_pixel_to_img(t_img *img, int x, int y, int color)
 {
-    g->player.angle += g->player.rot_speed * dir;
-    if (g->player.angle < 0)
-        g->player.angle += 2 * M_PI;
-    if (g->player.angle > 2 * M_PI)
-        g->player.angle -= 2 * M_PI;
+	char	*dst;
+
+	if (x < 0 || x >= WIN_W || y < 0 || y >= WIN_H)
+		return;
+	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
+	*(unsigned int *)dst = color;
+}
+
+void	clear_image(t_img *img, int color)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < WIN_H)
+	{
+		x = 0;
+		while (x < WIN_W)
+		{
+			put_pixel_to_img(img, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }

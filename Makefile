@@ -14,11 +14,21 @@ OBJ_DIR = obj
 # Lista todos os ficheiros .c na pasta src (adiciona os teus ficheiros aqui)
 SRC = main.c \
 	  parse/parsing_input.c \
+	  parse/parsing_player.c \
 	  parse/read_file.c \
 	  parse/check_elem_map.c \
 	  utils/file_utils.c \
 	  utils/errors.c \
-	  utils/free_all.c
+	  utils/free_all.c \
+	  utils/pixel_utils.c \
+	  events/handle_keys.c \
+	  events/move_player.c \
+	  events/rotate_player.c \
+	  init/init_game.c \
+	  init/load_textures.c \
+	  render/draw_minimap.c \
+	  render/draw_player.c \
+	  render/raycasting.c 
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 

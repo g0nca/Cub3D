@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:23 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/10 14:51:42 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/11 12:25:42 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void    print_error_and_exit_FREE(const char *message, int exit_flag, t_map *map
     printf("Error : %s\n", message);
     if (exit_flag == 1)
     {
-        ft_free_map(map->map);
+        ft_free_map(map->grid);
         free(map->no_texture);
         free(map->so_texture);
         free(map->we_texture);

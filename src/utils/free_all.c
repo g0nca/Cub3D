@@ -6,9 +6,23 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:27 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/10 13:03:45 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/11 12:53:05 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../include/cub3d.h"
+
+void	free_images(t_game *g)
+{
+	if (g->textures.north.img)
+		mlx_destroy_image(g->mlx, g->textures.north.img);
+	if (g->textures.south.img)
+		mlx_destroy_image(g->mlx, g->textures.south.img);
+	if (g->textures.west.img)
+		mlx_destroy_image(g->mlx, g->textures.west.img);
+	if (g->textures.east.img)
+		mlx_destroy_image(g->mlx, g->textures.east.img);
+}
 
 #include "../../include/cub3d.h"
 
@@ -33,20 +47,19 @@ void	ft_free_all(t_cub *cub)
 	int		i;
 
 	i = 0;
-
 	free(cub->map->no_texture);
     free(cub->map->so_texture);
     free(cub->map->we_texture);
     free(cub->map->ea_texture);
     free(cub->map->floor_color);
     free(cub->map->ceiling_color);
-	while (cub->map->map[i])
+	while (cub->map->grid[i])
 	{
-		free(cub->map->map[i]);
-		cub->map->map[i] = NULL;
+		free(cub->map->grid[i]);
+		cub->map->grid[i] = NULL;
 		i++;
 	}
-	free(cub->map->map);
+	free(cub->map->grid);
 	free(cub->map);
 }
 

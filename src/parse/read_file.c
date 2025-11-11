@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/10 16:30:44 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/11 11:58:58 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_map	*init_map_struct(void)
 	map = malloc(sizeof(t_map));
 	if (!map)
 		return (NULL);
-	map->map = NULL;
+	map->grid = NULL;
 	map->no_texture = NULL;
 	map->so_texture = NULL;
 	map->we_texture = NULL;
@@ -79,19 +79,19 @@ static int	copy_to_struct(char **av, t_map *map)
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
 	{
-		free(map->map);
+		free(map->grid);
 		free(map);
 		return (-1);
 	}
 	i = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		map->map[i] = line;
+		map->grid[i] = line;
 		if ((int)ft_strlen(line) > map->width)
 			map->width = ft_strlen(line);
 		i++;
 	}
-	map->map[i] = NULL;
+	map->grid[i] = NULL;
 	map->height = i;
 	close(fd);	
 	return (0);
@@ -111,8 +111,8 @@ t_map	*read_file_parse(char **av, t_cub *cub)
 		free(map);
 		return (NULL);
 	}
-	map->map = malloc(sizeof(char *) * (line_count + 1));
-	if (!map->map)
+	map->grid = malloc(sizeof(char *) * (line_count + 1));
+	if (!map->grid)
 	{
 		free(map);
 		return (NULL);
@@ -240,7 +240,7 @@ int		is_map_line(char *line)
 
 int		check_map(t_map *map, int *i)
 {
-	if (is_map_line(map->map[*i]))
+	if (is_map_line(map->grid[*i]))
 	{
 		if (map->start == 0)
 		{
@@ -275,7 +275,7 @@ t_map	*save_only_map_lines(t_map *map)
 	j = 0;
 	while (i <= map->end)
 	{
-		only_map[j] = ft_strdup(map->map[i]);
+		only_map[j] = ft_strdup(map->grid[i]);
 		if (ft_strlen(only_map[j]) - 1 == '\n')
 			only_map[j][ft_strlen(only_map[j]) - 1] = '\0';
 		j++;
@@ -283,8 +283,8 @@ t_map	*save_only_map_lines(t_map *map)
 	}
 	only_map[j] = NULL;
 	i = 0;
-	ft_free_map(map->map);
-	map->map = only_map;
+	ft_free_map(map->grid);
+	map->grid = only_map;
 	return (map);
 }
 t_map	*separate_map_info(t_map *map)
@@ -293,12 +293,12 @@ t_map	*separate_map_info(t_map *map)
 	int	info_status;
 
 	i = 0;
-	while (map->map[i])
+	while (map->grid[i])
 	{
 		info_status = 0;
-		info_status = check_info(map->map[i]);
+		info_status = check_info(map->grid[i]);
 		if (info_status >= 1 && info_status <= 6)
-			save_info_to_map_struct(map, map->map[i], info_status);
+			save_info_to_map_struct(map, map->grid[i], info_status);
 		if (info_status == 0)
 		{
 			if (check_map(map, &i) == -1)
