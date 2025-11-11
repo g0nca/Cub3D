@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/11 13:33:40 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/11 14:00:25 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,16 @@ int main(int ac, char **av)
         return (1);
     }
     game.map = *(cub->map);
+    init_game(&game);
     game.cub = *(cub);
     free(cub);
     cub = NULL;
-    print_map_struct(&game.cub);
     if (!find_player_position(&game))
     {
         game.player.x = 2.5;
         game.player.y = 2.5;
         game.player.angle = 3 * M_PI / 2;
     }
-    init_game(&game);
     render_3d_view(&game);
     draw_minimap(&game);
     draw_player(&game);
@@ -59,6 +58,7 @@ int main(int ac, char **av)
     mlx_hook(game.win, 3, 1L<<1, key_release, &game);    // Key release
     mlx_hook(game.win, 17, 0, close_window, &game);      // Window close
     mlx_loop_hook(game.mlx, handle_keys, &game);         // Loop contínuo
+    print_map_struct(&game.cub);
     mlx_loop(game.mlx);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/11 11:58:58 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/11 13:41:06 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,12 @@ t_map	*read_file_parse(char **av, t_cub *cub)
 	if (copy_to_struct(av, map) == -1)
 		return (NULL);
 	separate_map_info(map);
+	int i = 0;
+	while (map->grid[i])
+	{
+		trim_newline(map->grid[i]);
+		i++;
+	}
 	return (map);
 }
 int		check_info(char *line)
