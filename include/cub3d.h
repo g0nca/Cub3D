@@ -74,6 +74,8 @@ typedef struct s_map
     char    *ceiling_color;
     int     floor_rgb[3];
     int     ceiling_rgb[3];
+	int		final_rgb_floor;
+	int		final_rgb_ceiling;
     int     start;
     int     last_map_line;
     int     end;
@@ -174,6 +176,8 @@ void	trim_newline(char *str);
 void	save_texture_or_color2(t_map *map, char *value, int info_status);
 bool	verify_texture_elements(t_map *map);
 void	check_texture(t_map *map, char *line);
+void	check_if_all_elements_exists(t_map *map);
+int		rgb_to_hex(int r, int g, int b);
 //void    colors_check(char **colors, t_map *map, int floor_or_ceiling);
 //void	save_color_values(char *colors, t_map *map, int floor_or_ceiling, int i);
 // utils/file_utils.c

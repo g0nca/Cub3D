@@ -85,6 +85,9 @@ bool	verify_color_elements(t_map *map)
     colors_check(ceiling_split, map, 0, floor_split, ceiling_split);
     free_split_array(floor_split);
     free_split_array(ceiling_split);
+    map->final_rgb_floor = rgb_to_hex(map->floor_rgb[0], map->floor_rgb[1], map->floor_rgb[2]);
+    map->final_rgb_ceiling = rgb_to_hex(map->ceiling_rgb[0], map->ceiling_rgb[1], map->ceiling_rgb[2]);
+    printf("RGB:%d\n", map->final_rgb_floor);
 	return (true);
 }
 void	check_texture(t_map *map, char *line)

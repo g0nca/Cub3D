@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/11 13:41:06 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/11 15:51:11 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_map	*init_map_struct(void)
 	map->ceiling_rgb[0] = -1;
 	map->ceiling_rgb[1] = -1;
 	map->ceiling_rgb[2] = -1;
+	map->final_rgb_floor = 0;
+	map->final_rgb_ceiling = 0;
 	map->exit_flag = 0;
 	map->start = 0;
 	map->last_map_line = 0;
@@ -159,6 +161,8 @@ void	trim_newline(char *str)
 	int i;
 
 	i = 0;
+	if (!str)
+		return ;
 	while (str[i])
 	{
 		if (str[i] == '\n')
@@ -293,6 +297,22 @@ t_map	*save_only_map_lines(t_map *map)
 	map->grid = only_map;
 	return (map);
 }
+void	check_if_all_elements_exists(t_map *map)
+{
+	if (!map->no_texture)
+		print_error_and_exit_FREE("Missing North Path for texture", 1, map);
+	if (!map->so_texture)
+		print_error_and_exit_FREE("Missing South Path for texture", 1, map);
+	if (!map->we_texture)
+		print_error_and_exit_FREE("Missing West Path for texture", 1, map);
+	if (!map->ea_texture)
+		print_error_and_exit_FREE("Missing East Path for texture", 1, map);
+	if (!map->floor_color)
+		print_error_and_exit_FREE("Missing Floor Color", 1, map);
+	if (!map->ceiling_color)
+		print_error_and_exit_FREE("Missing Ceiling Color", 1, map);
+
+}
 t_map	*separate_map_info(t_map *map)
 {
 	int i;
@@ -312,6 +332,7 @@ t_map	*separate_map_info(t_map *map)
 		}
 		i++;
 	}
+	check_if_all_elements_exists(map);
 	map = save_only_map_lines(map);
 	trim_newline(map->no_texture);
 	trim_newline(map->so_texture);
