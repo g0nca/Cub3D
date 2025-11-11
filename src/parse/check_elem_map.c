@@ -100,8 +100,11 @@ void	check_texture(t_map *map, char *line)
         perror("stat");
         return ;
     }
+
     if (S_ISDIR(info.st_mode))
+	{
         print_error_and_exit_without_free("Is a Directory", 1, map);
+	}
 	
 	if (access(line, F_OK) == -1)
 		print_error_and_exit_FREE("Texture Not Found", 1, map);
