@@ -21,6 +21,7 @@ SRC = main.c \
 	  utils/errors.c \
 	  utils/free_all.c \
 	  utils/pixel_utils.c \
+	  utils/color_utils.c \
 	  events/handle_keys.c \
 	  events/move_player.c \
 	  events/rotate_player.c \
@@ -28,7 +29,7 @@ SRC = main.c \
 	  init/load_textures.c \
 	  render/draw_minimap.c \
 	  render/draw_player.c \
-	  render/raycasting.c 
+	  render/raycasting.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
@@ -53,7 +54,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Compila o executável
-$(NAME): $(MLX_DIR)/libmlx.a $(OBJ) $(GNL) $(LIBFT) 
+$(NAME): $(MLX_DIR)/libmlx.a $(OBJ) $(GNL) $(LIBFT)
 	@echo "$(BLUE)A criar executável $(NAME)...$(RESET)"
 	@$(CC) $(OBJ) $(MLX) $(GNL) $(LIBFT) -o $(NAME)
 	@echo "$(GREEN)✓ $(NAME) compilado com sucesso!$(RESET)"

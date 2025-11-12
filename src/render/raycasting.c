@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:36 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/11 12:52:35 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/12 09:33:14 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ static void draw_wall_stripe(t_game *g, int x, t_ray *ray)
 
     /* Desenha teto */
     for (int y = 0; y < draw_start; ++y)
-        put_pixel_to_img(&g->screen, x, y, 0x87CEEB);
+        put_pixel_to_img(&g->screen, x, y, get_ceiling_color(g));
 
     /* Cálculo de passo para a textura (double!) */
     double step = (double)texture->height / (double)wall_height;
@@ -180,7 +180,7 @@ static void draw_wall_stripe(t_game *g, int x, t_ray *ray)
 
     /* Desenha chão */
     for (int y = draw_end; y < WIN_H; ++y)
-        put_pixel_to_img(&g->screen, x, y, 0x8B4513);
+        put_pixel_to_img(&g->screen, x, y, get_floor_color(g));
 }
 
 

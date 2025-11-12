@@ -1,10 +1,10 @@
 NO ./assets/textures/malucos.xpm
 SO ./assets/textures/malucos.xpm
-WE ./assets/textures/west.xpm
+WE ./assets/textures/malucos.xpm
 EA ./assets/textures/malucos.xpm
 
-F 100,100,100
-C 200,200,255
+F 34,139,34
+C 135,206,235
 
 
 	   	1111111111111111111111111
