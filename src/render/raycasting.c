@@ -6,7 +6,7 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:36 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/12 09:33:14 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/12 09:53:40 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,12 @@ static void draw_wall_stripe(t_game *g, int x, t_ray *ray)
     if (tex_x >= texture->width) tex_x = texture->width - 1;
 
     /* Desenha teto */
-    for (int y = 0; y < draw_start; ++y)
+    int y = 0;
+    while (y < draw_start)
+    {
+        y++;
         put_pixel_to_img(&g->screen, x, y, get_ceiling_color(g));
+    }
 
     /* Cálculo de passo para a textura (double!) */
     double step = (double)texture->height / (double)wall_height;
@@ -165,8 +169,10 @@ static void draw_wall_stripe(t_game *g, int x, t_ray *ray)
     /* alternativa clássica: tex_pos = (draw_start - WIN_H/2 + wall_height/2) * step; ambos equivalem */
 
     /* Desenha parede com amostragem correta */
-    for (int y = draw_start; y < draw_end; ++y)
+    y = draw_start;
+    while (y < draw_end)
     {
+        y++;
         int tex_y = (int)tex_pos;
         if (tex_y < 0) tex_y = 0;
         if (tex_y >= texture->height) tex_y = texture->height - 1;
@@ -179,8 +185,12 @@ static void draw_wall_stripe(t_game *g, int x, t_ray *ray)
     }
 
     /* Desenha chão */
-    for (int y = draw_end; y < WIN_H; ++y)
+    y = draw_end;
+    while (y < WIN_H)
+    {
+        y++;
         put_pixel_to_img(&g->screen, x, y, get_floor_color(g));
+    }
 }
 
 
