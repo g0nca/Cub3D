@@ -29,6 +29,7 @@ SRC = main.c \
 	  init/load_textures.c \
 	  render/draw_minimap.c \
 	  render/draw_player.c \
+	  render/draw_walls.c \
 	  render/raycasting.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
