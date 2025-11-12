@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/12 11:01:07 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/12 14:37:20 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,15 @@ t_map	*init_map_struct(void)
 	map->ceiling_rgb[0] = -1;
 	map->ceiling_rgb[1] = -1;
 	map->ceiling_rgb[2] = -1;
+	map->start_x = -1;
+	map->start_y = -1;
 	map->exit_flag = 0;
 	map->start = 0;
 	map->last_map_line = 0;
 	map->end = 0;
 	map->height = 0;
 	map->width = 0;
+	map->player_p = false;
 	return (map);
 }
 
@@ -92,7 +95,6 @@ static int	copy_to_struct(char **av, t_map *map)
 		i++;
 	}
 	map->grid[i] = NULL;
-	map->height = i;
 	close(fd);	
 	return (0);
 }
@@ -121,6 +123,8 @@ t_map	*read_file_parse(char **av, t_cub *cub)
 		return (NULL);
 	separate_map_info(map);
 	trim_newline_center(map, 1);
+	if (check_map_closed(map) == 1)
+		map->exit_flag = 1;
 	return (map);
 }
 int		check_info(char *line)
@@ -128,6 +132,8 @@ int		check_info(char *line)
 	int i;
 
 	i = 0;
+	if (!line)
+		return (0);
 	while (line[i])
 	{
 		if (line[i] == ' ')
@@ -227,13 +233,19 @@ t_map	*save_info_to_map_struct(t_map *map, char *line, int info_status)
 	return (map);
 }
 
-int		is_map_line(char *line)
+int		is_map_line(char *line, t_map *map)
 {
 	int i;
 
 	i = 0;
+	if (!line)
+		return (0);
 	while (line[i])
 	{
+		if (map->player_p == false && (line[i] == 'N' || line[i] == 'S' || line[i] == 'W' || line[i] == 'E'))
+			map->player_p = true;
+		else
+			print_error_and_exit_FREE("Only SinglePlayer Game, NOT MULTIPLAYER", 1, map);
  		if (line[i] != '0' && line[i] != '1' && line[i] != 'N' && line[i] != 'S' && line[i] != 'E' && line[i] != 'W' && line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
 			return (0);
 		i++;
@@ -243,7 +255,7 @@ int		is_map_line(char *line)
 
 int		check_map(t_map *map, int *i)
 {
-	if (is_map_line(map->grid[*i]))
+	if (is_map_line(map->grid[*i], map))
 	{
 		if (map->start == 0)
 		{
@@ -356,3 +368,113 @@ t_map	*separate_map_info(t_map *map)
 	trim_newline_center(map, 0);
 	return (map);
 }
+int		map_height(t_map *map)
+{
+	int i;
+
+	i = 0;
+	while (map->grid[i])
+		i++;
+	return (i);
+}
+
+char	**copy_map_grid(t_map *map)
+{
+	char	**map_copy;
+	int		i;
+
+	if (!map->grid)
+		return (NULL);
+	map_copy = (char **)malloc(sizeof(char *) * (map->height + 1));
+	if (!map_copy)
+		return (NULL);
+	i = 0;
+	while (map->grid[i])
+	{
+		map_copy[i] = ft_strdup(map->grid[i]);
+		i++;
+	}
+	map_copy[i] = NULL;
+	return (map_copy);
+}
+int		find_player_position_parse(t_map *map, int *start_x, int *start_y)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < map->height)
+	{
+		x = 0;
+		while (map->grid[y][x])
+		{
+			if (map->grid[y][x] == 'N' || map->grid[y][x] == 'S' || map->grid[y][x] == 'W' || map->grid[y][x] == 'E')
+			{
+				*start_x = x;
+				*start_y = y;
+				return (1);
+			}
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+int		flood_fill(char **map_copy, int x, int y, int width, int height)
+{
+	char	c;
+	int		line_len;
+
+	if (y < 0 || y >= height || x < 0 || x >= width)
+		return (0);
+	line_len = ft_strlen(map_copy[y]);
+	if (x < 0 || x >= line_len)
+		return (0);
+	c = map_copy[y][x];
+	if (c == '1' || c == 'V')
+		return (1);
+	if (c == ' ' || c == '\0' || c == '\n')
+	{
+		if ((c == ' ' || c == '\0') && (y == 0 || y == height -1 || x == 0 || x == width -1))
+			return (0);
+	}
+	map_copy[y][x] = 'V';
+	if (!flood_fill(map_copy, x, y - 1, width, height))
+		return (0);
+	if (!flood_fill(map_copy, x, y + 1, width, height))
+		return (0);
+	if (!flood_fill(map_copy, x - 1, y, width, height))
+		return (0);
+	if (!flood_fill(map_copy, x + 1, y, width, height))
+		return (0);
+	return (1);
+}
+int	check_map_closed(t_map *map)
+{
+	char	**map_copy;
+	int		start_x;
+	int		start_y;
+	int		result;
+
+	map->height = map_height(map);
+	map_copy = copy_map_grid(map);
+	if (!map_copy)
+	{
+		ft_free_map(map_copy);
+		print_error_and_exit_FREE("No space left on device", 1, map);
+	}
+	if (!find_player_position_parse(map, &start_x, &start_y))
+	{
+		ft_free_map(map_copy);
+		print_error_and_exit_FREE("No player position founded", 1, map);
+	}
+	result = flood_fill(map_copy, start_x, start_y, map->width, map->height);	
+	ft_free_map(map_copy);
+	if (!result)
+	{
+		print_error_and_exit_FREE("Map is not closed by walls\nMap are closing by system", 0, map);
+		return (1);
+	}
+	return (0);
+}
+

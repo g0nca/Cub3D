@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/12 10:06:19 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/12 13:42:10 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int main(int ac, char **av)
     }
     game.map = *(cub->map);
     game.cub = *(cub);
+    //print_map_struct(&game.cub, NULL);
     free(cub);
     cub = NULL;
     init_game(&game);
@@ -69,7 +70,6 @@ int main(int ac, char **av)
     mlx_hook(game.win, 3, 1L<<1, key_release, &game);    // Key release
     mlx_hook(game.win, 17, 0, close_window, &game);      // Window close
     mlx_loop_hook(game.mlx, handle_keys, &game);         // Loop contínuo
-    print_map_struct(&game.cub, NULL);
     mlx_loop(game.mlx);
     return (0);
 }

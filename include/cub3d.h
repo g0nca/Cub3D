@@ -25,7 +25,7 @@
 #include "../libs/libft/libft.h"
 #include "../minilibx-linux/mlx.h"
 
-#define WIN_W 1920
+#define WIN_W 1280
 #define WIN_H 1080
 #define TILE_SIZE 20
 
@@ -47,6 +47,12 @@
 #include "../libs/get_next_line/get_next_line.h"
 
 #define PATH_MAX 4096
+#define NO 1
+#define SO 2
+#define WE 3
+#define EA 4
+#define F 5
+#define C 6
 
 typedef struct s_player
 {
@@ -56,12 +62,6 @@ typedef struct s_player
 	double	move_speed;
 	double	rot_speed;
 }			t_player;
-#define NO 1
-#define SO 2
-#define WE 3
-#define EA 4
-#define F 5
-#define C 6
 
 typedef struct s_map
 {
@@ -74,12 +74,15 @@ typedef struct s_map
     char    *ceiling_color;
     int     floor_rgb[3];
     int     ceiling_rgb[3];
+	int		start_x;
+	int		start_y;
     int     start;
     int     last_map_line;
     int     end;
     int     exit_flag;
     int     width;
     int     height;
+	bool	player_p;
     struct s_cub   *cub_struct;
 }   t_map;
 
@@ -168,7 +171,7 @@ t_map   *separate_map_info(t_map *map);
 t_map	*save_info_to_map_struct(t_map *map, char *line, int info_status);
 int		check_info(char *line);
 int		check_map(t_map *map, int *i);
-int		is_map_line(char *line);
+int		is_map_line(char *line, t_map *map);
 bool    check_elements(t_map *map);
 void	trim_newline(char *str);
 void	save_texture_or_color2(t_map *map, char *value, int info_status);
@@ -176,6 +179,10 @@ bool	verify_texture_elements(t_map *map);
 void	check_texture(t_map *map, char *line);
 void	check_if_all_elements_exists(t_map *map);
 void	trim_newline_center(t_map *map, int flag);
+int		check_map_closed(t_map *map);
+int		map_height(t_map *map);
+char	**copy_map_grid(t_map *map);
+int		find_player_position_parse(t_map *map, int *start_x, int *start_y);
 //void    colors_check(char **colors, t_map *map, int floor_or_ceiling);
 //void	save_color_values(char *colors, t_map *map, int floor_or_ceiling, int i);
 // utils/file_utils.c
