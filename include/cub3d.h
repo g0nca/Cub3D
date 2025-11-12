@@ -25,8 +25,8 @@
 #include "../libs/libft/libft.h"
 #include "../minilibx-linux/mlx.h"
 
-#define WIN_W 800
-#define WIN_H 600
+#define WIN_W 1920
+#define WIN_H 1080
 #define TILE_SIZE 20
 
 #define MINIMAP_RADIUS 80      // Raio do minimapa circular
@@ -74,8 +74,6 @@ typedef struct s_map
     char    *ceiling_color;
     int     floor_rgb[3];
     int     ceiling_rgb[3];
-	int		final_rgb_floor;
-	int		final_rgb_ceiling;
     int     start;
     int     last_map_line;
     int     end;
@@ -177,7 +175,7 @@ void	save_texture_or_color2(t_map *map, char *value, int info_status);
 bool	verify_texture_elements(t_map *map);
 void	check_texture(t_map *map, char *line);
 void	check_if_all_elements_exists(t_map *map);
-int		rgb_to_hex(int r, int g, int b);
+void	trim_newline_center(t_map *map, int flag);
 //void    colors_check(char **colors, t_map *map, int floor_or_ceiling);
 //void	save_color_values(char *colors, t_map *map, int floor_or_ceiling, int i);
 // utils/file_utils.c
@@ -199,5 +197,6 @@ void    print_error_and_exit_without_free(const char *message, int exit_flag, t_
 void    print_error_and_exit_FREE(const char *message, int exit_flag, t_map *map);
 
 int		main(int ac, char **av);
+void	print_map_struct(t_cub *cub, t_map *map);
 
 #endif

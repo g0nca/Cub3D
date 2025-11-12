@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/11 15:51:11 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/12 11:01:07 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ t_map	*init_map_struct(void)
 	map->ceiling_rgb[0] = -1;
 	map->ceiling_rgb[1] = -1;
 	map->ceiling_rgb[2] = -1;
-	map->final_rgb_floor = 0;
-	map->final_rgb_ceiling = 0;
 	map->exit_flag = 0;
 	map->start = 0;
 	map->last_map_line = 0;
@@ -122,12 +120,7 @@ t_map	*read_file_parse(char **av, t_cub *cub)
 	if (copy_to_struct(av, map) == -1)
 		return (NULL);
 	separate_map_info(map);
-	int i = 0;
-	while (map->grid[i])
-	{
-		trim_newline(map->grid[i]);
-		i++;
-	}
+	trim_newline_center(map, 1);
 	return (map);
 }
 int		check_info(char *line)
@@ -241,11 +234,11 @@ int		is_map_line(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '0' || line[i] == '1' || line[i] == 'N' || line[i] == 'S' || line[i] == 'E' || line[i] == 'W' || line[i] == ' ')
-			return (1);
+ 		if (line[i] != '0' && line[i] != '1' && line[i] != 'N' && line[i] != 'S' && line[i] != 'E' && line[i] != 'W' && line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
+			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 int		check_map(t_map *map, int *i)
@@ -313,6 +306,30 @@ void	check_if_all_elements_exists(t_map *map)
 		print_error_and_exit_FREE("Missing Ceiling Color", 1, map);
 
 }
+
+void	trim_newline_center(t_map *map, int flag)
+{
+	int i;
+
+	i = 0;
+	if (flag == 0)
+	{
+		trim_newline(map->no_texture);
+		trim_newline(map->so_texture);
+		trim_newline(map->we_texture);
+		trim_newline(map->ea_texture);
+		trim_newline(map->floor_color);
+		trim_newline(map->ceiling_color);
+	}
+	else if (flag == 1)
+	{
+		while (map->grid[i])
+		{
+			trim_newline(map->grid[i]);
+			i++;
+		}
+	}
+}
 t_map	*separate_map_info(t_map *map)
 {
 	int i;
@@ -321,6 +338,8 @@ t_map	*separate_map_info(t_map *map)
 	i = 0;
 	while (map->grid[i])
 	{
+		if (map->grid[i][0] == '\n')
+			i++;
 		info_status = 0;
 		info_status = check_info(map->grid[i]);
 		if (info_status >= 1 && info_status <= 6)
@@ -334,11 +353,6 @@ t_map	*separate_map_info(t_map *map)
 	}
 	check_if_all_elements_exists(map);
 	map = save_only_map_lines(map);
-	trim_newline(map->no_texture);
-	trim_newline(map->so_texture);
-	trim_newline(map->we_texture);
-	trim_newline(map->ea_texture);
-	trim_newline(map->floor_color);
-	trim_newline(map->ceiling_color);
+	trim_newline_center(map, 0);
 	return (map);
 }

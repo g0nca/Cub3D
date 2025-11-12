@@ -6,19 +6,30 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/11 15:31:57 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/12 10:06:19 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-static void print_map_struct(t_cub *cub)
+void print_map_struct(t_cub *cub, t_map *map)
 {
     int i = 0;
-    while (cub->map->grid[i])
+    if (cub != NULL)
     {
-        printf("%s\n", cub->map->grid[i]);
-        i++;
+        while (cub->map->grid[i])
+        {
+            printf("%s\n", cub->map->grid[i]);
+            i++;
+        }
+    }
+    else if (map != NULL)
+    {
+        while (map->grid[i])
+        {
+            printf("%s\n", map->grid[i]);
+            i++;
+        }
     }
 }
 int main(int ac, char **av)
@@ -58,7 +69,7 @@ int main(int ac, char **av)
     mlx_hook(game.win, 3, 1L<<1, key_release, &game);    // Key release
     mlx_hook(game.win, 17, 0, close_window, &game);      // Window close
     mlx_loop_hook(game.mlx, handle_keys, &game);         // Loop contínuo
-    print_map_struct(&game.cub);
+    print_map_struct(&game.cub, NULL);
     mlx_loop(game.mlx);
     return (0);
 }
