@@ -191,6 +191,9 @@ int		find_player_position(t_game *game);
 void	free_images(t_game *g);
 void	clear_image(t_img *img, int color);
 void	put_pixel_to_img(t_img *img, int x, int y, int color);
+int	rgb_to_int(int r, int g, int b);
+int	get_ceiling_color(t_game *g);
+int	get_floor_color(t_game *g);
 
 // errors.c
 void    print_error_and_exit_without_free(const char *message, int exit_flag, t_map *map);
