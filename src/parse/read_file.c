@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/12 14:37:20 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/12 14:51:59 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,7 @@ int		is_map_line(char *line, t_map *map)
 	{
 		if (map->player_p == false && (line[i] == 'N' || line[i] == 'S' || line[i] == 'W' || line[i] == 'E'))
 			map->player_p = true;
-		else
+		else if (map->player_p == true && (line[i] == 'N' || line[i] == 'S' || line[i] == 'W' || line[i] == 'E'))
 			print_error_and_exit_FREE("Only SinglePlayer Game, NOT MULTIPLAYER", 1, map);
  		if (line[i] != '0' && line[i] != '1' && line[i] != 'N' && line[i] != 'S' && line[i] != 'E' && line[i] != 'W' && line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
 			return (0);

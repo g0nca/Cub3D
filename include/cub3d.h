@@ -119,6 +119,7 @@ typedef struct s_ray
 	double	distance;
 	int		hit_vertical;
 	double	wall_x;
+	int     is_door;
 }			t_ray;
 
 typedef struct s_game
@@ -158,6 +159,9 @@ void	init_images(t_game *g);
 void	draw_minimap(t_game *g);
 void	draw_player(t_game *g);
 void	render_3d_view(t_game *g);
+int		is_wall_at(t_game *g, int x, int y);
+void draw_wall_stripe(t_game *g, int x, t_ray *ray);
+t_img *get_texture(t_game *g, t_ray *ray, double angle);
 
 // free_all.c
 void	ft_free_all(t_cub *cub);
