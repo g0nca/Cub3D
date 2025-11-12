@@ -25,6 +25,7 @@ SRC = main.c \
 	  events/handle_keys.c \
 	  events/move_player.c \
 	  events/rotate_player.c \
+	  events/mouse_control.c \
 	  init/init_game.c \
 	  init/load_textures.c \
 	  render/draw_minimap.c \

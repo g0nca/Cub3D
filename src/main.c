@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/12 13:42:10 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/12 15:00:51 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int main(int ac, char **av)
     }
     game.map = *(cub->map);
     game.cub = *(cub);
-    //print_map_struct(&game.cub, NULL);
     free(cub);
     cub = NULL;
     init_game(&game);
@@ -61,15 +60,29 @@ int main(int ac, char **av)
         game.player.y = 2.5;
         game.player.angle = 3 * M_PI / 2;
     }
+
+    // Renderização inicial
     render_3d_view(&game);
     draw_minimap(&game);
     draw_player(&game);
     mlx_put_image_to_window(game.mlx, game.win, game.screen.img, 0, 0);
 
+    // Registra eventos de teclado
     mlx_hook(game.win, 2, 1L<<0, key_press, &game);      // Key press
     mlx_hook(game.win, 3, 1L<<1, key_release, &game);    // Key release
     mlx_hook(game.win, 17, 0, close_window, &game);      // Window close
+
+    // Registra eventos de mouse
+    mlx_hook(game.win, 6, 1L<<6, mouse_move, &game);     // Mouse move
+
+    // Esconde o cursor para experiência mais imersiva
+    hide_mouse_cursor(&game);
+
+    // Centra o cursor no meio da janela
+    mlx_mouse_move(game.mlx, game.win, WIN_W / 2, WIN_H / 2);
+
     mlx_loop_hook(game.mlx, handle_keys, &game);         // Loop contínuo
+    print_map_struct(&game.cub, NULL);
     mlx_loop(game.mlx);
     return (0);
 }

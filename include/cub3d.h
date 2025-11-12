@@ -25,8 +25,8 @@
 #include "../libs/libft/libft.h"
 #include "../minilibx-linux/mlx.h"
 
-#define WIN_W 1280
-#define WIN_H 1080
+#define WIN_W 800
+#define WIN_H 600
 #define TILE_SIZE 20
 
 #define MINIMAP_RADIUS 80      // Raio do minimapa circular
@@ -42,6 +42,8 @@
 #define KEY_ESC 65307
 #define KEY_LEFT 65361
 #define KEY_RIGHT 65363
+#define MOUSE_SENSITIVITY 0.002
+#define MOUSE_DEAD_ZONE 1
 
 #define M_PI 3.14159265358979323846
 #include "../libs/get_next_line/get_next_line.h"
@@ -150,6 +152,10 @@ void	move_strafe(t_game *g, int dir);
 void	move_forward_backward(t_game *g, int dir);
 void	rotate_player(t_game *g, int dir);
 int		close_window(t_game *g);
+int		mouse_move(int x, int y, t_game *g);
+int		mouse_press(int button, int x, int y, t_game *g);
+void	hide_mouse_cursor(t_game *g);
+void	show_mouse_cursor(t_game *g);
 
 //intit
 void	init_game(t_game *game);
