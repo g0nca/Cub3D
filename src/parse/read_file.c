@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/12 14:51:59 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/12 15:47:20 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,8 @@ int		is_map_line(char *line, t_map *map)
 
 int		check_map(t_map *map, int *i)
 {
+	if (map->grid[*i][0] == '\n')
+		return (0);
 	if (is_map_line(map->grid[*i], map))
 	{
 		if (map->start == 0)
@@ -471,10 +473,7 @@ int	check_map_closed(t_map *map)
 	result = flood_fill(map_copy, start_x, start_y, map->width, map->height);	
 	ft_free_map(map_copy);
 	if (!result)
-	{
-		print_error_and_exit_FREE("Map is not closed by walls\nMap are closing by system", 0, map);
-		return (1);
-	}
+		print_error_and_exit_FREE("Map is not closed by walls", 1, map);
 	return (0);
 }
 

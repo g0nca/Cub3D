@@ -1,0 +1,12 @@
+NO ./assets/textures/validTextures/north.xpm
+SO ./assets/textures/validTextures/south.xpm
+WE ./assets/textures/validTextures/west.xpm
+EA ./assets/textures/validTextures/east.xpm
+
+F 164,169,20
+C 153,204,255
+
+111111111
+11001111111
+100000W11
+111111111
