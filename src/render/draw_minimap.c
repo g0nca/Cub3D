@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_minimap.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:33 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/06 14:17:11 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/17 13:20:02 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static int is_inside_circle(int x, int y, int cx, int cy, int radius)
 
 static int get_map_tile(t_game *g, int map_x, int map_y)
 {
-    int rows;
+    int     rows;
+    char    tile;
 
     if (map_y < 0 || map_x < 0)
         return (1);
@@ -30,12 +31,13 @@ static int get_map_tile(t_game *g, int map_x, int map_y)
     rows = 0;
     while (g->map.grid[rows])
         rows++;
-
     if (map_y >= rows)
         return (1);
     if (map_x >= (int)ft_strlen(g->map.grid[map_y]))
         return (1);
-
+    tile = g->map.grid[map_y][map_x];
+    if (tile == '1' || tile == ' ' || tile == '\t')
+        return (1);
     return (g->map.grid[map_y][map_x] == '1');
 }
 

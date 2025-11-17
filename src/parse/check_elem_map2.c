@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 09:40:44 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 09:44:29 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/17 13:09:53 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void safe_exit_with_splits(char *msg, t_map *map,
 {
     free_split_array(floor_split);
     free_split_array(ceiling_split);
-    print_error_and_exit_without_free(msg, 1, map);
+    print_error_and_exit_FREE(msg, 1, map);
 }
 
 void save_color_values(char *color_str, t_map *map, int floor_or_ceiling, 
