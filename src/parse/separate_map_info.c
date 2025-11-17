@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:45:43 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 10:52:10 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/17 11:58:36 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,79 +67,29 @@ int		check_info(char *line)
 	{
 		if (line[i] == ' ')
 			i++;
-		else if (line[i] == 'N' && line[i + 1] == 'O')
+		if (line[i] == 'N' && line[i + 1] == 'O')
 			return (NO);
-		else if (line[i] == 'S' && line[i + 1] == 'O')
+		if (line[i] == 'S' && line[i + 1] == 'O')
 			return (SO);
-		else if (line[i] == 'W' && line[i + 1] == 'E')
+		if (line[i] == 'W' && line[i + 1] == 'E')
 			return (WE);
-		else if (line[i] == 'E' && line[i + 1] == 'A')
+		if (line[i] == 'E' && line[i + 1] == 'A')
 			return (EA);
-		else if (line[i] == 'F')
+		if (line[i] == 'F')
 			return (F);
-		else if (line[i] == 'C')
+		if (line[i] == 'C')
 			return (C);
 		i++;
 	}
 	return (0);
 }
 
-void	save_texture_or_color2(t_map *map, char *value, int info_status)
-{
-
-	if (info_status == WE)
-	{
-		if (map->we_texture == NULL)
-			map->we_texture = ft_strdup(value);
-		else
-			map->exit_flag = 1;
-	}
-	else if (info_status == EA)
-	{
-		if (map->ea_texture == NULL)
-			map->ea_texture = ft_strdup(value);
-		else
-			map->exit_flag = 1;
-	}
-	else if (info_status == F)
-	{
-		if (map->floor_color == NULL)
-			map->floor_color = ft_strdup(value);
-		else
-			map->exit_flag = 1;
-	}
-	else if (info_status == C)
-	{
-		if (map->ceiling_color == NULL)
-			map->ceiling_color = ft_strdup(value);
-		else
-			map->exit_flag = 1;
-	}
-}
-
 t_map	*save_info_to_map_struct(t_map *map, char *line, int info_status)
 {
 	int	i;
 
-	i = 0;
-	while (line[i] && line[i] != ' ')
-		i++;
-	while (line[i] && line[i] == ' ')
-		i++;
-	if (info_status == NO)
-	{
-		if (map->no_texture == NULL)
-			map->no_texture = ft_strdup(&line[i]);
-		else
-			map->exit_flag = 1;
-	}
-	else if (info_status == SO)
-	{
-		if (map->so_texture == NULL)
-			map->so_texture = ft_strdup(&line[i]);
-		else
-			map->exit_flag = 1;
-	}
+	i = delete_spaces(line, info_status);
+	save_texture_or_color1(map, &line[i], info_status);
 	save_texture_or_color2(map, &line[i], info_status);
 	return (map);
 }

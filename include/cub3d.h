@@ -204,6 +204,7 @@ t_map				*save_only_map_lines(t_map *map);
 int					check_map(t_map *map, int *i);
 int					is_map_line(char *line, t_map *map);
 int					check_info(char *line);
+void				save_texture_or_color1(t_map *map, char *value, int info_status);
 void				save_texture_or_color2(t_map *map, char *value, int info);
 t_map				*save_info_to_map_struct(t_map *map, char *line, int info);
 
@@ -212,10 +213,14 @@ int					map_height(t_map *map);
 void				trim_newline_center(t_map *map, int flag);
 void				trim_newline(char *str);
 int					ft_line_count(char **av, t_map *map);
+int					delete_spaces(char *line, int info_status);
+
+/* ----------------------- Parsing Utilities 2 (PARSE/) --------------------- */
+void	print_texture(int type);
 
 /* -------------------- Element Validation (parse/) ------------------------- */
 bool				verify_color_elements(t_map *map);
-void				check_texture(t_map *map, char *line);
+void				check_texture(t_map *map, char *line, int type);
 bool				verify_texture_elements(t_map *map);
 bool				check_elements(t_map *map);
 

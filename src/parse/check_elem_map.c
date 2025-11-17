@@ -31,7 +31,7 @@ bool	verify_color_elements(t_map *map)
     free_split_array(ceiling_split);
 	return (true);
 }
-void	check_texture(t_map *map, char *line)
+void	check_texture(t_map *map, char *line, int type)
 {
 	struct stat info;
 	int len;
@@ -53,15 +53,19 @@ void	check_texture(t_map *map, char *line)
 	if (access(line, F_OK) == -1)
 		print_error_and_exit_FREE("Texture Not Found", 1, map);
 	if (access(line, R_OK) == -1)
+	{
+		print_texture(type);
 		print_error_and_exit_FREE("Permission denied", 1, map);
+	}
 	
 }
+
 bool	verify_texture_elements(t_map *map)
 {
-	check_texture(map, map->no_texture);
-	check_texture(map, map->so_texture);
-	check_texture(map, map->we_texture);
-	check_texture(map, map->ea_texture);
+	check_texture(map, map->no_texture, NO);
+	check_texture(map, map->so_texture, SO);
+	check_texture(map, map->we_texture, WE);
+	check_texture(map, map->ea_texture, EA);
 	return (true);
 }
 bool    check_elements(t_map *map)

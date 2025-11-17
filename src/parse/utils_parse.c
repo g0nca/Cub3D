@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:43:22 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 10:48:04 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/17 11:52:51 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,28 @@ int		map_height(t_map *map)
 	i = 0;
 	while (map->grid[i])
 		i++;
+	return (i);
+}
+
+int		delete_spaces(char *line, int info_status)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] && info_status >= 1 && info_status <= 6)
+	{
+		if ((info_status >= 1 && info_status <= 4) && (line[i] == '.' && line[i + 1] == '/'))
+			return (i);
+		if (info_status == 5 || info_status == 6)
+		{
+			while (line[i] && line[i] != ' ')
+				i++;
+			while (line[i] && line[i] == ' ')
+				i++;
+			return (i);
+		}
+		i++;
+	}
 	return (i);
 }
 

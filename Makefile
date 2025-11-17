@@ -20,9 +20,11 @@ SRC = main.c \
 	  parse/check_elem_map2.c \
 	  parse/init_map_struct.c \
 	  parse/utils_parse.c \
+	  parse/utils_parse2.c \
 	  parse/save_only_map_lines.c \
 	  parse/check_map_closed.c \
 	  parse/separate_map_info.c \
+	  parse/save_texture_or_color.c \
 	  utils/file_utils.c \
 	  utils/errors.c \
 	  utils/free_all.c \
