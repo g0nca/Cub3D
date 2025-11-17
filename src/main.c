@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 13:26:20 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/17 15:09:34 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ int main(int ac, char **av)
         game.player.y = 2.5;
         game.player.angle = 3 * M_PI / 2;
     }
+    //Inicializa sistema de inimigos
+    init_enemy_system(&game);
+    printf("[DEBUG] Init_enemy_system done\n");
+    // Renderização inicial
     render_3d_view(&game);
     draw_minimap(&game);
     draw_player(&game);
