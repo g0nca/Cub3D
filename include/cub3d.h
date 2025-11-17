@@ -55,9 +55,8 @@
 # define KEY_RIGHT		65363
 
 /* Math constants */
-# ifndef M_PI
 #  define M_PI			3.14159265358979323846
-# endif
+
 
 /* Path and element identifiers */
 # define PATH_MAX		4096
@@ -206,7 +205,7 @@ int					is_map_line(char *line, t_map *map);
 int					check_info(char *line);
 void				save_texture_or_color1(t_map *map, char *value, int info_status);
 void				save_texture_or_color2(t_map *map, char *value, int info);
-t_map				*save_info_to_map_struct(t_map *map, char *line, int info);
+t_map				*save_info_to_map_struct(t_map *map, char *line, int info_status);
 
 /* ----------------------- Parsing Utilities (parse/) ----------------------- */
 int					map_height(t_map *map);
