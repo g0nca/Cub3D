@@ -53,11 +53,11 @@
 # define KEY_ESC		65307
 # define KEY_LEFT		65361
 # define KEY_RIGHT		65363
+#define MOUSE_SENSITIVITY 0.002
+#define MOUSE_DEAD_ZONE 1
 
 /* Math constants */
-# ifndef M_PI
 #  define M_PI			3.14159265358979323846
-# endif
 
 /* Path and element identifiers */
 # define PATH_MAX		4096
