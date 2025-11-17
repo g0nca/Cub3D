@@ -284,4 +284,20 @@ void				print_error_and_exit_FREE(const char *message,
 int					main(int ac, char **av);
 void				print_map_struct(t_cub *cub, t_map *map);
 
+//enemy
+void	init_enemy_system(t_game *g);
+void	spawn_enemies(t_game *g);
+void	update_enemies(t_game *g);
+void	render_enemies(t_game *g);
+void	check_enemy_collision(t_game *g);
+void	draw_game_over(t_game *g);
+void	draw_enemy_counter(t_game *g);
+void	free_enemy_system(t_game *g);
+
+// Funções auxiliares
+int		count_floor_tiles(t_game *g);
+int		get_enemy_count_by_tiles(int tile_count);
+int		is_valid_spawn_position(t_game *g, double x, double y);
+void	load_enemy_textures(t_game *g);
+
 #endif
