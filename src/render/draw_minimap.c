@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_minimap.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:33 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/06 14:17:11 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/14 18:40:20 by andrade          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,29 @@ static int get_minimap_color(t_game *g, double world_x, double world_y)
     if (get_map_tile(g, map_x, map_y))
         return (0x333333);  // Parede - cinzento escuro
     return (0xCCCCCC);      // Chão - cinzento claro
+}
+
+/* Desenha um marcador preenchido no minimapa (círculo pequeno) */
+static void draw_enemy_marker(t_game *g, int cx, int cy, int color)
+{
+    int r = 2; // raio do marcador em pixels
+    int x = -r;
+    while (x <= r)
+    {
+        int y = -r;
+        while (y <= r)
+        {
+            if (x * x + y * y <= r * r)
+            {
+                int px = cx + x;
+                int py = cy + y;
+                if (px >= 0 && px < WIN_W && py >= 0 && py < WIN_H)
+                    put_pixel_to_img(&g->screen, px, py, color);
+            }
+            y++;
+        }
+        x++;
+    }
 }
 
 void draw_minimap(t_game *g)
@@ -111,5 +134,27 @@ void draw_minimap(t_game *g)
             screen_x++;
         }
         screen_y++;
+    }
+
+    /* Desenha inimigos no minimapa (pequenos pontos vermelhos) */
+    int i = 0;
+    while (i < g->enemy_sys.enemy_count)
+    {
+        if (g->enemy_sys.enemies[i].active)
+        {
+            double ex = g->enemy_sys.enemies[i].x;
+            double ey = g->enemy_sys.enemies[i].y;
+
+            // Converte coordenadas do mundo para tela do minimapa
+            int mx = MINIMAP_X + (int)((ex - g->player.x) * MINIMAP_SCALE);
+            int my = MINIMAP_Y + (int)((ey - g->player.y) * MINIMAP_SCALE);
+
+            // Só desenha se estiver dentro do círculo do minimapa
+            if (is_inside_circle(mx, my, MINIMAP_X, MINIMAP_Y, MINIMAP_RADIUS))
+            {
+                draw_enemy_marker(g, mx, my, 0xFF0000);
+            }
+        }
+        i++;
     }
 }

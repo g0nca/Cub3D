@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_control.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 15:00:00 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/12 15:00:21 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/14 15:34:22 by andrade          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ int	mouse_move(int x, int y, t_game *g)
 	int		dx;
 	double	rotation;
 
-	(void)y;  // Não usamos movimento vertical
+	(void)y;
+
+	// Se game over, não processa movimento
+	if (g->enemy_sys.game_over)  // <-- ADICIONAR ESTA VERIFICAÇÃO
+		return (0);
 
 	// Calcula diferença em relação ao centro da janela
 	dx = x - (WIN_W / 2);
@@ -46,10 +50,20 @@ int	mouse_move(int x, int y, t_game *g)
 	mlx_mouse_move(g->mlx, g->win, WIN_W / 2, WIN_H / 2);
 
 	// Re-renderiza a cena
+	update_enemies(g);  // <-- ADICIONAR ESTA LINHA
+	
+	if (g->enemy_sys.game_over)  // <-- ADICIONAR ESTE BLOCO
+	{
+		draw_game_over(g);
+		return (0);
+	}
+	
 	render_3d_view(g);
+	render_enemies(g);  // <-- ADICIONAR ESTA LINHA
 	draw_minimap(g);
 	draw_player(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->screen.img, 0, 0);
+	draw_enemy_counter(g);  // <-- ADICIONAR ESTA LINHA
 
 	return (0);
 }

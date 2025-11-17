@@ -22,6 +22,7 @@
 #include <fcntl.h>
 #include <stdbool.h>
 #include <math.h>
+#include <time.h>
 #include "../libs/libft/libft.h"
 #include "../minilibx-linux/mlx.h"
 
@@ -56,6 +57,13 @@
 #define F 5
 #define C 6
 
+#define MAX_ENEMIES 50
+#define ENEMY_ASSETS 10
+#define COLLISION_DISTANCE 0.5
+#define ENEMY_SIZE 0.3
+// Speed (world units per update call) for enemy movement (reduced to avoid instant death)
+#define ENEMY_SPEED 0.01
+
 typedef struct s_player
 {
 	double	x;
@@ -72,9 +80,9 @@ typedef struct s_map
     char    *so_texture;
     char    *we_texture;
     char    *ea_texture;
-    char    *floor_color;
-    char    *ceiling_color;
-    int     floor_rgb[3];
+	char    *floor_color;
+	char    *ceiling_color;
+	int     floor_rgb[3];
     int     ceiling_rgb[3];
 	int		start_x;
 	int		start_y;
@@ -115,6 +123,34 @@ typedef struct s_textures
 	t_img	east;
 }			t_textures;
 
+typedef struct s_enemy
+{
+	double	x;
+	double	y;
+	int		asset_id;
+	int		active;
+	t_img	texture;
+}			t_enemy;
+
+/**
+ * Estrutura para armazenar informações de sprite para ordenação
+ */
+typedef struct s_sprite_data
+{
+	int		index;
+	double	distance;
+	double	x;
+	double	y;
+}			t_sprite_data;
+
+typedef struct s_enemy_system
+{
+	t_enemy		enemies[MAX_ENEMIES];
+	int			enemy_count;
+	int			game_over;
+	t_img		enemy_textures[ENEMY_ASSETS];
+}				t_enemy_system;
+
 typedef struct s_ray
 {
 	double	ray_angle;
@@ -136,6 +172,8 @@ typedef struct s_game
 	t_cub		cub;
 	t_textures	textures;
 	t_img		screen;
+	double		z_buffer[WIN_W];
+	t_enemy_system	enemy_sys;
 }				t_game;
 
 /* typedef struct s_data
@@ -218,5 +256,21 @@ void    print_error_and_exit_FREE(const char *message, int exit_flag, t_map *map
 
 int		main(int ac, char **av);
 void	print_map_struct(t_cub *cub, t_map *map);
+
+//enemy
+void	init_enemy_system(t_game *g);
+void	spawn_enemies(t_game *g);
+void	update_enemies(t_game *g);
+void	render_enemies(t_game *g);
+void	check_enemy_collision(t_game *g);
+void	draw_game_over(t_game *g);
+void	draw_enemy_counter(t_game *g);
+void	free_enemy_system(t_game *g);
+
+// Funções auxiliares
+int		count_floor_tiles(t_game *g);
+int		get_enemy_count_by_tiles(int tile_count);
+int		is_valid_spawn_position(t_game *g, double x, double y);
+void	load_enemy_textures(t_game *g);
 
 #endif

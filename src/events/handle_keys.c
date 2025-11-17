@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_keys.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/12 11:01:55 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/17 12:14:57 by andrade          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,27 +90,44 @@ static int	handle_rotation(t_game *g)
 
 static void	handle_render(t_game *g)
 {
+	// Se game over, mostra tela preta
+
+	
+	if (g->enemy_sys.game_over)  // <-- ADICIONAR ESTE BLOCO
+	{
+		draw_game_over(g);
+		return;
+	}
+	
+	// Renderização normal
 	render_3d_view(g);
+	render_enemies(g);  // <-- ADICIONAR: Renderiza inimigos após paredes
 	draw_minimap(g);
 	draw_player(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->screen.img, 0, 0);
+	draw_enemy_counter(g);  // <-- ADICIONAR: Mostra contador de inimigos
 }
 
 // Esta função é chamada continuamente pelo mlx_loop
 int	handle_keys(t_game *g)
 {
-	int	moved;
+	int movement_moved = 0;
+	int rotation_moved = 0;
 
-	moved = 0;
-	moved |= handle_movement(g);
-	moved |= handle_rotation(g);
-	if (moved)
+	movement_moved = handle_movement(g);
+	rotation_moved = handle_rotation(g);
+
+	if (movement_moved)
+		update_enemies(g);
+
+	if (movement_moved || rotation_moved)
 		handle_render(g);
 	return (0);
 }
 
 int	close_window(t_game *g)
 {
+	free_enemy_system(g);  // <-- ADICIONAR ESTA LINHA
 	free_images(g);
 	if (g->screen.img)
 		mlx_destroy_image(g->mlx, g->screen.img);

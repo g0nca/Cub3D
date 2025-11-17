@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/12 15:00:51 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/17 12:10:37 by andrade          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ int main(int ac, char **av)
     t_cub   *cub;
     t_game game;
 
+    /* Initialize game struct to all zeros to avoid garbage in enemy_sys */
+    ft_bzero(&game, sizeof(t_game));
+    
     cub = malloc(sizeof(t_cub));
     if (!cub)
         return (1);
@@ -60,12 +63,22 @@ int main(int ac, char **av)
         game.player.y = 2.5;
         game.player.angle = 3 * M_PI / 2;
     }
-
+    //Inicializa sistema de inimigos
+    init_enemy_system(&game);
+    printf("[DEBUG] init_enemy_system done\n");
     // Renderização inicial
     render_3d_view(&game);
+    printf("[DEBUG] render_3d_view done\n");
+    render_enemies(&game);  // <-- ADICIONAR ESTA LINHA
+    printf("[DEBUG] render_enemies done\n");
     draw_minimap(&game);
+    printf("[DEBUG] draw_minimap done\n");
     draw_player(&game);
+    printf("[DEBUG] draw_player done\n");
     mlx_put_image_to_window(game.mlx, game.win, game.screen.img, 0, 0);
+    printf("[DEBUG] mlx_put_image_to_window done\n");
+    draw_enemy_counter(&game);  // <-- ADICIONAR ESTA LINHA
+    printf("[DEBUG] draw_enemy_counter done\n");
 
     // Registra eventos de teclado
     mlx_hook(game.win, 2, 1L<<0, key_press, &game);      // Key press

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 14:04:49 by joaomart          #+#    #+#             */
-/*   Updated: 2025/11/06 14:08:50 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/17 09:47:10 by andrade          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void draw_player(t_game *g)
         while (i <= r)
         {
             if (i * i + j * j <= r * r)
-                put_pixel_to_img(&g->screen, px + i, py + j, 0xFF0000);
+                put_pixel_to_img(&g->screen, px + i, py + j, 0x008000);
             i++;
         }
         j++;
@@ -46,7 +46,7 @@ void draw_player(t_game *g)
     {
         int lx = px + (int)(cos(g->player.angle) * k);
         int ly = py + (int)(sin(g->player.angle) * k);
-        put_pixel_to_img(&g->screen, lx, ly, 0xFFFF00);
+    put_pixel_to_img(&g->screen, lx, ly, 0xFFFF00);
         k++;
     }
 }
