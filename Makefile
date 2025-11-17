@@ -17,6 +17,12 @@ SRC = main.c \
 	  parse/parsing_player.c \
 	  parse/read_file.c \
 	  parse/check_elem_map.c \
+	  parse/check_elem_map2.c \
+	  parse/init_map_struct.c \
+	  parse/utils_parse.c \
+	  parse/save_only_map_lines.c \
+	  parse/check_map_closed.c \
+	  parse/separate_map_info.c \
 	  utils/file_utils.c \
 	  utils/errors.c \
 	  utils/free_all.c \

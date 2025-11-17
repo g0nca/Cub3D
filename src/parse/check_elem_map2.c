@@ -1,0 +1,70 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_elem_map2.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/17 09:40:44 by ggomes-v          #+#    #+#             */
+/*   Updated: 2025/11/17 09:44:29 by ggomes-v         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/cub3d.h"
+
+void safe_exit_with_splits(char *msg, t_map *map, 
+                                   char **floor_split, char **ceiling_split)
+{
+    free_split_array(floor_split);
+    free_split_array(ceiling_split);
+    print_error_and_exit_without_free(msg, 1, map);
+}
+
+void save_color_values(char *color_str, t_map *map, int floor_or_ceiling, 
+                               int index, char **floor_split, char **ceiling_split)
+{
+    int value;
+    
+    value = ft_atoi(color_str);
+    if (value < 0 || value > 255)
+        safe_exit_with_splits("The numbers exceed the valid range", 
+                              map, floor_split, ceiling_split);
+    if (floor_or_ceiling == 1)
+        map->floor_rgb[index] = value;
+    else if (floor_or_ceiling == 0)
+        map->ceiling_rgb[index] = value;
+}
+
+void colors_check(char **colors, t_map *map, int floor_or_ceiling,
+                         char **floor_split, char **ceiling_split)
+{
+    int     i;
+    int     j;
+    bool    num_exist;
+    
+    i = 0;
+    while (colors[i])
+    {
+        j = 0;
+        num_exist = false;
+        while (colors[i][j])
+        {
+            if (colors[i][j] == '.')
+                safe_exit_with_splits("Invalid decimal numbers", 
+                                      map, floor_split, ceiling_split);
+            if (colors[i][j] == ' ' && num_exist == false 
+                && colors[i][j + 1] == '\0')
+                safe_exit_with_splits("Missing numbers", 
+                                      map, floor_split, ceiling_split);
+            if (colors[i][j] >= '0' && colors[i][j] <= '9')
+                num_exist = true;
+            j++;
+        }
+        save_color_values(colors[i], map, floor_or_ceiling, i, 
+                         floor_split, ceiling_split);
+        i++;
+    }
+    if (i != 3)
+        safe_exit_with_splits("Only 3 numbers are accepted", 
+                              map, floor_split, ceiling_split);
+}
