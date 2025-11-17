@@ -68,6 +68,12 @@
 # define F				5
 # define C				6
 
+#define MAX_ENEMIES 50
+#define ENEMY_ASSETS 10
+#define COLLISION_DISTANCE 0.5
+#define ENEMY_SIZE 0.3
+// Speed (world units per update call) for enemy movement (reduced to avoid instant death)
+#define ENEMY_SPEED 0.01
 /* ========================================================================== */
 /*                               STRUCTURES                                   */
 /* ========================================================================== */
