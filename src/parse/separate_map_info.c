@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:45:43 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 11:58:36 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/17 14:51:00 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		is_map_line(char *line, t_map *map)
 
 int		check_map(t_map *map, int *i)
 {
-	if (map->grid[*i][0] == '\n')
+	if (map->grid[*i][0] == '\n' || map->grid[*i] == NULL)
 		return (0);
 	if (is_map_line(map->grid[*i], map))
 	{

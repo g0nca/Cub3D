@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 10:59:13 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/17 14:51:20 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ t_map	*separate_map_info(t_map *map)
 			save_info_to_map_struct(map, map->grid[i], info_status);
 		if (info_status == 0)
 		{
-			if (check_map(map, &i) == -1)
-				return (map);
+			if (map->grid[i] == NULL)
+				break ;
+			check_map(map, &i);
 		}
 		i++;
 	}
