@@ -1,13 +1,13 @@
-NO 					./path_to_the_north_texture
+NO 					./assets/textures/validTextures/north.xpm
 
 
-       SO ./path_to_the_south_texture
+       SO ./assets/textures/validTextures/south.xpm
 
 
-WE ./path_to_the_west_texture
+WE ./assets/textures/validTextures/west.xpm
 
 
-EA ./path_to_the_east_texture
+EA ./assets/textures/validTextures/east.xpm
 
 F 220,100,0
 C 225,30,0

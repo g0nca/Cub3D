@@ -37,6 +37,11 @@ void	check_texture(t_map *map, char *line, int type)
 	int len;
 
 	len = ft_strlen(line);
+	if (len <= 0)
+	{
+		print_texture(type);
+		print_error_and_exit_FREE("Texture Not Found", 1, map);
+	}
 	if (ft_strcmp(&line[len - 4], ".xpm") != 0)
         print_error_and_exit_FREE("Invalid file extension \"Example.xpm\"", 1, map);
     if (stat(line, &info) == -1)

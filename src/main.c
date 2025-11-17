@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 13:13:07 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/17 13:26:20 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int main(int ac, char **av)
     }
     game.map = *(cub->map);
     game.cub = *(cub);
-    print_map_struct(&game.cub, NULL);
+    //print_map_struct(&game.cub, NULL);
     free(cub);
     cub = NULL;
     init_game(&game);
