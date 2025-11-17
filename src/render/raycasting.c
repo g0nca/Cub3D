@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:36 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/14 18:18:38 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/12 14:41:34 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,6 @@ void render_3d_view(t_game *g)
         t_ray ray;
         cast_ray_dda(g, &ray, ray_angle);
         draw_wall_stripe(g, x, &ray);
-        // Save perpendicular distance to z-buffer for sprite occlusion
-        if (x >= 0 && x < WIN_W)
-            g->z_buffer[x] = ray.distance;
         ray_angle += angle_step;
         x++;
     }

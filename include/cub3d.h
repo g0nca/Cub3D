@@ -13,169 +13,145 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <limits.h>
-#include <fcntl.h>
-#include <stdbool.h>
-#include <math.h>
-#include <time.h>
-#include "../libs/libft/libft.h"
-#include "../minilibx-linux/mlx.h"
+/* ========================================================================== */
+/*                               INCLUDES                                     */
+/* ========================================================================== */
 
-#define WIN_W 800
-#define WIN_H 600
-#define TILE_SIZE 20
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <string.h>
+# include <sys/stat.h>
+# include <limits.h>
+# include <fcntl.h>
+# include <stdbool.h>
+# include <math.h>
+# include "../libs/libft/libft.h"
+# include "../libs/get_next_line/get_next_line.h"
+# include "../minilibx-linux/mlx.h"
 
-#define MINIMAP_RADIUS 80      // Raio do minimapa circular
-#define MINIMAP_SCALE 15       // Escala do minimapa (pixels por tile)
-#define MINIMAP_X 100          // Posição X do centro do minimapa
-#define MINIMAP_Y 100          // Posição Y do centro do minimapa
+/* ========================================================================== */
+/*                               DEFINES                                      */
+/* ========================================================================== */
 
-// Define key codes
-#define KEY_W 119
-#define KEY_A 97
-#define KEY_S 115
-#define KEY_D 100
-#define KEY_ESC 65307
-#define KEY_LEFT 65361
-#define KEY_RIGHT 65363
-#define MOUSE_SENSITIVITY 0.002
-#define MOUSE_DEAD_ZONE 1
+/* Window dimensions */
+# define WIN_W			1280
+# define WIN_H			1080
+# define TILE_SIZE		20
 
-#define M_PI 3.14159265358979323846
-#include "../libs/get_next_line/get_next_line.h"
+/* Minimap settings */
+# define MINIMAP_RADIUS	80
+# define MINIMAP_SCALE	15
+# define MINIMAP_X		100
+# define MINIMAP_Y		100
 
-#define PATH_MAX 4096
-#define NO 1
-#define SO 2
-#define WE 3
-#define EA 4
-#define F 5
-#define C 6
+/* Key codes */
+# define KEY_W			119
+# define KEY_A			97
+# define KEY_S			115
+# define KEY_D			100
+# define KEY_ESC		65307
+# define KEY_LEFT		65361
+# define KEY_RIGHT		65363
 
-#define MAX_ENEMIES 50
-#define ENEMY_ASSETS 10
-#define COLLISION_DISTANCE 0.5
-#define ENEMY_SIZE 0.3
-// Speed (world units per update call) for enemy movement (reduced to avoid instant death)
-#define ENEMY_SPEED 0.01
+/* Math constants */
+# ifndef M_PI
+#  define M_PI			3.14159265358979323846
+# endif
+
+/* Path and element identifiers */
+# define PATH_MAX		4096
+# define NO				1
+# define SO				2
+# define WE				3
+# define EA				4
+# define F				5
+# define C				6
+
+/* ========================================================================== */
+/*                               STRUCTURES                                   */
+/* ========================================================================== */
 
 typedef struct s_player
 {
-	double	x;
-	double	y;
-	double	angle;
-	double	move_speed;
-	double	rot_speed;
-}			t_player;
+	double			x;
+	double			y;
+	double			angle;
+	double			move_speed;
+	double			rot_speed;
+}					t_player;
 
 typedef struct s_map
 {
-	char	**grid;
-    char    *no_texture;
-    char    *so_texture;
-    char    *we_texture;
-    char    *ea_texture;
-	char    *floor_color;
-	char    *ceiling_color;
-	int     floor_rgb[3];
-    int     ceiling_rgb[3];
-	int		start_x;
-	int		start_y;
-    int     start;
-    int     last_map_line;
-    int     end;
-    int     exit_flag;
-    int     width;
-    int     height;
-	bool	player_p;
-    struct s_cub   *cub_struct;
-}   t_map;
+	char			**grid;
+	char			*no_texture;
+	char			*so_texture;
+	char			*we_texture;
+	char			*ea_texture;
+	char			*floor_color;
+	char			*ceiling_color;
+	int				floor_rgb[3];
+	int				ceiling_rgb[3];
+	int				start_x;
+	int				start_y;
+	int				start;
+	int				last_map_line;
+	int				end;
+	int				exit_flag;
+	int				width;
+	int				height;
+	bool			player_p;
+	struct s_cub	*cub_struct;
+}					t_map;
 
 typedef struct s_cub
 {
-    t_map   *map;
-    void    *mlx;
-    void    *win;
-}   t_cub;
-
+	t_map			*map;
+	void			*mlx;
+	void			*win;
+}					t_cub;
 
 typedef struct s_img
 {
-	void	*img;
-	char	*addr;
-	int		bpp;
-	int		line_len;
-	int		endian;
-	int		width;
-	int		height;
-}			t_img;
+	void			*img;
+	char			*addr;
+	int				bpp;
+	int				line_len;
+	int				endian;
+	int				width;
+	int				height;
+}					t_img;
 
 typedef struct s_textures
 {
-	t_img	north;
-	t_img	south;
-	t_img	west;
-	t_img	east;
-}			t_textures;
-
-typedef struct s_enemy
-{
-	double	x;
-	double	y;
-	int		asset_id;
-	int		active;
-	t_img	texture;
-}			t_enemy;
-
-/**
- * Estrutura para armazenar informações de sprite para ordenação
- */
-typedef struct s_sprite_data
-{
-	int		index;
-	double	distance;
-	double	x;
-	double	y;
-}			t_sprite_data;
-
-typedef struct s_enemy_system
-{
-	t_enemy		enemies[MAX_ENEMIES];
-	int			enemy_count;
-	int			game_over;
-	t_img		enemy_textures[ENEMY_ASSETS];
-}				t_enemy_system;
+	t_img			north;
+	t_img			south;
+	t_img			west;
+	t_img			east;
+}					t_textures;
 
 typedef struct s_ray
 {
-	double	ray_angle;
-	double	distance;
-	int		hit_vertical;
-	double	wall_x;
-	int     is_door;
-}			t_ray;
+	double			ray_angle;
+	double			distance;
+	int				hit_vertical;
+	double			wall_x;
+	int				is_door;
+}					t_ray;
 
 typedef struct s_game
 {
-	void		*mlx;
-	void		*win;
-	int			keys[256];
-	int			key_left;
-	int			key_right;
-	t_player	player;
-	t_map		map;
-	t_cub		cub;
-	t_textures	textures;
-	t_img		screen;
-	double		z_buffer[WIN_W];
-	t_enemy_system	enemy_sys;
-}				t_game;
-
+	void			*mlx;
+	void			*win;
+	int				keys[256];
+	int				key_left;
+	int				key_right;
+	t_player		player;
+	t_map			map;
+	t_cub			cub;
+	t_textures		textures;
+	t_img			screen;
+}					t_game;
 
 /* ========================================================================== */
 /*                          FUNCTION PROTOTYPES                               */
@@ -283,21 +259,5 @@ void				print_error_and_exit_FREE(const char *message,
 /* ----------------------------- Main (main.c) ------------------------------ */
 int					main(int ac, char **av);
 void				print_map_struct(t_cub *cub, t_map *map);
-
-//enemy
-void	init_enemy_system(t_game *g);
-void	spawn_enemies(t_game *g);
-void	update_enemies(t_game *g);
-void	render_enemies(t_game *g);
-void	check_enemy_collision(t_game *g);
-void	draw_game_over(t_game *g);
-void	draw_enemy_counter(t_game *g);
-void	free_enemy_system(t_game *g);
-
-// Funções auxiliares
-int		count_floor_tiles(t_game *g);
-int		get_enemy_count_by_tiles(int tile_count);
-int		is_valid_spawn_position(t_game *g, double x, double y);
-void	load_enemy_textures(t_game *g);
 
 #endif
