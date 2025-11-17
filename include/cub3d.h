@@ -145,6 +145,15 @@ typedef struct s_ray
 	int				is_door;
 }					t_ray;
 
+typedef struct s_enemy
+{
+	double	x;
+	double	y;
+	int		asset_id;
+	int		active;
+	t_img	texture;
+}			t_enemy;
+
 typedef struct s_sprite_data
 {
 	int		index;
