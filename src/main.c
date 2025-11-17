@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 12:10:37 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/17 15:08:28 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int main(int ac, char **av)
     }
     //Inicializa sistema de inimigos
     init_enemy_system(&game);
-    printf("[DEBUG] init_enemy_system done\n");
+    printf("[DEBUG] Init_enemy_system done\n");
     // Renderização inicial
     render_3d_view(&game);
     printf("[DEBUG] render_3d_view done\n");
