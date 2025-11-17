@@ -139,19 +139,46 @@ typedef struct s_ray
 	int				is_door;
 }					t_ray;
 
+typedef struct s_sprite_data
+{
+	int		index;
+	double	distance;
+	double	x;
+	double	y;
+}			t_sprite_data;
+
+typedef struct s_enemy_system
+{
+	t_enemy		enemies[MAX_ENEMIES];
+	int			enemy_count;
+	int			game_over;
+	t_img		enemy_textures[ENEMY_ASSETS];
+}				t_enemy_system;
+
+typedef struct s_ray
+{
+	double	ray_angle;
+	double	distance;
+	int		hit_vertical;
+	double	wall_x;
+	int     is_door;
+}			t_ray;
+
 typedef struct s_game
 {
-	void			*mlx;
-	void			*win;
-	int				keys[256];
-	int				key_left;
-	int				key_right;
-	t_player		player;
-	t_map			map;
-	t_cub			cub;
-	t_textures		textures;
-	t_img			screen;
-}					t_game;
+	void		*mlx;
+	void		*win;
+	int			keys[256];
+	int			key_left;
+	int			key_right;
+	t_player	player;
+	t_map		map;
+	t_cub		cub;
+	t_textures	textures;
+	t_img		screen;
+	double		z_buffer[WIN_W];
+	t_enemy_system	enemy_sys;
+}				t_game;
 
 /* ========================================================================== */
 /*                          FUNCTION PROTOTYPES                               */
