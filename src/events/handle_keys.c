@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_keys.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 12:14:57 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/18 12:09:44 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,13 +127,18 @@ int	handle_keys(t_game *g)
 
 int	close_window(t_game *g)
 {
-	free_enemy_system(g);  // <-- ADICIONAR ESTA LINHA
+	//show_mouse_cursor(g);
+	free_enemy_system(g);
 	free_images(g);
 	if (g->screen.img)
 		mlx_destroy_image(g->mlx, g->screen.img);
-	mlx_destroy_window(g->mlx, g->win);
-	mlx_destroy_display(g->mlx);
-	free(g->mlx);
+	if (g->win)
+		mlx_destroy_window(g->mlx, g->win);
+	if (g->mlx)
+	{
+		mlx_destroy_display(g->mlx);
+		free(g->mlx);
+	}
 	ft_free_all(&g->cub);
 	exit(0);
 	return (0);

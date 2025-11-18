@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 15:08:28 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/18 13:10:00 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ int main(int ac, char **av)
 
     /* Initialize game struct to all zeros to avoid garbage in enemy_sys */
     ft_bzero(&game, sizeof(t_game));
-    
+
+    parsing_input(ac, av);
     cub = malloc(sizeof(t_cub));
     if (!cub)
         return (1);
-    parsing_input(ac, av);
     cub->map = read_file_parse(av, cub);
     if (cub->map->exit_flag == 1 || check_elements(cub->map) == false)
     {
@@ -88,11 +88,10 @@ int main(int ac, char **av)
     // Registra eventos de mouse
     mlx_hook(game.win, 6, 1L<<6, mouse_move, &game);     // Mouse move
 
-    // Esconde o cursor para experiência mais imersiva
-    hide_mouse_cursor(&game);
+    //hide_mouse_cursor(&game);
 
     // Centra o cursor no meio da janela
-    mlx_mouse_move(game.mlx, game.win, WIN_W / 2, WIN_H / 2);
+    //mlx_mouse_move(game.mlx, game.win, WIN_W / 2, WIN_H / 2);
 
     mlx_loop_hook(game.mlx, handle_keys, &game);         // Loop contínuo
     print_map_struct(&game.cub, NULL);

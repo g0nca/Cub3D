@@ -204,6 +204,7 @@ void				rotate_player(t_game *g, int dir);
 int					close_window(t_game *g);
 int					mouse_move(int x, int y, t_game *g);
 void				hide_mouse_cursor(t_game *g);
+void				show_mouse_cursor(t_game *g);
 
 /* ------------------------- Initialization (init/) ------------------------- */
 void				init_game(t_game *game);
