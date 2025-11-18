@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:48 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/11 13:18:11 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/18 09:45:42 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void    init_game(t_game *game)
     game->player.x = 0.0;
     game->player.y = 0.0;
     game->player.angle = 0.0;
-    game->player.move_speed = 0.01;
+    game->player.move_speed = 0.04;
     game->player.rot_speed = 0.01;
 
     // Inicializa array de teclas
