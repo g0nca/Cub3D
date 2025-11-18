@@ -159,7 +159,7 @@ run: all
 	./$(NAME) $(MAP)
 
 # Executa com Valgrind usando supressões
-valgrind: $(NAME) sup
+valgrind: $(NAME) $(SUPP_FILE)
 	@if [ -z "$(MAP)" ]; then \
 		echo "$(RED)Erro: Especifica um mapa com MAP=caminho/mapa.cub$(RESET)"; \
 		echo "$(YELLOW)Exemplo: make valgrind MAP=maps/test.cub$(RESET)"; \
