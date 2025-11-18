@@ -3,14 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_render.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:30:43 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/17 12:24:57 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/18 09:10:18 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
+
+/**
+ * Verifica se uma cor é transparente
+ * Pixels com 'None' no XPM aparecem como preto (0x000000)
+ * Você pode ajustar esta função se a cor for diferente
+ */
+static int is_transparent(int color)
+{
+	// Remove o canal alpha se existir
+	color = color & 0x00FFFFFF;
+
+	// Verifica se é preto puro (cor transparente comum em XPM)
+	if (color == 0x000000)
+		return (1);
+
+	// Verifica se é magenta (outra cor comum para transparência)
+	if (color == 0xFF00FF)
+		return (1);
+
+	return (0);
+}
 
 /**
  * Compara sprites pela distância (para ordenação)
@@ -19,7 +40,7 @@ static int	compare_sprites(const void *a, const void *b)
 {
 	t_sprite_data	*sa = (t_sprite_data *)a;
 	t_sprite_data	*sb = (t_sprite_data *)b;
-	
+
 	if (sa->distance > sb->distance)
 		return (-1);
 	if (sa->distance < sb->distance)
@@ -28,7 +49,7 @@ static int	compare_sprites(const void *a, const void *b)
 }
 
 /**
- * Renderiza um único sprite de inimigo - VERSÃO BÁSICA SEM TRANSPARÊNCIA
+ * Renderiza um único sprite de inimigo - COM TRANSPARÊNCIA
  */
 static void	render_sprite(t_game *g, t_enemy *enemy)
 {
@@ -95,7 +116,7 @@ static void	render_sprite(t_game *g, t_enemy *enemy)
 	if (draw_end_x >= WIN_W)
 		draw_end_x = WIN_W - 1;
 
-	// Desenha o sprite - SEM QUALQUER VERIFICAÇÃO DE TRANSPARÊNCIA
+	// Desenha o sprite COM VERIFICAÇÃO DE TRANSPARÊNCIA
 	stripe = draw_start_x;
 	while (stripe < draw_end_x)
 	{
@@ -111,7 +132,7 @@ static void	render_sprite(t_game *g, t_enemy *enemy)
 
 		tex_x = (int)((stripe - (-sprite_width / 2 + sprite_screen_x)) *
 			enemy->texture.width / sprite_width);
-		
+
 		if (tex_x < 0)
 			tex_x = 0;
 		if (tex_x >= enemy->texture.width)
@@ -121,7 +142,7 @@ static void	render_sprite(t_game *g, t_enemy *enemy)
 		while (y < draw_end_y)
 		{
 			tex_y = ((y - draw_start_y) * enemy->texture.height) / sprite_height;
-			
+
 			if (tex_y < 0)
 				tex_y = 0;
 			if (tex_y >= enemy->texture.height)
@@ -131,8 +152,9 @@ static void	render_sprite(t_game *g, t_enemy *enemy)
 				(tex_y * enemy->texture.line_len +
 				tex_x * (enemy->texture.bpp / 8)));
 
-			// DESENHA TODOS OS PIXELS - SEM TRANSPARÊNCIA
-			put_pixel_to_img(&g->screen, stripe, y, color);
+			// VERIFICA SE O PIXEL NÃO É TRANSPARENTE ANTES DE DESENHAR
+			if (!is_transparent(color))
+				put_pixel_to_img(&g->screen, stripe, y, color);
 
 			y++;
 		}
