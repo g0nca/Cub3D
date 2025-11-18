@@ -36,8 +36,8 @@
 /* ========================================================================== */
 
 /* Window dimensions */
-# define WIN_W			1280
-# define WIN_H			1080
+# define WIN_W			800
+# define WIN_H			600
 # define TILE_SIZE		20
 
 /* Minimap settings */

@@ -6,7 +6,7 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 15:00:00 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/18 09:31:18 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/18 09:40:15 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	mouse_move(int x, int y, t_game *g)
 	(void)y;
 
 	// Se game over, não processa movimento
-	if (g->enemy_sys.game_over)  // <-- ADICIONAR ESTA VERIFICAÇÃO
+	if (g->enemy_sys.game_over)
 		return (0);
 
 	// Calcula diferença em relação ao centro da janela
@@ -49,21 +49,21 @@ int	mouse_move(int x, int y, t_game *g)
 	// Recentra o cursor no meio da janela
 	mlx_mouse_move(g->mlx, g->win, WIN_W / 2, WIN_H / 2);
 
-	// Re-renderiza a cena
-	update_enemies(g);  // <-- ADICIONAR ESTA LINHA
+	// Re-renderiza a cena (SEM atualizar inimigos - apenas rotação da câmera)
+	// REMOVIDO: update_enemies(g);  <- Isso fazia os inimigos se moverem ao rotacionar
 
-	if (g->enemy_sys.game_over)  // <-- ADICIONAR ESTE BLOCO
+	if (g->enemy_sys.game_over)
 	{
 		draw_game_over(g);
 		return (0);
 	}
 
 	render_3d_view(g);
-	render_enemies(g);  // <-- ADICIONAR ESTA LINHA
+	render_enemies(g);
 	draw_minimap(g);
 	draw_player(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->screen.img, 0, 0);
-	draw_enemy_counter(g);  // <-- ADICIONAR ESTA LINHA
+	draw_enemy_counter(g);
 
 	return (0);
 }
