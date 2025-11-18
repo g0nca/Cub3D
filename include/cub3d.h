@@ -22,6 +22,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <sys/stat.h>
+# include <sys/time.h>
 # include <limits.h>
 # include <fcntl.h>
 # include <stdbool.h>
@@ -71,6 +72,7 @@
 # define F				5
 # define C				6
 
+#define WEAPON_FRAMES 5
 /* Enimies */
 #define					MAX_ENEMIES 50
 #define					ENEMY_ASSETS 10
@@ -174,6 +176,14 @@ typedef struct s_ray
 	int				is_door;
 }					t_ray;
 
+typedef struct s_weapon
+{
+	t_img	textures[5];
+	int		is_firing;
+	int		current_frame;
+	long	last_frame_time;
+}	t_weapon;
+
 typedef struct s_game
 {
 	void			*mlx;
@@ -186,6 +196,7 @@ typedef struct s_game
 	t_map			map;
 	t_cub			cub;
 	t_textures		textures;
+	t_weapon		weapon;
 	t_img			screen;
 	t_enemy_system	enemy_sys;
 }					t_game;
@@ -301,6 +312,7 @@ void				init_enemy_system(t_game *g);
 void				spawn_enemies(t_game *g);
 void				update_enemies(t_game *g);
 void				render_enemies(t_game *g);
+int					is_transparent(int color);
 void				check_enemy_collision(t_game *g);
 void				draw_game_over(t_game *g);
 void				draw_enemy_counter(t_game *g);
@@ -311,5 +323,12 @@ int					get_enemy_count_by_tiles(int tile_count);
 /* ----------------------------- Main (main.c) ------------------------------ */
 int					main(int ac, char **av);
 void				print_map_struct(t_cub *cub, t_map *map);
+
+
+void init_weapon_assets(t_game *game);
+void update_weapon_animation(t_game *game);
+long get_current_time_ms();
+void render_weapon(t_game *game);
+void handle_shoot(t_game *game);
 
 #endif

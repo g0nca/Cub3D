@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_render.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:30:43 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/18 09:10:18 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/18 15:45:33 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * Pixels com 'None' no XPM aparecem como preto (0x000000)
  * Você pode ajustar esta função se a cor for diferente
  */
-static int is_transparent(int color)
+int is_transparent(int color)
 {
 	// Remove o canal alpha se existir
 	color = color & 0x00FFFFFF;

@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/18 13:10:00 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/18 15:29:03 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int main(int ac, char **av)
     init_enemy_system(&game);
     printf("[DEBUG] Init_enemy_system done\n");
     // Renderização inicial
+    render_weapon(&game);
     render_3d_view(&game);
     printf("[DEBUG] render_3d_view done\n");
     render_enemies(&game);  // <-- ADICIONAR ESTA LINHA

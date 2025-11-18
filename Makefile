@@ -1,6 +1,6 @@
 NAME = cub3d
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Iinclude -Iminilibx-linux
+CFLAGS = -Wall -Wextra -Werror -O3 -Iinclude -Iminilibx-linux
 MLX_DIR = minilibx-linux
 MLX = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 LIBFT_DIR = libs/libft
@@ -36,12 +36,14 @@ SRC = main.c \
         events/move_player.c \
         events/rotate_player.c \
         events/mouse_control.c \
+		events/gun_animation.c \
         init/init_game.c \
         init/load_textures.c \
         render/draw_minimap.c \
         render/draw_player.c \
         render/draw_walls.c \
         render/raycasting.c \
+		render/render_weapon.c \
         enemy_system/enemy_init.c \
         enemy_system/enemy_spawn.c \
         enemy_system/enemy_render.c \

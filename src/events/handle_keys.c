@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/18 12:09:44 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/18 15:35:54 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ int	key_press(int key, t_game *g)
 	// Teclas normais (W, A, S, D)
 	if (key >= 0 && key < 256)
 		g->keys[key] = 1;
+	if (key == 49 || key == 32)
+	{
+		handle_shoot(g);
+	}
 	// Setas (teclas especiais)
 	if (key == KEY_LEFT)
 		g->key_left = 1;
@@ -98,10 +102,12 @@ static void	handle_render(t_game *g)
 		draw_game_over(g);
 		return;
 	}
-	
+
+	update_weapon_animation(g);
 	// Renderização normal
 	render_3d_view(g);
 	render_enemies(g);  // <-- ADICIONAR: Renderiza inimigos após paredes
+	render_weapon(g);
 	draw_minimap(g);
 	draw_player(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->screen.img, 0, 0);
@@ -119,9 +125,7 @@ int	handle_keys(t_game *g)
 
 	if (movement_moved)
 		update_enemies(g);
-
-	if (movement_moved || rotation_moved)
-		handle_render(g);
+	handle_render(g);
 	return (0);
 }
 
