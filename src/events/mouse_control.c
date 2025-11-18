@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_control.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 15:00:00 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/14 15:34:22 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/18 09:31:18 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	mouse_move(int x, int y, t_game *g)
 		return (0);
 
 	// Calcula rotação baseada no movimento horizontal
-	rotation = dx * MOUSE_SENSITIVITY;
+	rotation = dx * MOUSE_SENS;
 
 	// Aplica rotação ao jogador
 	g->player.angle += rotation;
@@ -51,13 +51,13 @@ int	mouse_move(int x, int y, t_game *g)
 
 	// Re-renderiza a cena
 	update_enemies(g);  // <-- ADICIONAR ESTA LINHA
-	
+
 	if (g->enemy_sys.game_over)  // <-- ADICIONAR ESTE BLOCO
 	{
 		draw_game_over(g);
 		return (0);
 	}
-	
+
 	render_3d_view(g);
 	render_enemies(g);  // <-- ADICIONAR ESTA LINHA
 	draw_minimap(g);

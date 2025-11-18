@@ -13,29 +13,37 @@ OBJ_DIR = obj
 
 # Lista todos os ficheiros .c na pasta src (adiciona os teus ficheiros aqui)
 SRC = main.c \
-	  parse/parsing_input.c \
-	  parse/parsing_player.c \
-	  parse/read_file.c \
-	  parse/check_elem_map.c \
-	  utils/file_utils.c \
-	  utils/errors.c \
-	  utils/free_all.c \
-	  utils/pixel_utils.c \
-	  utils/color_utils.c \
-	  events/handle_keys.c \
-	  events/move_player.c \
-	  events/rotate_player.c \
-	  events/mouse_control.c \
-	  init/init_game.c \
-	  init/load_textures.c \
-	  render/draw_minimap.c \
-	  render/draw_player.c \
-	  render/draw_walls.c \
-	  render/raycasting.c \
-	  enemy_system/enemy_init.c \
-	  enemy_system/enemy_spawn.c \
-	  enemy_system/enemy_render.c \
-	  enemy_system/enemy_collision.c
+		parse/parsing_input.c \
+		parse/parsing_player.c \
+		parse/read_file.c \
+		parse/check_elem_map.c \
+		parse/check_elem_map2.c \
+		parse/init_map_struct.c \
+		parse/utils_parse.c \
+		parse/utils_parse2.c \
+		parse/save_only_map_lines.c \
+		parse/check_map_closed.c \
+		parse/separate_map_info.c \
+		parse/save_texture_or_color.c \
+		utils/file_utils.c \
+		utils/errors.c \
+		utils/free_all.c \
+		utils/pixel_utils.c \
+		utils/color_utils.c \
+		events/handle_keys.c \
+		events/move_player.c \
+		events/rotate_player.c \
+		events/mouse_control.c \
+		init/init_game.c \
+		init/load_textures.c \
+		render/draw_minimap.c \
+		render/draw_player.c \
+		render/draw_walls.c \
+		render/raycasting.c \
+		enemy_system/enemy_init.c \
+		enemy_system/enemy_spawn.c \
+		enemy_system/enemy_render.c \
+		enemy_system/enemy_collision.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
