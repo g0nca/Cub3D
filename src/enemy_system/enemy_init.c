@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:28:44 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/17 12:25:05 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/19 11:11:17 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@ void	load_enemy_textures(t_game *g)
 
 	i = 0;
 	loaded_count = 0;
-	printf("[DEBUG] load_enemy_textures: starting (ENEMY_ASSETS=%d)\n", ENEMY_ASSETS);
 	while (i < ENEMY_ASSETS)
 	{
 		snprintf(path, sizeof(path), "assets/enemies/enemy_%d.xpm", i);
-		printf("[DEBUG] load_enemy_textures: trying to load %s\n", path);
 		g->enemy_sys.enemy_textures[i].img = mlx_xpm_file_to_image(
 			g->mlx, path,
 			&g->enemy_sys.enemy_textures[i].width,
@@ -35,7 +33,6 @@ void	load_enemy_textures(t_game *g)
 		
 		if (!g->enemy_sys.enemy_textures[i].img)
 		{
-			printf("[DEBUG] load_enemy_textures: FAILED to load %s\n", path);
 			g->enemy_sys.enemy_textures[i].addr = NULL;
 			g->enemy_sys.enemy_textures[i].bpp = 0;
 			g->enemy_sys.enemy_textures[i].line_len = 0;
@@ -43,23 +40,14 @@ void	load_enemy_textures(t_game *g)
 			i++;
 			continue;
 		}
-		
 		loaded_count++;
-		printf("[DEBUG] load_enemy_textures: loaded %s (width=%d, height=%d)\n", 
-			path, g->enemy_sys.enemy_textures[i].width, g->enemy_sys.enemy_textures[i].height);
-		
 		g->enemy_sys.enemy_textures[i].addr = mlx_get_data_addr(
 			g->enemy_sys.enemy_textures[i].img,
 			&g->enemy_sys.enemy_textures[i].bpp,
 			&g->enemy_sys.enemy_textures[i].line_len,
 			&g->enemy_sys.enemy_textures[i].endian);
-
-		printf("[DEBUG] load_enemy_textures: texture %d addr=%p bpp=%d\n",
-			i, g->enemy_sys.enemy_textures[i].addr, g->enemy_sys.enemy_textures[i].bpp);
-		
 		i++;
 	}
-	printf("[DEBUG] load_enemy_textures: finished - loaded %d/%d textures\n", loaded_count, ENEMY_ASSETS);
 }
 
 /**
@@ -116,8 +104,6 @@ void	init_enemy_system(t_game *g)
 	int	i;
 
 	srand(time(NULL));
-	
-	// Zera todos os inimigos
 	i = 0;
 	while (i < MAX_ENEMIES)
 	{
@@ -127,33 +113,8 @@ void	init_enemy_system(t_game *g)
 		g->enemy_sys.enemies[i].asset_id = 0;
 		i++;
 	}
-	
 	g->enemy_sys.enemy_count = 0;
 	g->enemy_sys.game_over = 0;
-
-	// REMOVIDO: inicialização de transparent_color
-	
-	// Carrega texturas
 	load_enemy_textures(g);
-	
-	// Spawn dos inimigos
 	spawn_enemies(g);
-	
-	printf("Enemy System: Initialized with %d enemies\n", g->enemy_sys.enemy_count);
-}
-
-/**
- * Libera recursos do sistema de inimigos
- */
-void	free_enemy_system(t_game *g)
-{
-	int	i;
-
-	i = 0;
-	while (i < ENEMY_ASSETS)
-	{
-		if (g->enemy_sys.enemy_textures[i].img)
-			mlx_destroy_image(g->mlx, g->enemy_sys.enemy_textures[i].img);
-		i++;
-	}
 }

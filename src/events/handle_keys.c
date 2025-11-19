@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/18 15:35:54 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 11:01:49 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int	close_window(t_game *g)
 {
 	//show_mouse_cursor(g);
 	free_enemy_system(g);
+	free_weapon_texture_system(g);
 	free_images(g);
 	if (g->screen.img)
 		mlx_destroy_image(g->mlx, g->screen.img);

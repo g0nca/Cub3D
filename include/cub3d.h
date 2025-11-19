@@ -316,7 +316,6 @@ int					is_transparent(int color);
 void				check_enemy_collision(t_game *g);
 void				draw_game_over(t_game *g);
 void				draw_enemy_counter(t_game *g);
-void				free_enemy_system(t_game *g);
 int					count_floor_tiles(t_game *g);
 int					get_enemy_count_by_tiles(int tile_count);
 
@@ -330,5 +329,7 @@ void update_weapon_animation(t_game *game);
 long get_current_time_ms();
 void render_weapon(t_game *game);
 void handle_shoot(t_game *game);
+void	free_weapon_texture_system(t_game *g);
+void				free_enemy_system(t_game *g);
 
 #endif

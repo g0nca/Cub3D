@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_spawn.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:29:42 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/17 12:10:37 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/19 11:09:15 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,11 +144,9 @@ void	spawn_enemies(t_game *g)
 
 	// Conta tiles de chão
 	tile_count = count_floor_tiles(g);
-	printf("Floor tiles found: %d\n", tile_count);
 	
 	// Determina quantos inimigos spawnar
 	target_enemies = get_enemy_count_by_tiles(tile_count);
-	printf("Target enemies to spawn: %d\n", target_enemies);
 	
 	if (target_enemies == 0)
 	{
@@ -177,6 +175,4 @@ void	spawn_enemies(t_game *g)
 	}
 	
 	g->enemy_sys.enemy_count = spawned;
-	printf("Successfully spawned %d/%d enemies\n", spawned, target_enemies);
-	printf("[DEBUG] spawn_enemies: set enemy_count to %d\n", g->enemy_sys.enemy_count);
 }
