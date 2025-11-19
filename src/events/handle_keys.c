@@ -6,7 +6,7 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 10:10:01 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:36:10 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,12 +138,18 @@ int handle_keys(t_game *g)
         update_enemies(g);
 
     handle_render(g);
+	if (g->enemy_sys.enemy_count == 0)
+	{
+		print_error_and_exit_FREE("Win !!! \n", 0, g->cub.map);
+		close_window(g);
+	}
     return (0);
 }
 
 int	close_window(t_game *g)
 {
 	free_enemy_system(g);
+	free_weapon_texture_system(g);
 	free_images(g);
 	if (g->screen.img)
 		mlx_destroy_image(g->mlx, g->screen.img);

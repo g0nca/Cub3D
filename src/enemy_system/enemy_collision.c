@@ -6,7 +6,7 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:31:43 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/19 09:53:53 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:30:36 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,6 @@ void	update_enemies(t_game *g)
 
 	if (g->enemy_sys.game_over)
 		return;
-
 	i = 0;
 	while (i < g->enemy_sys.enemy_count)
 	{

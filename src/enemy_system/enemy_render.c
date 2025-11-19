@@ -6,7 +6,7 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:30:43 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/19 14:12:38 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:32:23 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,8 +176,6 @@ void	render_enemies(t_game *g)
 	// Ordena sprites por distância (mais longe primeiro)
 	if (sprite_count > 0)
 		qsort(sprites, sprite_count, sizeof(t_sprite_data), compare_sprites);
-
-	// Renderiza sprites ordenados
 	i = 0;
 	while (i < sprite_count)
 	{
