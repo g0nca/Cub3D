@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 12:22:42 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:29:09 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ static void	handle_render(t_game *g)
 	update_weapon_animation(g);
 	// Renderização normal
 	render_3d_view(g);
-	render_enemies(g);  // <-- ADICIONAR: Renderiza inimigos após paredes
+	render_enemies(g);
+	update_enemies(g);
 	render_weapon(g);
 	draw_minimap(g);
 	draw_player(g);
