@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:48 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 11:04:54 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 11:33:04 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void    init_game(t_game *game)
     game->player.x = 0.0;
     game->player.y = 0.0;
     game->player.angle = 0.0;
-    game->player.move_speed = 0.01;
+    game->player.move_speed = 0.02;
     game->player.rot_speed = 0.01;
     init_keys(game);
     game->key_left = 0;

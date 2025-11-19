@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_collision.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:31:43 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/17 09:52:43 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/19 11:32:36 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,12 +200,12 @@ void	update_enemies(t_game *g)
 
 	if (g->enemy_sys.game_over)
 		return;
-
 	i = 0;
 	while (i < g->enemy_sys.enemy_count)
 	{
 		if (g->enemy_sys.enemies[i].active)
 		{
+			usleep(1000);
 			// Vetor do inimigo até o jogador
 			dx = g->player.x - g->enemy_sys.enemies[i].x;
 			dy = g->player.y - g->enemy_sys.enemies[i].y;

@@ -45,6 +45,7 @@ SRC = main.c \
         render/draw_walls.c \
         render/raycasting.c \
 		render/render_weapon.c \
+		enemy_system/check_enemy_hit.c \
         enemy_system/enemy_init.c \
         enemy_system/enemy_spawn.c \
         enemy_system/enemy_render.c \

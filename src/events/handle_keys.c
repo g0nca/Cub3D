@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 11:01:49 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 11:50:38 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,8 @@ int	handle_keys(t_game *g)
 	movement_moved = handle_movement(g);
 	rotation_moved = handle_rotation(g);
 
-	if (movement_moved)
-		update_enemies(g);
+	//if (movement_moved)
+	update_enemies(g);
 	handle_render(g);
 	return (0);
 }

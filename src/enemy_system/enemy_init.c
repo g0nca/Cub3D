@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:28:44 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/19 11:11:17 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 11:44:26 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	load_enemy_textures(t_game *g)
 
 	i = 0;
 	loaded_count = 0;
-	while (i < ENEMY_ASSETS)
+	while (i < 49/* ENEMY_ASSETS */)
 	{
 		snprintf(path, sizeof(path), "assets/enemies/enemy_%d.xpm", i);
 		g->enemy_sys.enemy_textures[i].img = mlx_xpm_file_to_image(

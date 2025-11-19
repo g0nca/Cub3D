@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:01:46 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/18 15:46:03 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 11:48:42 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void render_weapon(t_game *game)
     int y_pos = WIN_H - scaled_height + 20; // +20 para descer um pouco mais se quiseres
     
     // Chama a nova função com os parâmetros de escala
-    scale_and_copy_img_to_buffer(&game->screen, texture_to_draw, x_pos, y_pos, scaled_width, scaled_height); 
+    scale_and_copy_img_to_buffer(&game->screen, texture_to_draw, x_pos, y_pos, scaled_width, scaled_height);
 }
 
 
@@ -79,7 +79,5 @@ void handle_shoot(t_game *game)
     game->weapon.current_frame = 1; // Começa na primeira frame de disparo (não a idle)
     game->weapon.last_frame_time = get_current_time_ms();
 
-    // -- AQUI É ONDE VAIS INTEGRAR O HITSCAN (ver resposta anterior) --
-    // O hitscan deve ocorrer no momento exato do disparo (nesta função ou na frame 1 da anim)
-    //check_enemy_hit(game); 
+    check_enemy_hit(game); 
 }

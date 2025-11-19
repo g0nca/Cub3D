@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:29:42 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/19 11:09:15 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:16:40 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	is_valid_spawn_position(t_game *g, double x, double y)
 	
 	// Verifica distância ao jogador
 	dist_to_player = sqrt(pow(x - g->player.x, 2) + pow(y - g->player.y, 2));
-	if (dist_to_player < 3.0)
+	if (dist_to_player < 1.5)
 		return (0);
 	
 	// Verifica se está em cima de outro inimigo
@@ -90,11 +90,14 @@ static int	find_random_spawn_position(t_game *g, double *x, double *y)
 		*y = rand_y + 0.5;
 		
 		if (is_valid_spawn_position(g, *x, *y))
+		{
+			printf("Posicao Valida\n");
 			return (1);
+		}
 		
 		attempts++;
 	}
-	
+	printf("posicao invalida\n");
 	return (0);
 }
 
@@ -141,38 +144,33 @@ void	spawn_enemies(t_game *g)
 	int	target_enemies;
 	int	spawned;
 	int	i;
+	int attempts;
 
-	// Conta tiles de chão
 	tile_count = count_floor_tiles(g);
-	
-	// Determina quantos inimigos spawnar
 	target_enemies = get_enemy_count_by_tiles(tile_count);
-	
 	if (target_enemies == 0)
 	{
 		printf("Map too small for enemies\n");
 		return;
 	}
-	
-	// Tenta spawnar os inimigos
+	attempts = 0;
 	spawned = 0;
 	i = 0;
-	while (i < target_enemies && i < MAX_ENEMIES)
-	{
-		if (spawn_single_enemy(g, i))
+	while (spawned < target_enemies && spawned < MAX_ENEMIES && attempts < 1000)
 		{
-			spawned++;
-			printf("Enemy %d spawned at (%.2f, %.2f) with asset %d\n",
-				i, g->enemy_sys.enemies[i].x,
-				g->enemy_sys.enemies[i].y,
-				g->enemy_sys.enemies[i].asset_id);
+			if (spawn_single_enemy(g, spawned)) 
+			{
+				printf("Enemy %d spawned successfully\n", spawned);
+				spawned++;
+				attempts = 0;
+			}
+			else
+			{
+				attempts++;
+				printf("Tentativa falhada, tentando novamente...\n");
+			}
 		}
-		else
-		{
-			printf("Failed to spawn enemy %d\n", i);
-		}
-		i++;
-	}
-	
-	g->enemy_sys.enemy_count = spawned;
+		g->enemy_sys.enemy_count = spawned;
+		printf("Total de inimigos spawnados: %d\n", spawned);
 }
+	
