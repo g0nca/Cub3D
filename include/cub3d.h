@@ -79,7 +79,7 @@
 #define FRAMES_PER_ENEMY 5      // Número de frames de animação por inimigo
 #define COLLISION_DISTANCE 0.5
 #define ENEMY_SIZE 0.3
-#define ENEMY_SPEED 0.01
+#define ENEMY_SPEED 0.001
 #define ENEMY_ANIM_SPEED 100    // Milissegundos entre frames
 
 /* ========================================================================== */
@@ -168,7 +168,6 @@ typedef struct s_enemy_system
 	t_enemy		enemies[MAX_ENEMIES];
 	int			enemy_count;
 	int			game_over;
-	// Texturas carregadas para cada tipo de inimigo
 	t_img		enemy_textures[ENEMY_TYPES][FRAMES_PER_ENEMY];
 }				t_enemy_system;
 
@@ -196,6 +195,7 @@ typedef struct s_game
 	int				keys[256];
 	int				key_left;
 	int				key_right;
+	int				win_game;
 	double			z_buffer[WIN_W];
 	t_player		player;
 	t_map			map;

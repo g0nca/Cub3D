@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:28:44 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/19 14:42:47 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/19 15:10:22 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ void	init_enemy_system(t_game *g)
 		g->enemy_sys.enemies[i].enemy_type = 0;
 		g->enemy_sys.enemies[i].current_frame = 0;
 		g->enemy_sys.enemies[i].last_frame_time = 0;
-
 		// Inicializa array de frames
 		j = 0;
 		while (j < FRAMES_PER_ENEMY)
@@ -137,7 +136,6 @@ void	init_enemy_system(t_game *g)
 		}
 		i++;
 	}
-
 	g->enemy_sys.enemy_count = 0;
 	g->enemy_sys.game_over = 0;
 

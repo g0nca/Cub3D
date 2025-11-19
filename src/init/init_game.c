@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:48 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 14:37:11 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/19 15:20:26 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,17 @@ void init_weapon_assets(t_game *game)
 
     while (i < WEAPON_FRAMES)
     {
-        game->weapon.textures[i].img = mlx_xpm_file_to_image(game->mlx, paths[i],
-                                                &game->weapon.textures[i].width,
+        game->weapon.textures[i].img = mlx_xpm_file_to_image(game->mlx, paths[i], 
+                                                &game->weapon.textures[i].width, 
                                                 &game->weapon.textures[i].height);
         if (!game->weapon.textures[i].img)
         {
             print_error_and_exit_without_free("Failed loading weapon textures", 0, game->cub.map);
             close_window(game);
         }
-        // Opcional: obter o addr para gestão manual de pixels e transparência (se necessário)
-        game->weapon.textures[i].addr = mlx_get_data_addr(game->weapon.textures[i].img,
-                                            &game->weapon.textures[i].bpp,
-                                            &game->weapon.textures[i].line_len,
+        game->weapon.textures[i].addr = mlx_get_data_addr(game->weapon.textures[i].img, 
+                                            &game->weapon.textures[i].bpp, 
+                                            &game->weapon.textures[i].line_len, 
                                             &game->weapon.textures[i].endian);
         i++;
     }
@@ -71,6 +70,7 @@ void    init_game(t_game *game)
         &game->screen.bpp, &game->screen.line_len, &game->screen.endian);
     init_images(game);
     init_weapon_assets(game);
+    game->win_game = 0;
     game->player.x = 0.0;
     game->player.y = 0.0;
     game->player.angle = 0.0;

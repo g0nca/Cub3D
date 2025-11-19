@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 10:40:59 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 13:48:08 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 15:21:24 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void check_enemy_hit(t_game *g)
         if (center_x >= draw_start_x && center_x <= draw_end_x)
         {
             enemy->active = 0;
-            g->enemy_sys.enemy_count--;
+			g->win_game++;
             printf("Inimigo %d morto!\n", current_index);
             return ;
         }

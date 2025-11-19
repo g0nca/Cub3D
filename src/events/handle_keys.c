@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_keys.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 14:36:10 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/19 15:22:51 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,19 +111,7 @@ static void	handle_render(t_game *g)
 /**
  * Esta função é chamada continuamente pelo mlx_loop
  * AGORA OS INIMIGOS ATUALIZAM SEMPRE, NÃO SÓ QUANDO O PLAYER SE MOVE
- */
-/* int	handle_keys(t_game *g)
-{
-	handle_movement(g);
-	handle_rotation(g);
-
-	// IMPORTANTE: Atualiza inimigos SEMPRE, não apenas quando há movimento
-	// Isso faz com que eles andem continuamente
-	update_enemies(g);
-
-	handle_render(g);
-	return (0);
-} */
+ */	
 int handle_keys(t_game *g)
 {
     int movement_moved;
@@ -134,13 +122,13 @@ int handle_keys(t_game *g)
     movement_moved = handle_movement(g);
     rotation_moved = handle_rotation(g);
 
-	if (movement_moved)
-        update_enemies(g);
+	//if (movement_moved)
+    update_enemies(g);
 
     handle_render(g);
-	if (g->enemy_sys.enemy_count == 0)
-	{
-		print_error_and_exit_FREE("Win !!! \n", 0, g->cub.map);
+	if (g->win_game == g->enemy_sys.enemy_count)
+	{	
+		printf("Win !!! \n");
 		close_window(g);
 	}
     return (0);
