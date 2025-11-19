@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_spawn.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:29:42 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/17 12:10:37 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/19 09:53:45 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 /**
  * Verifica se uma posição é válida para spawn
- * - Não pode ser parede
- * - Não pode estar muito perto do jogador (mínimo 3.0 unidades)
- * - Não pode estar em cima de outro inimigo
  */
 int	is_valid_spawn_position(t_game *g, double x, double y)
 {
@@ -25,25 +22,21 @@ int	is_valid_spawn_position(t_game *g, double x, double y)
 	double	dist_to_player;
 	int		i;
 
-	// Verifica limites do mapa
 	map_x = (int)x;
 	map_y = (int)y;
-	
+
 	if (map_y < 0 || map_x < 0 || !g->map.grid[map_y])
 		return (0);
 	if (map_x >= (int)ft_strlen(g->map.grid[map_y]))
 		return (0);
-	
-	// Verifica se é parede
+
 	if (g->map.grid[map_y][map_x] == '1')
 		return (0);
-	
-	// Verifica distância ao jogador
+
 	dist_to_player = sqrt(pow(x - g->player.x, 2) + pow(y - g->player.y, 2));
 	if (dist_to_player < 3.0)
 		return (0);
-	
-	// Verifica se está em cima de outro inimigo
+
 	i = 0;
 	while (i < g->enemy_sys.enemy_count)
 	{
@@ -58,7 +51,7 @@ int	is_valid_spawn_position(t_game *g, double x, double y)
 		}
 		i++;
 	}
-	
+
 	return (1);
 }
 
@@ -73,29 +66,44 @@ static int	find_random_spawn_position(t_game *g, double *x, double *y)
 	int		rand_x;
 	int		rand_y;
 
-	// Conta dimensões do mapa
 	map_height = 0;
 	while (g->map.grid[map_height])
 		map_height++;
-	
+
 	map_width = g->map.width;
-	
+
 	attempts = 0;
 	while (attempts < 100)
 	{
 		rand_x = rand() % map_width;
 		rand_y = rand() % map_height;
-		
+
 		*x = rand_x + 0.5;
 		*y = rand_y + 0.5;
-		
+
 		if (is_valid_spawn_position(g, *x, *y))
 			return (1);
-		
+
 		attempts++;
 	}
-	
+
 	return (0);
+}
+
+/**
+ * Copia os frames do tipo de inimigo para o inimigo específico
+ */
+static void copy_enemy_frames(t_game *g, int enemy_index, int enemy_type)
+{
+	int frame;
+
+	frame = 0;
+	while (frame < FRAMES_PER_ENEMY)
+	{
+		g->enemy_sys.enemies[enemy_index].frames[frame] =
+			g->enemy_sys.enemy_textures[enemy_type][frame];
+		frame++;
+	}
 }
 
 /**
@@ -105,30 +113,43 @@ static int	spawn_single_enemy(t_game *g, int index)
 {
 	double	spawn_x;
 	double	spawn_y;
-	int		asset_id;
+	int		enemy_type;
 
 	if (!find_random_spawn_position(g, &spawn_x, &spawn_y))
 		return (0);
-    
-	// Escolhe asset aleatório que foi carregado com sucesso
-	asset_id = rand() % ENEMY_ASSETS;
-	int attempts = 0;
-	while (attempts < ENEMY_ASSETS && (!g->enemy_sys.enemy_textures[asset_id].img ||
-			!g->enemy_sys.enemy_textures[asset_id].addr))
+
+	// Escolhe tipo aleatório de inimigo (0-4)
+	enemy_type = rand() % ENEMY_TYPES;
+
+	// Verifica se pelo menos o primeiro frame deste tipo foi carregado
+	if (!g->enemy_sys.enemy_textures[enemy_type][0].img ||
+		!g->enemy_sys.enemy_textures[enemy_type][0].addr)
 	{
-		asset_id = (asset_id + 1) % ENEMY_ASSETS;
-		attempts++;
+		printf("[DEBUG] Enemy type %d has no valid textures, trying another\n", enemy_type);
+		int attempts = 0;
+		while (attempts < ENEMY_TYPES)
+		{
+			enemy_type = (enemy_type + 1) % ENEMY_TYPES;
+			if (g->enemy_sys.enemy_textures[enemy_type][0].img &&
+				g->enemy_sys.enemy_textures[enemy_type][0].addr)
+				break;
+			attempts++;
+		}
+		if (attempts >= ENEMY_TYPES)
+			return (0);
 	}
-	if (attempts >= ENEMY_ASSETS)
-		return (0);
-	
+
 	// Configura inimigo
 	g->enemy_sys.enemies[index].x = spawn_x;
 	g->enemy_sys.enemies[index].y = spawn_y;
-	g->enemy_sys.enemies[index].asset_id = asset_id;
+	g->enemy_sys.enemies[index].enemy_type = enemy_type;
 	g->enemy_sys.enemies[index].active = 1;
-	g->enemy_sys.enemies[index].texture = g->enemy_sys.enemy_textures[asset_id];
-	
+	g->enemy_sys.enemies[index].current_frame = 0;
+	g->enemy_sys.enemies[index].last_frame_time = get_current_time_ms();
+
+	// Copia os frames para este inimigo
+	copy_enemy_frames(g, index, enemy_type);
+
 	return (1);
 }
 
@@ -142,21 +163,18 @@ void	spawn_enemies(t_game *g)
 	int	spawned;
 	int	i;
 
-	// Conta tiles de chão
 	tile_count = count_floor_tiles(g);
 	printf("Floor tiles found: %d\n", tile_count);
-	
-	// Determina quantos inimigos spawnar
+
 	target_enemies = get_enemy_count_by_tiles(tile_count);
 	printf("Target enemies to spawn: %d\n", target_enemies);
-	
+
 	if (target_enemies == 0)
 	{
 		printf("Map too small for enemies\n");
 		return;
 	}
-	
-	// Tenta spawnar os inimigos
+
 	spawned = 0;
 	i = 0;
 	while (i < target_enemies && i < MAX_ENEMIES)
@@ -164,10 +182,10 @@ void	spawn_enemies(t_game *g)
 		if (spawn_single_enemy(g, i))
 		{
 			spawned++;
-			printf("Enemy %d spawned at (%.2f, %.2f) with asset %d\n",
+			printf("Enemy %d spawned at (%.2f, %.2f) with type %d\n",
 				i, g->enemy_sys.enemies[i].x,
 				g->enemy_sys.enemies[i].y,
-				g->enemy_sys.enemies[i].asset_id);
+				g->enemy_sys.enemies[i].enemy_type);
 		}
 		else
 		{
@@ -175,8 +193,7 @@ void	spawn_enemies(t_game *g)
 		}
 		i++;
 	}
-	
+
 	g->enemy_sys.enemy_count = spawned;
 	printf("Successfully spawned %d/%d enemies\n", spawned, target_enemies);
-	printf("[DEBUG] spawn_enemies: set enemy_count to %d\n", g->enemy_sys.enemy_count);
 }

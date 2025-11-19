@@ -3,63 +3,75 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:28:44 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/17 12:25:05 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/19 14:12:51 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
 /**
- * Carrega todas as texturas dos inimigos - VERSÃO SIMPLES
+ * Carrega todas as texturas dos inimigos (5 tipos x 8 frames cada)
  */
 void	load_enemy_textures(t_game *g)
 {
 	char	path[256];
-	int		i;
+	int		enemy_type;
+	int		frame;
 	int		loaded_count;
 
-	i = 0;
 	loaded_count = 0;
-	printf("[DEBUG] load_enemy_textures: starting (ENEMY_ASSETS=%d)\n", ENEMY_ASSETS);
-	while (i < ENEMY_ASSETS)
-	{
-		snprintf(path, sizeof(path), "assets/enemies/enemy_%d.xpm", i);
-		printf("[DEBUG] load_enemy_textures: trying to load %s\n", path);
-		g->enemy_sys.enemy_textures[i].img = mlx_xpm_file_to_image(
-			g->mlx, path,
-			&g->enemy_sys.enemy_textures[i].width,
-			&g->enemy_sys.enemy_textures[i].height);
-		
-		if (!g->enemy_sys.enemy_textures[i].img)
-		{
-			printf("[DEBUG] load_enemy_textures: FAILED to load %s\n", path);
-			g->enemy_sys.enemy_textures[i].addr = NULL;
-			g->enemy_sys.enemy_textures[i].bpp = 0;
-			g->enemy_sys.enemy_textures[i].line_len = 0;
-			g->enemy_sys.enemy_textures[i].endian = 0;
-			i++;
-			continue;
-		}
-		
-		loaded_count++;
-		printf("[DEBUG] load_enemy_textures: loaded %s (width=%d, height=%d)\n", 
-			path, g->enemy_sys.enemy_textures[i].width, g->enemy_sys.enemy_textures[i].height);
-		
-		g->enemy_sys.enemy_textures[i].addr = mlx_get_data_addr(
-			g->enemy_sys.enemy_textures[i].img,
-			&g->enemy_sys.enemy_textures[i].bpp,
-			&g->enemy_sys.enemy_textures[i].line_len,
-			&g->enemy_sys.enemy_textures[i].endian);
+	printf("[DEBUG] load_enemy_textures: starting (ENEMY_TYPES=%d, FRAMES=%d)\n",
+		ENEMY_TYPES, FRAMES_PER_ENEMY);
 
-		printf("[DEBUG] load_enemy_textures: texture %d addr=%p bpp=%d\n",
-			i, g->enemy_sys.enemy_textures[i].addr, g->enemy_sys.enemy_textures[i].bpp);
-		
-		i++;
+	enemy_type = 0;
+	while (enemy_type < ENEMY_TYPES)
+	{
+		frame = 0;
+		while (frame < FRAMES_PER_ENEMY)
+		{
+			// Caminho: assets/enemies/enemy0/enemy0_0.xpm até enemy4/enemy4_7.xpm
+			snprintf(path, sizeof(path), "assets/enemies/enemy%d/enemy%d_%d.xpm",
+				enemy_type, enemy_type, frame);
+
+			printf("[DEBUG] Loading: %s\n", path);
+
+			g->enemy_sys.enemy_textures[enemy_type][frame].img = mlx_xpm_file_to_image(
+				g->mlx, path,
+				&g->enemy_sys.enemy_textures[enemy_type][frame].width,
+				&g->enemy_sys.enemy_textures[enemy_type][frame].height);
+
+			if (!g->enemy_sys.enemy_textures[enemy_type][frame].img)
+			{
+				printf("[DEBUG] FAILED to load %s\n", path);
+				g->enemy_sys.enemy_textures[enemy_type][frame].addr = NULL;
+				g->enemy_sys.enemy_textures[enemy_type][frame].bpp = 0;
+				g->enemy_sys.enemy_textures[enemy_type][frame].line_len = 0;
+				g->enemy_sys.enemy_textures[enemy_type][frame].endian = 0;
+			}
+			else
+			{
+				loaded_count++;
+				printf("[DEBUG] Loaded %s (width=%d, height=%d)\n",
+					path,
+					g->enemy_sys.enemy_textures[enemy_type][frame].width,
+					g->enemy_sys.enemy_textures[enemy_type][frame].height);
+
+				g->enemy_sys.enemy_textures[enemy_type][frame].addr = mlx_get_data_addr(
+					g->enemy_sys.enemy_textures[enemy_type][frame].img,
+					&g->enemy_sys.enemy_textures[enemy_type][frame].bpp,
+					&g->enemy_sys.enemy_textures[enemy_type][frame].line_len,
+					&g->enemy_sys.enemy_textures[enemy_type][frame].endian);
+			}
+			frame++;
+		}
+		enemy_type++;
 	}
-	printf("[DEBUG] load_enemy_textures: finished - loaded %d/%d textures\n", loaded_count, ENEMY_ASSETS);
+
+	printf("[DEBUG] load_enemy_textures: finished - loaded %d/%d textures\n",
+		loaded_count, ENEMY_TYPES * FRAMES_PER_ENEMY);
 }
 
 /**
@@ -105,7 +117,7 @@ int	get_enemy_count_by_tiles(int tile_count)
 	else if (tile_count <= 100)
 		return (5);
 	else
-		return (tile_count / 20);
+		return (1 + tile_count / 20);
 }
 
 /**
@@ -114,9 +126,10 @@ int	get_enemy_count_by_tiles(int tile_count)
 void	init_enemy_system(t_game *g)
 {
 	int	i;
+	int	j;
 
 	srand(time(NULL));
-	
+
 	// Zera todos os inimigos
 	i = 0;
 	while (i < MAX_ENEMIES)
@@ -124,21 +137,30 @@ void	init_enemy_system(t_game *g)
 		g->enemy_sys.enemies[i].active = 0;
 		g->enemy_sys.enemies[i].x = 0.0;
 		g->enemy_sys.enemies[i].y = 0.0;
-		g->enemy_sys.enemies[i].asset_id = 0;
+		g->enemy_sys.enemies[i].enemy_type = 0;
+		g->enemy_sys.enemies[i].current_frame = 0;
+		g->enemy_sys.enemies[i].last_frame_time = 0;
+
+		// Inicializa array de frames
+		j = 0;
+		while (j < FRAMES_PER_ENEMY)
+		{
+			g->enemy_sys.enemies[i].frames[j].img = NULL;
+			g->enemy_sys.enemies[i].frames[j].addr = NULL;
+			j++;
+		}
 		i++;
 	}
-	
+
 	g->enemy_sys.enemy_count = 0;
 	g->enemy_sys.game_over = 0;
 
-	// REMOVIDO: inicialização de transparent_color
-	
 	// Carrega texturas
 	load_enemy_textures(g);
-	
+
 	// Spawn dos inimigos
 	spawn_enemies(g);
-	
+
 	printf("Enemy System: Initialized with %d enemies\n", g->enemy_sys.enemy_count);
 }
 
@@ -147,13 +169,19 @@ void	init_enemy_system(t_game *g)
  */
 void	free_enemy_system(t_game *g)
 {
-	int	i;
+	int	enemy_type;
+	int	frame;
 
-	i = 0;
-	while (i < ENEMY_ASSETS)
+	enemy_type = 0;
+	while (enemy_type < ENEMY_TYPES)
 	{
-		if (g->enemy_sys.enemy_textures[i].img)
-			mlx_destroy_image(g->mlx, g->enemy_sys.enemy_textures[i].img);
-		i++;
+		frame = 0;
+		while (frame < FRAMES_PER_ENEMY)
+		{
+			if (g->enemy_sys.enemy_textures[enemy_type][frame].img)
+				mlx_destroy_image(g->mlx, g->enemy_sys.enemy_textures[enemy_type][frame].img);
+			frame++;
+		}
+		enemy_type++;
 	}
 }

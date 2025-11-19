@@ -73,12 +73,14 @@
 # define C				6
 
 #define WEAPON_FRAMES 5
-/* Enimies */
-#define					MAX_ENEMIES 50
-#define					ENEMY_ASSETS 10
-#define					COLLISION_DISTANCE 0.5
-#define					ENEMY_SIZE 0.3
-#define					ENEMY_SPEED 0.01
+/* Enemy animation settings */
+#define MAX_ENEMIES 50
+#define ENEMY_TYPES 5           // enemy0 a enemy4
+#define FRAMES_PER_ENEMY 5      // Número de frames de animação por inimigo
+#define COLLISION_DISTANCE 0.5
+#define ENEMY_SIZE 0.3
+#define ENEMY_SPEED 0.01
+#define ENEMY_ANIM_SPEED 100    // Milissegundos entre frames
 
 /* ========================================================================== */
 /*                               STRUCTURES                                   */
@@ -146,9 +148,11 @@ typedef struct s_enemy
 {
 	double	x;
 	double	y;
-	int		asset_id;
+	int		enemy_type;         // 0-4 (qual pasta enemy)
 	int		active;
-	t_img	texture;
+	int		current_frame;      // Frame atual da animação (0-7)
+	long	last_frame_time;    // Timestamp da última mudança de frame
+	t_img	frames[FRAMES_PER_ENEMY]; // Array com todos os frames
 }			t_enemy;
 
 typedef struct s_sprite_data
@@ -164,7 +168,8 @@ typedef struct s_enemy_system
 	t_enemy		enemies[MAX_ENEMIES];
 	int			enemy_count;
 	int			game_over;
-	t_img		enemy_textures[ENEMY_ASSETS];
+	// Texturas carregadas para cada tipo de inimigo
+	t_img		enemy_textures[ENEMY_TYPES][FRAMES_PER_ENEMY];
 }				t_enemy_system;
 
 typedef struct s_ray

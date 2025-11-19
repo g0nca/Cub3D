@@ -3,28 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_collision.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:31:43 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/17 09:52:43 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/19 09:53:53 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-/*
- * Verifica se há linha de visão direta entre (x0,y0) e (x1,y1).
- * Caminha ao longo do segmento e retorna 1 se não houver paredes entre os pontos.
+/**
+ * Verifica se há linha de visão direta entre (x0,y0) e (x1,y1)
  */
 static int is_line_of_sight_clear(t_game *g, double x0, double y0, double x1, double y1)
 {
-	/* Use DDA ray cast from (x0,y0) towards (x1,y1). If a wall is hit before
-	 * reaching the player position, LOS is blocked. This mirrors the raycaster
-	 * approach and avoids sampling gaps.
-	 */
 	double dx = x1 - x0;
 	double dy = y1 - y0;
 	double dist_to_target = sqrt(dx * dx + dy * dy);
+
 	if (dist_to_target <= 0.0)
 		return (1);
 
@@ -52,6 +48,7 @@ static int is_line_of_sight_clear(t_game *g, double x0, double y0, double x1, do
 		step_x = 1;
 		side_dist_x = (map_x + 1.0 - x0) * delta_dist_x;
 	}
+
 	if (ray_dir_y < 0)
 	{
 		step_y = -1;
@@ -70,7 +67,6 @@ static int is_line_of_sight_clear(t_game *g, double x0, double y0, double x1, do
 		{
 			side_dist_x += delta_dist_x;
 			map_x += step_x;
-			// distance from origin to this vertical side
 			double traveled = side_dist_x - delta_dist_x;
 			if (traveled >= dist_to_target)
 				return (1);
@@ -91,19 +87,17 @@ static int is_line_of_sight_clear(t_game *g, double x0, double y0, double x1, do
 		if (map_x >= (int)ft_strlen(g->map.grid[map_y]))
 			return (0);
 		if (g->map.grid[map_y][map_x] == '1')
-			return (0); // wall blocks LOS
+			return (0);
 	}
 
 	return (1);
 }
 
-/* Helper: verifica se uma posição (double) é caminhável (não parede) */
+/**
+ * Helper: verifica se uma posição (double) é caminhável
+ */
 static int is_walkable_at(t_game *g, double fx, double fy)
 {
-	/*
-	* Use circle-vs-tile collision to prevent clipping through corners.
-	* Check all tiles that the enemy's collision circle could overlap.
-	*/
 	int x0 = (int)floor(fx - ENEMY_SIZE);
 	int x1 = (int)floor(fx + ENEMY_SIZE);
 	int y0 = (int)floor(fy - ENEMY_SIZE);
@@ -120,7 +114,6 @@ static int is_walkable_at(t_game *g, double fx, double fy)
 				return (0);
 			if (g->map.grid[ty][tx] == '1')
 			{
-				/* Closest point on the tile rectangle to the circle center */
 				double closest_x = fx;
 				if (closest_x < (double)tx)
 					closest_x = (double)tx;
@@ -136,7 +129,7 @@ static int is_walkable_at(t_game *g, double fx, double fy)
 				double dx = fx - closest_x;
 				double dy = fy - closest_y;
 				if (sqrt(dx * dx + dy * dy) < ENEMY_SIZE)
-					return (0); // collision with wall tile
+					return (0);
 			}
 		}
 	}
@@ -166,7 +159,6 @@ void	check_enemy_collision(t_game *g)
 
 			if (distance < COLLISION_DISTANCE)
 			{
-				/* Só mata se houver linha de visão direta (sem paredes entre) */
 				if (is_line_of_sight_clear(g,
 					g->enemy_sys.enemies[i].x, g->enemy_sys.enemies[i].y,
 					g->player.x, g->player.y))
@@ -183,7 +175,27 @@ void	check_enemy_collision(t_game *g)
 }
 
 /**
+ * Atualiza animação do inimigo
+ */
+static void update_enemy_animation(t_enemy *enemy)
+{
+	long current_time = get_current_time_ms();
+
+	// Muda de frame a cada ENEMY_ANIM_SPEED ms
+	if (current_time - enemy->last_frame_time >= ENEMY_ANIM_SPEED)
+	{
+		enemy->last_frame_time = current_time;
+		enemy->current_frame++;
+
+		// Loop da animação
+		if (enemy->current_frame >= FRAMES_PER_ENEMY)
+			enemy->current_frame = 0;
+	}
+}
+
+/**
  * Atualiza o sistema de inimigos (chamado a cada frame)
+ * AGORA OS INIMIGOS ANDAM SEMPRE, INDEPENDENTE DO MOVIMENTO DO PLAYER
  */
 void	update_enemies(t_game *g)
 {
@@ -206,6 +218,9 @@ void	update_enemies(t_game *g)
 	{
 		if (g->enemy_sys.enemies[i].active)
 		{
+			// ATUALIZA ANIMAÇÃO (sempre, independente do movimento)
+			update_enemy_animation(&g->enemy_sys.enemies[i]);
+
 			// Vetor do inimigo até o jogador
 			dx = g->player.x - g->enemy_sys.enemies[i].x;
 			dy = g->player.y - g->enemy_sys.enemies[i].y;
@@ -220,12 +235,6 @@ void	update_enemies(t_game *g)
 				// Movimento proposto
 				step_x = nx * ENEMY_SPEED;
 				step_y = ny * ENEMY_SPEED;
-
-				/*
-				* Melhor estratégia de movimento:
-				* - Primeiro tenta mover pelo vetor completo (step_x, step_y).
-				* - Se bloqueado, tenta mover separadamente por eixo X e Y.
-				*/
 
 				double try_x = g->enemy_sys.enemies[i].x + step_x;
 				double try_y = g->enemy_sys.enemies[i].y + step_y;
@@ -245,18 +254,17 @@ void	update_enemies(t_game *g)
 						g->enemy_sys.enemies[i].y += step_y;
 				}
 			}
-		}
 
-		/* track nearest enemy for debug */
-		if (g->enemy_sys.enemies[i].active && dist < nearest)
-			nearest = dist;
+			if (g->enemy_sys.enemies[i].active && dist < nearest)
+				nearest = dist;
+		}
 		i++;
 	}
 
 	// Verifica colisões com o jogador após mover inimigos
 	check_enemy_collision(g);
 
-	/* Debug: print nearest enemy distance once per second */
+	// Debug: print nearest enemy distance once per second
 	if (time(NULL) - last_debug >= 1)
 	{
 		printf("[DEBUG] nearest enemy dist = %.2f\n", nearest);
@@ -271,10 +279,10 @@ static void	draw_centered_text(t_game *g, char *text, int y, int color)
 {
 	int		text_len;
 	int		x;
-	
+
 	text_len = ft_strlen(text);
-	x = (WIN_W - (text_len * 10)) / 2;  // Aproximação (10 pixels por char)
-	
+	x = (WIN_W - (text_len * 10)) / 2;
+
 	mlx_string_put(g->mlx, g->win, x, y, color, text);
 }
 
@@ -289,7 +297,6 @@ void	draw_game_over(t_game *g)
 	if (!g->enemy_sys.game_over)
 		return;
 
-	// Preenche tela de preto
 	y = 0;
 	while (y < WIN_H)
 	{
@@ -302,10 +309,7 @@ void	draw_game_over(t_game *g)
 		y++;
 	}
 
-	// Desenha na imagem primeiro
 	mlx_put_image_to_window(g->mlx, g->win, g->screen.img, 0, 0);
-
-	// Depois desenha o texto por cima (usando mlx_string_put)
 	draw_centered_text(g, "GAME OVER", WIN_H / 2 - 50, 0xFF0000);
 	draw_centered_text(g, "Press ESC to exit", WIN_H / 2 + 20, 0xFFFFFF);
 }
@@ -322,7 +326,6 @@ void	draw_enemy_counter(t_game *g)
 	if (g->enemy_sys.game_over)
 		return;
 
-	// Conta inimigos ativos
 	active_count = 0;
 	i = 0;
 	while (i < g->enemy_sys.enemy_count)

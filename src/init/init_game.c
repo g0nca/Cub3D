@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:48 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/18 15:01:19 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:28:33 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ void init_weapon_assets(t_game *game)
 
     while (i < WEAPON_FRAMES)
     {
-        game->weapon.textures[i].img = mlx_xpm_file_to_image(game->mlx, paths[i], 
-                                                &game->weapon.textures[i].width, 
+        game->weapon.textures[i].img = mlx_xpm_file_to_image(game->mlx, paths[i],
+                                                &game->weapon.textures[i].width,
                                                 &game->weapon.textures[i].height);
         if (!game->weapon.textures[i].img)
         {
             // Tratar erro (falha ao carregar XPM)
             printf("Erro a carregar frame %d da arma\n", i);
-            exit(1); 
+            exit(1);
         }
         // Opcional: obter o addr para gestão manual de pixels e transparência (se necessário)
-        game->weapon.textures[i].addr = mlx_get_data_addr(game->weapon.textures[i].img, 
-                                            &game->weapon.textures[i].bpp, 
-                                            &game->weapon.textures[i].line_len, 
+        game->weapon.textures[i].addr = mlx_get_data_addr(game->weapon.textures[i].img,
+                                            &game->weapon.textures[i].bpp,
+                                            &game->weapon.textures[i].line_len,
                                             &game->weapon.textures[i].endian);
         i++;
     }
@@ -67,7 +67,7 @@ void    init_game(t_game *game)
     game->player.x = 0.0;
     game->player.y = 0.0;
     game->player.angle = 0.0;
-    game->player.move_speed = 0.04;
+    game->player.move_speed = 0.01;
     game->player.rot_speed = 0.01;
 
     // Inicializa array de teclas
