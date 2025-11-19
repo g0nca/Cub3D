@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 12:00:15 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 15:36:31 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ int main(int ac, char **av)
     draw_enemy_counter(&game);
     mlx_hook(game.win, 2, 1L<<0, key_press, &game);      // Key press
     mlx_hook(game.win, 3, 1L<<1, key_release, &game);    // Key release
-    mlx_hook(game.win, 17, 0, close_window, &game);      // Window close
-    mlx_hook(game.win, 6, 1L<<6, mouse_move, &game);     // Mouse move
+    mlx_hook(game.win, 17, 0, close_window, &game);
+	if (game.win_game != game.enemy_sys.enemy_count)
+        mlx_hook(game.win, 6, 1L<<6, mouse_move, &game);     // Mouse move
     //hide_mouse_cursor(&game);
     mlx_mouse_move(game.mlx, game.win, WIN_W / 2, WIN_H / 2);
     mlx_loop_hook(game.mlx, handle_keys, &game);         // Loop contínuo

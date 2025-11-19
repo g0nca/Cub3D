@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 15:00:00 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/18 15:31:34 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 15:38:19 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int	mouse_move(int x, int y, t_game *g)
 	// Se game over, não processa movimento
 	if (g->enemy_sys.game_over)
 		return (0);
-
+	if (g->win_game == g->enemy_sys.enemy_count)
+		return (0);
 	// Calcula diferença em relação ao centro da janela
 	dx = x - (WIN_W / 2);
 

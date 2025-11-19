@@ -338,5 +338,6 @@ void	free_weapon_texture_system(t_game *g);
 void				free_enemy_system(t_game *g);
 void check_enemy_hit(t_game *g);
 int compare_sprites_nearest_first(const void *a, const void *b);
+void	draw_game_win(t_game *g);
 
 #endif

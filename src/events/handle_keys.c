@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 15:22:51 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 15:35:05 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,7 @@ int handle_keys(t_game *g)
 
     handle_render(g);
 	if (g->win_game == g->enemy_sys.enemy_count)
-	{	
-		printf("Win !!! \n");
-		close_window(g);
-	}
+		draw_game_win(g);
     return (0);
 }
 
