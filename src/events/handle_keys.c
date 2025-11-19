@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 11:50:38 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:22:42 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,11 @@ int	handle_keys(t_game *g)
 	//if (movement_moved)
 	update_enemies(g);
 	handle_render(g);
+	if (g->enemy_sys.enemy_count == 0)
+	{
+		print_error_and_exit_FREE("Win !!! \n", 0, g->cub.map);
+		close_window(g);
+	}
 	return (0);
 }
 

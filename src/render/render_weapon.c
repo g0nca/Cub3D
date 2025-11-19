@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:01:46 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 11:48:42 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:27:17 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,17 @@ static void scale_and_copy_img_to_buffer(t_img *dest, t_img *src, int x_offset, 
 
 void render_weapon(t_game *game)
 {
-    t_img *texture_to_draw = &game->weapon.textures[game->weapon.current_frame];
-    
-    // Define o novo tamanho desejado: ex: 50% da largura da janela, ajuste a altura proporcionalmente
-    // Ou usa um fator fixo como 2x o tamanho original
-    int scaled_width = (int)(WIN_W * 0.4); // Exemplo: 40% da largura do ecra
-    int scaled_height = (int)(texture_to_draw->height * ((double)scaled_width / texture_to_draw->width));
+    t_img *texture_to_draw;
+    int scaled_width;
+    int scaled_height;
+    int x_pos;
+    int y_pos;
 
-    // Calcula a posição de desenho (centrado horizontalmente, no fundo verticalmente)
-    int x_pos = WIN_W / 2 - scaled_width / 2;
-    int y_pos = WIN_H - scaled_height + 20; // +20 para descer um pouco mais se quiseres
-    
-    // Chama a nova função com os parâmetros de escala
+    texture_to_draw = &game->weapon.textures[game->weapon.current_frame];    
+    scaled_width = (int)(WIN_W * 0.4);
+    scaled_height = (int)(texture_to_draw->height * ((double)scaled_width / texture_to_draw->width));
+    x_pos = WIN_W / 2 - scaled_width / 2;
+    y_pos = WIN_H - scaled_height + 20;
     scale_and_copy_img_to_buffer(&game->screen, texture_to_draw, x_pos, y_pos, scaled_width, scaled_height);
 }
 
@@ -71,12 +70,10 @@ void render_weapon(t_game *game)
 
 void handle_shoot(t_game *game)
 {
-    // Apenas permite disparar se a arma não estiver já a animar
     if (game->weapon.is_firing)
         return;
-
     game->weapon.is_firing = 1;
-    game->weapon.current_frame = 1; // Começa na primeira frame de disparo (não a idle)
+    game->weapon.current_frame = 1;
     game->weapon.last_frame_time = get_current_time_ms();
 
     check_enemy_hit(game); 

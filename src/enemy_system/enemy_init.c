@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:28:44 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/19 11:44:26 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 13:30:52 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	init_enemy_system(t_game *g)
 		g->enemy_sys.enemies[i].active = 0;
 		g->enemy_sys.enemies[i].x = 0.0;
 		g->enemy_sys.enemies[i].y = 0.0;
-		g->enemy_sys.enemies[i].asset_id = 0;
+		g->enemy_sys.enemies[i].asset_id = -1;
 		i++;
 	}
 	g->enemy_sys.enemy_count = 0;
