@@ -333,5 +333,6 @@ void update_weapon_animation(t_game *game);
 long get_current_time_ms();
 void render_weapon(t_game *game);
 void handle_shoot(t_game *game);
-
+void check_enemy_hit(t_game *g);
+int compare_sprites_nearest_first(const void *a, const void *b);
 #endif
