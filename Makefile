@@ -30,6 +30,7 @@ SRC = main.c \
         utils/file_utils.c \
         utils/errors.c \
         utils/free_all.c \
+		utils/free_images.c \
         utils/pixel_utils.c \
         utils/color_utils.c \
         events/handle_keys.c \

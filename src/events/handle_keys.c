@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/18 15:35:54 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:02:17 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,10 @@ int	key_press(int key, t_game *g)
 {
 	if (key == KEY_ESC)
 		close_window(g);
-	// Teclas normais (W, A, S, D)
 	if (key >= 0 && key < 256)
 		g->keys[key] = 1;
 	if (key == 49 || key == 32)
-	{
 		handle_shoot(g);
-	}
-	// Setas (teclas especiais)
 	if (key == KEY_LEFT)
 		g->key_left = 1;
 	if (key == KEY_RIGHT)
@@ -94,32 +90,29 @@ static int	handle_rotation(t_game *g)
 
 static void	handle_render(t_game *g)
 {
-	// Se game over, mostra tela preta
-
-	
-	if (g->enemy_sys.game_over)  // <-- ADICIONAR ESTE BLOCO
+	if (g->enemy_sys.game_over)
 	{
 		draw_game_over(g);
 		return;
 	}
-
 	update_weapon_animation(g);
-	// Renderização normal
 	render_3d_view(g);
-	render_enemies(g);  // <-- ADICIONAR: Renderiza inimigos após paredes
+	render_enemies(g);
 	render_weapon(g);
 	draw_minimap(g);
 	draw_player(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->screen.img, 0, 0);
-	draw_enemy_counter(g);  // <-- ADICIONAR: Mostra contador de inimigos
+	draw_enemy_counter(g);
 }
 
 // Esta função é chamada continuamente pelo mlx_loop
 int	handle_keys(t_game *g)
 {
-	int movement_moved = 0;
-	int rotation_moved = 0;
+	int movement_moved;
+	int rotation_moved;
 
+	movement_moved = 0;
+	rotation_moved = 0;
 	movement_moved = handle_movement(g);
 	rotation_moved = handle_rotation(g);
 
@@ -131,8 +124,8 @@ int	handle_keys(t_game *g)
 
 int	close_window(t_game *g)
 {
-	//show_mouse_cursor(g);
 	free_enemy_system(g);
+	free_weapon_system(g);
 	free_images(g);
 	if (g->screen.img)
 		mlx_destroy_image(g->mlx, g->screen.img);

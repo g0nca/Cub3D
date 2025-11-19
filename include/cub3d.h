@@ -287,6 +287,10 @@ void				colors_check(char **colors, t_map *map, int floor_or_ceiling,
 /* ------------------------- File Utilities (utils/) ------------------------ */
 int					ft_strcmp(const char *s1, const char *s2);
 
+/* ------------------------- Free Images (utils/) ------------------------ */
+void				free_enemy_system(t_game *g);
+void				free_weapon_system(t_game *g);
+
 /* ------------------------ Input Validation (parse/) ----------------------- */
 void				parsing_input(int ac, char **av);
 
@@ -316,7 +320,6 @@ int					is_transparent(int color);
 void				check_enemy_collision(t_game *g);
 void				draw_game_over(t_game *g);
 void				draw_enemy_counter(t_game *g);
-void				free_enemy_system(t_game *g);
 int					count_floor_tiles(t_game *g);
 int					get_enemy_count_by_tiles(int tile_count);
 
