@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_collision.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:31:43 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/19 15:33:15 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/20 10:37:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,7 +295,6 @@ void	draw_game_over(t_game *g)
 
 	if (!g->enemy_sys.game_over)
 		return;
-
 	y = 0;
 	while (y < WIN_H)
 	{
@@ -307,7 +306,6 @@ void	draw_game_over(t_game *g)
 		}
 		y++;
 	}
-
 	mlx_put_image_to_window(g->mlx, g->win, g->screen.img, 0, 0);
 	draw_centered_text(g, "GAME OVER", WIN_H / 2 - 50, 0xFF0000);
 	draw_centered_text(g, "Press ESC to exit", WIN_H / 2 + 20, 0xFFFFFF);
@@ -329,7 +327,6 @@ void	draw_game_win(t_game *g)
 		}
 		y++;
 	}
-
 	mlx_put_image_to_window(g->mlx, g->win, g->screen.img, 0, 0);
 	draw_centered_text(g, "Winner !!!!", WIN_H / 2 - 50, 0x00FF00);
 	draw_centered_text(g, "Press ESC to exit", WIN_H / 2 + 20, 0xFFFFFF);

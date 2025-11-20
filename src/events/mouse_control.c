@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_control.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 15:00:00 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 15:38:19 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/20 13:03:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,43 +22,25 @@ int	mouse_move(int x, int y, t_game *g)
 	double	rotation;
 
 	(void)y;
-
-	// Se game over, não processa movimento
 	if (g->enemy_sys.game_over)
 		return (0);
 	if (g->win_game == g->enemy_sys.enemy_count)
 		return (0);
-	// Calcula diferença em relação ao centro da janela
 	dx = x - (WIN_W / 2);
-
-	// Se o mouse estiver muito próximo do centro, não faz nada
 	if (dx > -5 && dx < 5)
 		return (0);
-
-	// Calcula rotação baseada no movimento horizontal
 	rotation = dx * MOUSE_SENS;
-
-	// Aplica rotação ao jogador
 	g->player.angle += rotation;
-
-	// Normaliza ângulo entre 0 e 2*PI
 	if (g->player.angle < 0)
 		g->player.angle += 2 * M_PI;
 	if (g->player.angle >= 2 * M_PI)
 		g->player.angle -= 2 * M_PI;
-
-	// Recentra o cursor no meio da janela
 	mlx_mouse_move(g->mlx, g->win, WIN_W / 2, WIN_H / 2);
-
-	// Re-renderiza a cena (SEM atualizar inimigos - apenas rotação da câmera)
-	// REMOVIDO: update_enemies(g);  <- Isso fazia os inimigos se moverem ao rotacionar
-
 	if (g->enemy_sys.game_over)
 	{
 		draw_game_over(g);
 		return (0);
 	}
-
 	render_3d_view(g);
 	render_weapon(g);
 	render_enemies(g);
@@ -66,7 +48,6 @@ int	mouse_move(int x, int y, t_game *g)
 	draw_player(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->screen.img, 0, 0);
 	draw_enemy_counter(g);
-
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_keys.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 15:35:05 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/20 10:29:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,17 +114,15 @@ static void	handle_render(t_game *g)
  */	
 int handle_keys(t_game *g)
 {
-    int movement_moved;
-    int rotation_moved;
+    //int movement_moved;
+    //int rotation_moved;
 
-	movement_moved = 0;
-    rotation_moved = 0;
-    movement_moved = handle_movement(g);
-    rotation_moved = handle_rotation(g);
-
+    //movement_moved = handle_movement(g);
+    //rotation_moved = handle_rotation(g);
+	handle_movement(g);
+	handle_rotation(g);
 	//if (movement_moved)
-    update_enemies(g);
-
+    	update_enemies(g);
     handle_render(g);
 	if (g->win_game == g->enemy_sys.enemy_count)
 		draw_game_win(g);

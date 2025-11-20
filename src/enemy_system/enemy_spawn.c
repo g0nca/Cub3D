@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_spawn.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:29:42 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/19 14:43:34 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/20 13:02:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,37 +162,26 @@ void	spawn_enemies(t_game *g)
 	int	tile_count;
 	int	target_enemies;
 	int	spawned;
-	int	i;
 	int attempts;
 
 	tile_count = count_floor_tiles(g);
-	printf("Floor tiles found: %d\n", tile_count);
-
 	target_enemies = get_enemy_count_by_tiles(tile_count);
-	printf("Target enemies to spawn: %d\n", target_enemies);
-
 	if (target_enemies == 0)
 	{
-		printf("Map too small for enemies\n");
-		return;
+		close_window(g);
+		print_error_and_exit_FREE("No enemies to spawn", 1, g->cub.map);
 	}
 	attempts = 0;
 	spawned = 0;
-	i = 0;
 	while (spawned < target_enemies && spawned < MAX_ENEMIES && attempts < 1000)
 		{
 			if (spawn_single_enemy(g, spawned))
 			{
-				printf("Enemy %d spawned successfully\n", spawned);
 				spawned++;
 				attempts = 0;
 			}
 			else
-			{
 				attempts++;
-				printf("Tentativa falhada, tentando novamente...\n");
-			}
 		}
 		g->enemy_sys.enemy_count = spawned;
-		printf("Total de inimigos spawnados: %d\n", spawned);
 }

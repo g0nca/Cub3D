@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_map_struct.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 09:45:04 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 09:56:03 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/20 10:27:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ static void		set_rgb_color(t_map *map)
 t_map	*init_map_struct(void)
 {
 	t_map	*map;
-	int		i;
 
-	i = 0;
 	map = malloc(sizeof(t_map));
 	if (!map)
 		return (NULL);

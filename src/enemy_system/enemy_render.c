@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_render.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:30:43 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/19 14:32:23 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/20 12:58:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,15 +127,11 @@ static void	render_sprite(t_game *g, t_enemy *enemy)
 				tex_y = 0;
 			if (tex_y >= current_texture->height)
 				tex_y = current_texture->height - 1;
-
 			int color = *(int *)(current_texture->addr +
 				(tex_y * current_texture->line_len +
 				tex_x * (current_texture->bpp / 8)));
-
-			// Verifica se o pixel não é transparente antes de desenhar
 			if (!is_transparent(color))
 				put_pixel_to_img(&g->screen, stripe, y, color);
-
 			y++;
 		}
 		stripe++;
@@ -152,9 +148,8 @@ void	render_enemies(t_game *g)
 	int				sprite_count;
 
 	if (g->enemy_sys.game_over)
-		return;
+		return ;
 
-	// Prepara dados dos sprites
 	sprite_count = 0;
 	i = 0;
 	while (i < g->enemy_sys.enemy_count)
@@ -172,8 +167,6 @@ void	render_enemies(t_game *g)
 		}
 		i++;
 	}
-
-	// Ordena sprites por distância (mais longe primeiro)
 	if (sprite_count > 0)
 		qsort(sprites, sprite_count, sizeof(t_sprite_data), compare_sprites);
 	i = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:28:44 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/19 15:10:22 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/20 10:34:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,6 @@ void	init_enemy_system(t_game *g)
 	int	j;
 
 	srand(time(NULL));
-
-	// Zera todos os inimigos
 	i = 0;
 	while (i < MAX_ENEMIES)
 	{
@@ -126,7 +124,6 @@ void	init_enemy_system(t_game *g)
 		g->enemy_sys.enemies[i].enemy_type = 0;
 		g->enemy_sys.enemies[i].current_frame = 0;
 		g->enemy_sys.enemies[i].last_frame_time = 0;
-		// Inicializa array de frames
 		j = 0;
 		while (j < FRAMES_PER_ENEMY)
 		{
@@ -138,10 +135,6 @@ void	init_enemy_system(t_game *g)
 	}
 	g->enemy_sys.enemy_count = 0;
 	g->enemy_sys.game_over = 0;
-
-	// Carrega texturas
 	load_enemy_textures(g);
-
-	// Spawn dos inimigos
 	spawn_enemies(g);
 }
