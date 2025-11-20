@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:31:43 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/20 10:37:01 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/20 17:12:40 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,6 @@ void	check_enemy_collision(t_game *g)
 
 	if (g->enemy_sys.game_over)
 		return;
-
 	i = 0;
 	while (i < g->enemy_sys.enemy_count)
 	{
@@ -166,7 +165,7 @@ void	check_enemy_collision(t_game *g)
 					printf("GAME OVER! Player touched enemy at (%.2f, %.2f)\n",
 						g->enemy_sys.enemies[i].x, g->enemy_sys.enemies[i].y);
 					g->enemy_sys.game_over = 1;
-					return;
+					return ;
 				}
 			}
 		}
@@ -179,15 +178,13 @@ void	check_enemy_collision(t_game *g)
  */
 static void update_enemy_animation(t_enemy *enemy)
 {
-	long current_time = get_current_time_ms();
+	long current_time;
 
-	// Muda de frame a cada ENEMY_ANIM_SPEED ms
+	current_time = get_current_time_ms();
 	if (current_time - enemy->last_frame_time >= ENEMY_ANIM_SPEED)
 	{
 		enemy->last_frame_time = current_time;
 		enemy->current_frame++;
-
-		// Loop da animação
 		if (enemy->current_frame >= FRAMES_PER_ENEMY)
 			enemy->current_frame = 0;
 	}
@@ -217,27 +214,18 @@ void	update_enemies(t_game *g)
 	{
 		if (g->enemy_sys.enemies[i].active)
 		{
-			// ATUALIZA ANIMAÇÃO (sempre, independente do movimento)
 			update_enemy_animation(&g->enemy_sys.enemies[i]);
-
-			// Vetor do inimigo até o jogador
 			dx = g->player.x - g->enemy_sys.enemies[i].x;
 			dy = g->player.y - g->enemy_sys.enemies[i].y;
 			dist = sqrt(dx * dx + dy * dy);
-
 			if (dist > 0.0001)
 			{
-				// Normaliza direção
 				nx = dx / dist;
 				ny = dy / dist;
-
-				// Movimento proposto
 				step_x = nx * ENEMY_SPEED;
 				step_y = ny * ENEMY_SPEED;
-
 				double try_x = g->enemy_sys.enemies[i].x + step_x;
 				double try_y = g->enemy_sys.enemies[i].y + step_y;
-
 				if (is_walkable_at(g, try_x, try_y))
 				{
 					g->enemy_sys.enemies[i].x = try_x;
@@ -245,25 +233,18 @@ void	update_enemies(t_game *g)
 				}
 				else
 				{
-					// Tenta eixo X
 					if (is_walkable_at(g, g->enemy_sys.enemies[i].x + step_x, g->enemy_sys.enemies[i].y))
 						g->enemy_sys.enemies[i].x += step_x;
-					// Tenta eixo Y
 					if (is_walkable_at(g, g->enemy_sys.enemies[i].x, g->enemy_sys.enemies[i].y + step_y))
 						g->enemy_sys.enemies[i].y += step_y;
 				}
 			}
-
 			if (g->enemy_sys.enemies[i].active && dist < nearest)
 				nearest = dist;
 		}
 		i++;
 	}
-
-	// Verifica colisões com o jogador após mover inimigos
 	check_enemy_collision(g);
-
-	// Debug: print nearest enemy distance once per second
 	if (time(NULL) - last_debug >= 1)
 	{
 		printf("[DEBUG] nearest enemy dist = %.2f\n", nearest);

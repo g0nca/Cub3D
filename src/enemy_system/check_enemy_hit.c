@@ -6,12 +6,15 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 10:40:59 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/20 17:09:48 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/20 17:18:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
+/*
+    Compare sprites by nearest distance first
+*/
 int compare_sprites_nearest_first(const void *a, const void *b)
 {
 	double distance_a;
@@ -26,7 +29,10 @@ int compare_sprites_nearest_first(const void *a, const void *b)
 	else
 		return (0);
 }
-
+/*
+    Prepare sprite data for hit detection
+    Calculate distance from player to each enemy
+*/
 static void prepare_sprite_data(t_game *g, t_sprite_data *sprites,
 	int *sprite_count)
 {
@@ -50,7 +56,10 @@ static void prepare_sprite_data(t_game *g, t_sprite_data *sprites,
 		i++;
 	}
 }
-
+/*
+    Calculate transformed camera coordinates for a sprite
+    relative to the player's position and viewing direction
+*/
 static void calculate_transform(t_game *g, double sprite_x, double sprite_y,
 	double *transform_x, double *transform_y)
 {
@@ -68,7 +77,10 @@ static void calculate_transform(t_game *g, double sprite_x, double sprite_y,
 	*transform_x = inv_det * (dir_y * sprite_x - dir_x * sprite_y);
 	*transform_y = inv_det * (-plane_y * sprite_x + plane_x * sprite_y);
 }
-
+/*
+    Check if the center x coordinate of the screen
+    intersects with the sprite's projected x range
+*/
 static int check_hit_collision(int center_x, double transform_y,
 	double transform_x)
 {
@@ -85,7 +97,11 @@ static int check_hit_collision(int center_x, double transform_y,
 		return (1);
 	return (0);
 }
-
+/*
+    Process a single sprite for hit detection
+    Returns 1 if hit, 0 otherwise
+    If enemy is hit, deactivates it and increments win_game counter
+*/
 static int process_single_sprite(t_game *g, t_sprite_data *sprite,
 	double shot_range, int center_x)
 {
@@ -112,7 +128,11 @@ static int process_single_sprite(t_game *g, t_sprite_data *sprite,
 	}
 	return (0);
 }
-
+/*
+    Iterates over all active enemies and
+    Check if an enemy is hit by the player's shot
+    Uses z-buffer to determine shot range
+*/
 void check_enemy_hit(t_game *g)
 {
 	t_sprite_data sprites[MAX_ENEMIES];
