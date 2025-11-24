@@ -247,6 +247,13 @@ typedef struct s_scale_ctx
 	int		h;
 }	t_scale_ctx;
 
+typedef struct s_pos
+{
+	double	x;
+	double	y;
+}	t_pos;
+
+
 typedef struct s_game
 {
 	void			*mlx;

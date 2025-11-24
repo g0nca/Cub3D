@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:26:05 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 11:48:55 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:16:40 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	is_transparent(int color)
 	return (0);
 }
 
-static void	draw_vertical_stripe(t_game *g, t_img *tex, t_draw_vars *v, int stripe)
+static void	draw_vertical_stripe(t_game *g, t_img *tex,
+	t_draw_vars *v, int stripe)
 {
 	int	tex_x;
 	int	y;
@@ -28,8 +29,8 @@ static void	draw_vertical_stripe(t_game *g, t_img *tex, t_draw_vars *v, int stri
 	int	tex_y;
 	int	color;
 
-	tex_x = (int)((stripe - (-v->sprite_w / 2 + v->sprite_screen_x)) * \
-		tex->width / v->sprite_w);
+	tex_x = (int)((stripe - (-v->sprite_w / 2 + v->sprite_screen_x))
+			* tex->width / v->sprite_w);
 	if (tex_x < 0 || tex_x >= tex->width)
 		return ;
 	y = v->draw_start_y;
@@ -41,7 +42,8 @@ static void	draw_vertical_stripe(t_game *g, t_img *tex, t_draw_vars *v, int stri
 			tex_y = 0;
 		else if (tex_y >= tex->height)
 			tex_y = tex->height - 1;
-		color = *(int *)(tex->addr + (tex_y * tex->line_len + tex_x * (tex->bpp / 8)));
+		color = *(int *)(tex->addr + (tex_y * tex->line_len
+					+ tex_x * (tex->bpp / 8)));
 		if (!is_transparent(color))
 			put_pixel_to_img(&g->screen, stripe, y, color);
 		y++;
@@ -71,7 +73,6 @@ static void	calc_transform(t_game *g, t_enemy *enemy, t_draw_vars *v)
 	double	sprite_x;
 	double	sprite_y;
 	double	inv_det;
-	double	transform_x;
 	double	dir_x;
 	double	dir_y;
 
@@ -80,10 +81,11 @@ static void	calc_transform(t_game *g, t_enemy *enemy, t_draw_vars *v)
 	dir_x = cos(g->player.angle);
 	dir_y = sin(g->player.angle);
 	inv_det = 1.0 / ((-dir_y * 0.66) * dir_y - dir_x * (dir_x * 0.66));
-	transform_x = inv_det * (dir_y * sprite_x - dir_x * sprite_y);
-	v->transform_y = inv_det * (-(dir_x * 0.66) * sprite_x + \
-		(-dir_y * 0.66) * sprite_y);
-	v->sprite_screen_x = (int)((WIN_W / 2) * (1 + transform_x / v->transform_y));
+	v->transform_y = inv_det * (-(dir_x * 0.66) * sprite_x
+			+ (-dir_y * 0.66) * sprite_y);
+	v->sprite_screen_x = (int)((WIN_W / 2) * (1 + (inv_det
+					* (dir_y * sprite_x - dir_x * sprite_y))
+				/ v->transform_y));
 }
 
 void	render_sprite_projection(t_game *g, t_enemy *enemy, t_img *tex)

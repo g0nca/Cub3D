@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:28:44 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/24 10:31:46 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:51:00 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ int	count_floor_tiles(t_game *g)
 	}
 	return (count);
 }
+
 /*
     Compare sprites by nearest distance first
 */
-int compare_sprites_nearest_first(const void *a, const void *b)
+int	compare_sprites_nearest_first(const void *a, const void *b)
 {
-	double distance_a;
-	double distance_b;
+	double	distance_a;
+	double	distance_b;
 
 	distance_a = ((t_sprite_data *)a)->distance;
 	distance_b = ((t_sprite_data *)b)->distance;
@@ -75,15 +76,16 @@ int	get_enemy_count_by_tiles(int tile_count)
 		return (1 + tile_count / 20);
 }
 
-static void		init_enemy_system_var(t_game *g, int i)
+static void	init_enemy_system_var(t_game *g, int i)
 {
-		g->enemy_sys.enemies[i].active = 0;
-		g->enemy_sys.enemies[i].x = 0.0;
-		g->enemy_sys.enemies[i].y = 0.0;
-		g->enemy_sys.enemies[i].enemy_type = 0;
-		g->enemy_sys.enemies[i].current_frame = 0;
-		g->enemy_sys.enemies[i].last_frame_time = 0;
+	g->enemy_sys.enemies[i].active = 0;
+	g->enemy_sys.enemies[i].x = 0.0;
+	g->enemy_sys.enemies[i].y = 0.0;
+	g->enemy_sys.enemies[i].enemy_type = 0;
+	g->enemy_sys.enemies[i].current_frame = 0;
+	g->enemy_sys.enemies[i].last_frame_time = 0;
 }
+
 /**
  * Inicializa o sistema de inimigos
  */

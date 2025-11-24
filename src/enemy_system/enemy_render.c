@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:39:39 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 11:39:58 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:12:04 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ static int	fill_sprite_array(t_game *g, t_sprite_data *sprites)
 			sprites[count].index = i;
 			sprites[count].x = g->enemy_sys.enemies[i].x;
 			sprites[count].y = g->enemy_sys.enemies[i].y;
-			sprites[count].distance = sqrt(pow(g->player.x - sprites[count].x, 2)
+			sprites[count].distance = sqrt(
+					pow(g->player.x - sprites[count].x, 2)
 					+ pow(g->player.y - sprites[count].y, 2));
 			count++;
 		}

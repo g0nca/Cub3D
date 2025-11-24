@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:40:08 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 11:48:32 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:11:25 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,46 +63,52 @@ static int	perform_dda(t_game *g, t_ray_vars *r, double dist_target)
 	}
 }
 
-int	is_line_of_sight_clear(t_game *g, double x0, double y0, double x1, double y1)
+/* Agora recebe arrays para reduzir argumentos:
+   start[0] = x0, start[1] = y0
+   end[0] = x1, end[1] = y1
+*/
+int	is_line_of_sight_clear(t_game *g, double *start, double *end)
 {
 	t_ray_vars	r;
 	double		dist;
 
-	r.dx = x1 - x0;
-	r.dy = y1 - y0;
+	r.dx = end[0] - start[0];
+	r.dy = end[1] - start[1];
 	dist = sqrt(r.dx * r.dx + r.dy * r.dy);
 	if (dist <= 0.0)
 		return (1);
-	r.map_x = (int)floor(x0);
-	r.map_y = (int)floor(y0);
-	r.delta_dist_x = (r.dx == 0) ? 1e30 : fabs(1.0 / (r.dx / dist));
-	r.delta_dist_y = (r.dy == 0) ? 1e30 : fabs(1.0 / (r.dy / dist));
-	init_ray_steps(&r, x0, y0);
+	r.map_x = (int)floor(start[0]);
+	r.map_y = (int)floor(start[1]);
+	if (r.dx == 0)
+		r.delta_dist_x = 1e30;
+	else
+		r.delta_dist_x = fabs(1.0 / (r.dx / dist));
+	if (r.dy == 0)
+		r.delta_dist_y = 1e30;
+	else
+		r.delta_dist_y = fabs(1.0 / (r.dy / dist));
+	init_ray_steps(&r, start[0], start[1]);
 	return (perform_dda(g, &r, dist));
 }
 
-static int	check_wall_col(t_game *g, double fx, double fy, int tx, int ty)
+static int	check_wall_col(t_game *g, t_pos *p, int tx, int ty)
 {
-	double	closest_x;
-	double	closest_y;
-	double	dx;
-	double	dy;
+	double	c_x;
+	double	c_y;
 
 	if (g->map.grid[ty][tx] == '1')
 	{
-		closest_x = fx;
-		if (closest_x < (double)tx)
-			closest_x = (double)tx;
-		if (closest_x > (double)(tx + 1))
-			closest_x = (double)(tx + 1);
-		closest_y = fy;
-		if (closest_y < (double)ty)
-			closest_y = (double)ty;
-		if (closest_y > (double)(ty + 1))
-			closest_y = (double)(ty + 1);
-		dx = fx - closest_x;
-		dy = fy - closest_y;
-		if (sqrt(dx * dx + dy * dy) < ENEMY_SIZE)
+		c_x = p->x;
+		if (c_x < (double)tx)
+			c_x = (double)tx;
+		if (c_x > (double)(tx + 1))
+			c_x = (double)(tx + 1);
+		c_y = p->y;
+		if (c_y < (double)ty)
+			c_y = (double)ty;
+		if (c_y > (double)(ty + 1))
+			c_y = (double)(ty + 1);
+		if (sqrt(pow(p->x - c_x, 2) + pow(p->y - c_y, 2)) < ENEMY_SIZE)
 			return (1);
 	}
 	return (0);
@@ -110,24 +116,25 @@ static int	check_wall_col(t_game *g, double fx, double fy, int tx, int ty)
 
 int	is_walkable_at(t_game *g, double fx, double fy)
 {
-	int	tx;
-	int	ty;
-	int	y_limit;
-	int	x_limit;
+	t_pos	p;
+	int		tx;
+	int		ty;
+	int		limits[2];
 
-	y_limit = (int)floor(fy + ENEMY_SIZE);
-	x_limit = (int)floor(fx + ENEMY_SIZE);
+	p.x = fx;
+	p.y = fy;
+	limits[1] = (int)floor(fy + ENEMY_SIZE);
+	limits[0] = (int)floor(fx + ENEMY_SIZE);
 	ty = (int)floor(fy - ENEMY_SIZE);
-	while (ty <= y_limit)
+	while (ty <= limits[1])
 	{
 		if (ty < 0 || !g->map.grid[ty])
 			return (0);
 		tx = (int)floor(fx - ENEMY_SIZE);
-		while (tx <= x_limit)
+		while (tx <= limits[0])
 		{
-			if (tx < 0 || tx >= (int)ft_strlen(g->map.grid[ty]))
-				return (0);
-			if (check_wall_col(g, fx, fy, tx, ty))
+			if ((tx < 0 || tx >= (int)ft_strlen(g->map.grid[ty]))
+				|| check_wall_col(g, &p, tx, ty))
 				return (0);
 			tx++;
 		}

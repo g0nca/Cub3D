@@ -6,43 +6,13 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:40:47 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 11:40:52 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:30:28 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-/* Protótipos necessários de outros ficheiros */
-int	is_line_of_sight_clear(t_game *g, double x0, double y0, double x1, double y1);
 int	is_walkable_at(t_game *g, double fx, double fy);
-
-void	check_enemy_collision(t_game *g)
-{
-	int		i;
-	double	dist;
-
-	if (g->enemy_sys.game_over)
-		return ;
-	i = -1;
-	while (++i < g->enemy_sys.enemy_count)
-	{
-		if (g->enemy_sys.enemies[i].active)
-		{
-			dist = sqrt(pow(g->player.x - g->enemy_sys.enemies[i].x, 2) + \
-					pow(g->player.y - g->enemy_sys.enemies[i].y, 2));
-			if (dist < COLLISION_DISTANCE)
-			{
-				if (is_line_of_sight_clear(g, g->enemy_sys.enemies[i].x, \
-					g->enemy_sys.enemies[i].y, g->player.x, g->player.y))
-				{
-					printf("GAME OVER!\n");
-					g->enemy_sys.game_over = 1;
-					return ;
-				}
-			}
-		}
-	}
-}
 
 static void	update_enemy_animation(t_enemy *enemy)
 {
@@ -58,7 +28,8 @@ static void	update_enemy_animation(t_enemy *enemy)
 	}
 }
 
-static void	apply_enemy_movement(t_game *g, t_enemy *e, double step_x, double step_y)
+static void	apply_enemy_movement(t_game *g, t_enemy *e,
+	double step_x, double step_y)
 {
 	double	try_x;
 	double	try_y;

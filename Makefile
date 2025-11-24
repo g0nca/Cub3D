@@ -49,6 +49,7 @@ SRC = main.c \
 		render/render_weapon.c \
 		enemy_system/check_enemy_hit.c \
 		enemy_system/enemy_load_textures.c \
+		enemy_system/check_enemy_coallision.c \
 		enemy_system/enemy_validate_spawn.c \
 		enemy_system/enemy_gui.c \
 		enemy_system/enemy_render.utils.c \

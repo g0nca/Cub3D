@@ -6,20 +6,22 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:28:37 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 11:18:54 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:22:01 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-static void		load_enemy_texture_info(t_game *g, char path[256], int frame, int enemy_type)
+static void	load_enemy_texture_info(t_game *g, char path[256],
+	int frame, int enemy_type)
 {
 	g->enemy_sys.enemy_textures[enemy_type][frame].img = mlx_xpm_file_to_image(
-		g->mlx, path,
-		&g->enemy_sys.enemy_textures[enemy_type][frame].width,
-		&g->enemy_sys.enemy_textures[enemy_type][frame].height);
+			g->mlx, path,
+			&g->enemy_sys.enemy_textures[enemy_type][frame].width,
+			&g->enemy_sys.enemy_textures[enemy_type][frame].height);
 }
-static void		load_enemy_texture_info2(t_game *g, int frame, int enemy_type)
+
+static void	load_enemy_texture_info2(t_game *g, int frame, int enemy_type)
 {
 	g->enemy_sys.enemy_textures[enemy_type][frame].addr = NULL;
 	g->enemy_sys.enemy_textures[enemy_type][frame].bpp = 0;
@@ -27,15 +29,16 @@ static void		load_enemy_texture_info2(t_game *g, int frame, int enemy_type)
 	g->enemy_sys.enemy_textures[enemy_type][frame].endian = 0;
 }
 
-static void		load_enemy_texture_info3(t_game *g, int frame, int enemy_type)
+static void	load_enemy_texture_info3(t_game *g, int frame, int enemy_type)
 {
 	g->enemy_sys.enemy_textures[enemy_type][frame].addr = mlx_get_data_addr(
-		g->enemy_sys.enemy_textures[enemy_type][frame].img,
-		&g->enemy_sys.enemy_textures[enemy_type][frame].bpp,
-		&g->enemy_sys.enemy_textures[enemy_type][frame].line_len,
-		&g->enemy_sys.enemy_textures[enemy_type][frame].endian);
+			g->enemy_sys.enemy_textures[enemy_type][frame].img,
+			&g->enemy_sys.enemy_textures[enemy_type][frame].bpp,
+			&g->enemy_sys.enemy_textures[enemy_type][frame].line_len,
+			&g->enemy_sys.enemy_textures[enemy_type][frame].endian);
 }
-static void		iterates_all_frames(t_game *g, int frame, int enemy_type)
+
+static void	iterates_all_frames(t_game *g, int frame, int enemy_type)
 {
 	int		loaded_count;
 	char	path[256];
@@ -56,6 +59,7 @@ static void		iterates_all_frames(t_game *g, int frame, int enemy_type)
 		frame++;
 	}
 }
+
 /**
  * Carrega todas as texturas dos inimigos (5 tipos x 8 frames cada)
  */

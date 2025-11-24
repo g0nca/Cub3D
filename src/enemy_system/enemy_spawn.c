@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:29:42 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/24 11:17:44 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:19:20 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,22 @@ static int	find_random_spawn_position(t_game *g, double *x, double *y)
 /**
  * Copia os frames do tipo de inimigo para o inimigo específico
  */
-static void copy_enemy_frames(t_game *g, int enemy_index, int enemy_type)
+static void	copy_enemy_frames(t_game *g, int enemy_index, int enemy_type)
 {
-	int frame;
+	int	frame;
 
 	frame = 0;
 	while (frame < FRAMES_PER_ENEMY)
 	{
-		g->enemy_sys.enemies[enemy_index].frames[frame] =
-			g->enemy_sys.enemy_textures[enemy_type][frame];
+		g->enemy_sys.enemies[enemy_index].frames[frame]
+			= g->enemy_sys.enemy_textures[enemy_type][frame];
 		frame++;
 	}
 }
 
-static int		trying_spawn_enemys(t_game *g, int enemy_type)
+static int	trying_spawn_enemys(t_game *g, int enemy_type)
 {
-	int attempts;
+	int	attempts;
 
 	attempts = 0;
 	while (attempts < ENEMY_TYPES)
@@ -70,11 +70,12 @@ static int		trying_spawn_enemys(t_game *g, int enemy_type)
 		enemy_type = (enemy_type + 1) % ENEMY_TYPES;
 		if (g->enemy_sys.enemy_textures[enemy_type][0].img &&
 				g->enemy_sys.enemy_textures[enemy_type][0].addr)
-			break;
+			break ;
 		attempts++;
 	}
 	return (attempts);
 }
+
 /**
  * Spawna um único inimigo
  */
@@ -111,7 +112,7 @@ void	spawn_enemies(t_game *g)
 	int	tile_count;
 	int	target_enemies;
 	int	spawned;
-	int attempts;
+	int	attempts;
 
 	tile_count = count_floor_tiles(g);
 	target_enemies = get_enemy_count_by_tiles(tile_count);
@@ -123,14 +124,14 @@ void	spawn_enemies(t_game *g)
 	attempts = 0;
 	spawned = 0;
 	while (spawned < target_enemies && spawned < MAX_ENEMIES && attempts < 1000)
+	{
+		if (spawn_single_enemy(g, spawned))
 		{
-			if (spawn_single_enemy(g, spawned))
-			{
-				spawned++;
-				attempts = 0;
-			}
-			else
-				attempts++;
+			spawned++;
+			attempts = 0;
 		}
-		g->enemy_sys.enemy_count = spawned;
+		else
+			attempts++;
+	}
+	g->enemy_sys.enemy_count = spawned;
 }

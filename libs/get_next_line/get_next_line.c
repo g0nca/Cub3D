@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 13:15:02 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/04 14:37:44 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:38:59 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*newline(char *str)
 char	*extract_line(char *str)
 {
 	int		i;
-	char		*line;
+	char	*line;
 
 	i = 0;
 	if (!str[i])
@@ -86,9 +86,7 @@ char	*read_file(int fd, char *str)
 			return (NULL);
 		}
 		buffer[read_bytes] = '\0';
-		str = ft_strjoinGNL(str, buffer);
-		//if (ft_strchr(str, '\n'))
-			//break;
+		str = ft_strjoingnl(str, buffer);
 	}
 	free(buffer);
 	return (str);
