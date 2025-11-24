@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 09:40:44 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 13:53:07 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:49:12 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	safe_exit_ctx(char *msg, t_parse_ctx *ctx)
 {
 	free_split_array(ctx->f_split);
 	free_split_array(ctx->c_split);
-	print_error_and_exit_FREE(msg, 1, ctx->map);
+	print_error_and_exit_free(msg, 1, ctx->map);
 }
 
 /* Salva o valor no mapa (RGB) */

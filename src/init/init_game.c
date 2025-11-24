@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:48 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 13:43:17 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:48:59 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ void	init_game(t_game *game)
 {
 	game->mlx = mlx_init();
 	if (!game->mlx)
-		print_error_and_exit_FREE("mlx_init failed", 1, NULL);
+		print_error_and_exit_free("mlx_init failed", 1, NULL);
 	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, "Cub3D");
 	if (!game->win)
-		print_error_and_exit_FREE("mlx_init failed", 1, NULL);
+		print_error_and_exit_free("mlx_init failed", 1, NULL);
 	game->screen.img = mlx_new_image(game->mlx, WIN_W, WIN_H);
 	if (!game->screen.img)
-		print_error_and_exit_FREE("mlx_init failed", 1, NULL);
+		print_error_and_exit_free("mlx_init failed", 1, NULL);
 	game->screen.addr = mlx_get_data_addr(game->screen.img,
 			&game->screen.bpp, &game->screen.line_len, &game->screen.endian);
 	init_images(game);

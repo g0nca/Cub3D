@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:29:42 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/24 13:59:43 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:48:42 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	spawn_enemies(t_game *g)
 	if (target_enemies == 0)
 	{
 		close_window(g);
-		print_error_and_exit_FREE("No enemies to spawn", 1, g->cub.map);
+		print_error_and_exit_free("No enemies to spawn", 1, g->cub.map);
 	}
 	attempts = 0;
 	spawned = 0;

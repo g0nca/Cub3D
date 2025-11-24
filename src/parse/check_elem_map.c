@@ -45,25 +45,25 @@ void	check_texture(t_map *map, char *line, int type)
 	if (ft_strlen(line) <= 0)
 	{
 		print_texture(type);
-		print_error_and_exit_FREE("Texture Not Found", 1, map);
+		print_error_and_exit_free("Texture Not Found", 1, map);
 	}
 	if (ft_strcmp(&line[ft_strlen(line) - 4], ".xpm") != 0)
-		print_error_and_exit_FREE("Invalid Extension \"Example.xpm\"", 1, map);
+		print_error_and_exit_free("Invalid Extension \"Example.xpm\"", 1, map);
 	if (stat(line, &info) == -1)
 	{
-		print_error_and_exit_FREE("Invalid Path", 1, map);
+		print_error_and_exit_free("Invalid Path", 1, map);
 		return ;
 	}
 	if (S_ISDIR(info.st_mode))
 	{
-		print_error_and_exit_FREE("Is a Directory", 1, map);
+		print_error_and_exit_free("Is a Directory", 1, map);
 	}
 	if (access(line, F_OK) == -1)
-		print_error_and_exit_FREE("Texture Not Found", 1, map);
+		print_error_and_exit_free("Texture Not Found", 1, map);
 	if (access(line, R_OK) == -1)
 	{
 		print_texture(type);
-		print_error_and_exit_FREE("Permission denied", 1, map);
+		print_error_and_exit_free("Permission denied", 1, map);
 	}
 }
 

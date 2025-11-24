@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:43:22 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 15:41:48 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:49:33 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	ft_line_count(char **av, t_map *map)
 	if (!line)
 	{
 		free(line);
-		print_error_and_exit_FREE("Empty File", 1, map);
+		print_error_and_exit_free("Empty File", 1, map);
 	}
 	free(line);
 	while (line != NULL)

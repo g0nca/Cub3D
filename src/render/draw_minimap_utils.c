@@ -6,19 +6,22 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:21:35 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 12:21:54 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 16:04:30 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
-
-int	is_inside_circle(int x, int y, int cx, int cy, int radius)
+/*
+** Recebe 'center' como array: center[0] = cx, center[1] = cy
+** Reduz argumentos de 5 para 4.
+*/
+int	is_inside_circle(int x, int y, int *center, int radius)
 {
 	int	dx;
 	int	dy;
 
-	dx = x - cx;
-	dy = y - cy;
+	dx = x - center[0];
+	dy = y - center[1];
 	return (dx * dx + dy * dy <= radius * radius);
 }
 
@@ -54,22 +57,23 @@ int	get_minimap_color(t_game *g, double world_x, double world_y)
 	return (0xCCCCCC);
 }
 
+/*
+** Variável 'r' removida (substituída por 2) para manter apenas 4 variáveis.
+*/
 void	draw_enemy_marker(t_game *g, int cx, int cy, int color)
 {
 	int	x;
 	int	y;
 	int	px;
 	int	py;
-	int	r;
 
-	r = 2;
-	x = -r;
-	while (x <= r)
+	x = -2;
+	while (x <= 2)
 	{
-		y = -r;
-		while (y <= r)
+		y = -2;
+		while (y <= 2)
 		{
-			if (x * x + y * y <= r * r)
+			if (x * x + y * y <= 4)
 			{
 				px = cx + x;
 				py = cy + y;

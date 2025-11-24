@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:45:43 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 15:35:28 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:49:28 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	is_map_line(char *line, t_map *map)
 			map->player_p = true;
 		else if (map->player_p == true && (line[i] == 'N'
 				|| line[i] == 'S' || line[i] == 'W' || line[i] == 'E'))
-			print_error_and_exit_FREE(
+			print_error_and_exit_free(
 				"Only SinglePlayer Game, NOT MULTIPLAYER", 1, map);
 		if (line[i] != '0' && line[i] != '1' && line[i] != 'N' && line[i] != 'S'
 			&& line[i] != 'E' && line[i] != 'W' && line[i] != ' '
@@ -51,13 +51,13 @@ int	check_map(t_map *map, int *i)
 		else
 		{
 			if (*i != map->last_map_line + 1)
-				print_error_and_exit_FREE("Invalid Map", 1, map);
+				print_error_and_exit_free("Invalid Map", 1, map);
 			map->last_map_line = *i;
 		}
 		map->end = *i;
 	}
 	else if (map->start != 0)
-		print_error_and_exit_FREE("Invalid Map", 1, map);
+		print_error_and_exit_free("Invalid Map", 1, map);
 	return (0);
 }
 

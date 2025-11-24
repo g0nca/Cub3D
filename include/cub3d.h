@@ -382,7 +382,7 @@ int					get_floor_color(t_game *g);
 /* ------------------------- Error Handling (errors/) ----------------------- */
 void				print_error_and_exit_without_free(const char *message,
 						int exit_flag, t_map *map);
-void				print_error_and_exit_FREE(const char *message,
+void				print_error_and_exit_free(const char *message,
 						int exit_flag, t_map *map);
 
 /* ------------------------ Enimies (enimy_system/) ------------------------- */

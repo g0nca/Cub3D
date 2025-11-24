@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 15:31:36 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:49:22 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,17 +100,17 @@ static int	copy_to_struct(char **av, t_map *map)
 void	check_if_all_elements_exists(t_map *map)
 {
 	if (!map->no_texture)
-		print_error_and_exit_FREE("Missing North Path for texture", 1, map);
+		print_error_and_exit_free("Missing North Path for texture", 1, map);
 	if (!map->so_texture)
-		print_error_and_exit_FREE("Missing South Path for texture", 1, map);
+		print_error_and_exit_free("Missing South Path for texture", 1, map);
 	if (!map->we_texture)
-		print_error_and_exit_FREE("Missing West Path for texture", 1, map);
+		print_error_and_exit_free("Missing West Path for texture", 1, map);
 	if (!map->ea_texture)
-		print_error_and_exit_FREE("Missing East Path for texture", 1, map);
+		print_error_and_exit_free("Missing East Path for texture", 1, map);
 	if (!map->floor_color)
-		print_error_and_exit_FREE("Missing Floor Color", 1, map);
+		print_error_and_exit_free("Missing Floor Color", 1, map);
 	if (!map->ceiling_color)
-		print_error_and_exit_FREE("Missing Ceiling Color", 1, map);
+		print_error_and_exit_free("Missing Ceiling Color", 1, map);
 }
 
 int	check_map_closed(t_map *map)
@@ -125,16 +125,16 @@ int	check_map_closed(t_map *map)
 	if (!map_copy)
 	{
 		ft_free_map(map_copy);
-		print_error_and_exit_FREE("No space left on device", 1, map);
+		print_error_and_exit_free("No space left on device", 1, map);
 	}
 	if (!find_player_position_parse(map, &start_x, &start_y))
 	{
 		ft_free_map(map_copy);
-		print_error_and_exit_FREE("No player position founded", 1, map);
+		print_error_and_exit_free("No player position founded", 1, map);
 	}
 	result = flood_fill(map, map_copy, start_x, start_y);
 	ft_free_map(map_copy);
 	if (!result)
-		print_error_and_exit_FREE("Map is not closed by walls", 1, map);
+		print_error_and_exit_free("Map is not closed by walls", 1, map);
 	return (0);
 }

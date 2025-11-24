@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:35 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 12:28:16 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:43:52 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ int	is_wall_at(t_game *g, int x, int y)
 	return (g->map.grid[y][x] == '1');
 }
 
-/* Realiza todos os cálculos geométricos e de textura antes do loop de desenho */
+/* 
+    Realiza todos os cálculos geométricos 
+    e de textura antes do loop de desenho 
+*/
 static void	calc_wall_info(t_game *g, t_ray *ray, t_wall_ctx *ctx)
 {
 	double	corrected_dist;
