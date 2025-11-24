@@ -3,32 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   check_enemy_hit.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 10:40:59 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/20 17:18:17 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/24 10:31:29 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-/*
-    Compare sprites by nearest distance first
-*/
-int compare_sprites_nearest_first(const void *a, const void *b)
-{
-	double distance_a;
-	double distance_b;
-
-	distance_a = ((t_sprite_data *)a)->distance;
-	distance_b = ((t_sprite_data *)b)->distance;
-	if (distance_a < distance_b)
-		return (-1);
-	else if (distance_a > distance_b)
-		return (1);
-	else
-		return (0);
-}
 /*
     Prepare sprite data for hit detection
     Calculate distance from player to each enemy

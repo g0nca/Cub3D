@@ -188,6 +188,30 @@ typedef struct s_weapon
 	long	last_frame_time;
 }	t_weapon;
 
+typedef struct s_ray_vars {
+	double	dx;
+	double	dy;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	int		step_x;
+	int		step_y;
+	int		map_x;
+	int		map_y;
+}	t_ray_vars;
+
+typedef struct s_draw_vars {
+	double	transform_y;
+	int		sprite_screen_x;
+	int		sprite_h;
+	int		sprite_w;
+	int		draw_start_y;
+	int		draw_end_y;
+	int		draw_start_x;
+	int		draw_end_x;
+}	t_draw_vars;
+
 typedef struct s_game
 {
 	void			*mlx;
@@ -314,6 +338,8 @@ void				print_error_and_exit_FREE(const char *message,
 
 /* ------------------------ Enimies (enimy_system/) ------------------------- */
 void				init_enemy_system(t_game *g);
+void				load_enemy_textures(t_game *g);
+int					is_valid_spawn_position(t_game *g, double x, double y);
 void				spawn_enemies(t_game *g);
 void				update_enemies(t_game *g);
 void				render_enemies(t_game *g);
