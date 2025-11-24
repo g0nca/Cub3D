@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 09:33:25 by joaomart          #+#    #+#             */
-/*   Updated: 2025/11/19 15:17:51 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:13:54 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 static double get_angle_from_direction(char dir)
 {
     if (dir == 'N')
-        return (3 * M_PI / 2);  // 270 graus - Norte (cima)
+        return (3 * M_PI / 2);
     else if (dir == 'S')
-        return (M_PI / 2);      // 90 graus - Sul (baixo)
+        return (M_PI / 2);
     else if (dir == 'E')
-        return (0);             // 0 graus - Este (direita)
+        return (0);
     else if (dir == 'W')
-        return (M_PI);          // 180 graus - Oeste (esquerda)
+        return (M_PI);
     return (0);
 }
 

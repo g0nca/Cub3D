@@ -6,75 +6,86 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:01:46 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 14:27:17 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:35:13 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-// Assume que WIN_W e WIN_H estão definidos globalmente ou acessíveis
-
-static void scale_and_copy_img_to_buffer(t_img *dest, t_img *src, int x_offset, int y_offset, int scale_width, int scale_height)
+/* Helper: Processa uma linha horizontal (eixo X) da imagem escalada */
+static void	draw_scaled_line(t_img *dest, t_img *src, t_scale_ctx *c, int y_dest)
 {
-    int x_dest, y_dest;
-    //char *dest_pixel;
-    char *src_pixel;
+	int				x_dest;
+	int				x_src;
+	int				y_src;
+	unsigned int	color;
+	char			*pixel;
 
-    double scale_x_factor = (double)src->width / scale_width;
-    double scale_y_factor = (double)src->height / scale_height;
-
-    y_dest = 0;
-    while (y_dest < scale_height)
-    {
-        x_dest = 0;
-        while (x_dest < scale_width)
-        {
-            int x_src = (int)floor(x_dest * scale_x_factor);
-            int y_src = (int)floor(y_dest * scale_y_factor);
-
-            if (x_src >= 0 && x_src < src->width && y_src >= 0 && y_src < src->height)
-            {
-                src_pixel = src->addr + (y_src * src->line_len + x_src * (src->bpp / 8));
-                unsigned int color = *(unsigned int *)src_pixel;
-
-                // USA A TUA FUNCAO is_transparent AQUI
-                if (!is_transparent(color)) 
-                {
-                    // Usa a tua funcao put_pixel_to_img para garantir consistencia
-                    put_pixel_to_img(dest, x_dest + x_offset, y_dest + y_offset, color);
-                }
-            }
-            x_dest++;
-        }
-        y_dest++;
-    }
+	y_src = (int)floor(y_dest * c->s_y);
+	if (y_src < 0 || y_src >= src->height)
+		return ;
+	x_dest = 0;
+	while (x_dest < c->w)
+	{
+		x_src = (int)floor(x_dest * c->s_x);
+		if (x_src >= 0 && x_src < src->width)
+		{
+			pixel = src->addr + (y_src * src->line_len + x_src * (src->bpp / 8));
+			color = *(unsigned int *)pixel;
+			if (!is_transparent(color))
+				put_pixel_to_img(dest, x_dest + c->x_off,
+					y_dest + c->y_off, color);
+		}
+		x_dest++;
+	}
 }
 
-void render_weapon(t_game *game)
+static void	scale_and_copy_img_to_buffer(t_img *dest, t_img *src,
+			int x_off, int y_off, int w, int h)
 {
-    t_img *texture_to_draw;
-    int scaled_width;
-    int scaled_height;
-    int x_pos;
-    int y_pos;
+	t_scale_ctx	ctx;
+	int			y_dest;
 
-    texture_to_draw = &game->weapon.textures[game->weapon.current_frame];    
-    scaled_width = (int)(WIN_W * 0.4);
-    scaled_height = (int)(texture_to_draw->height * ((double)scaled_width / texture_to_draw->width));
-    x_pos = WIN_W / 2 - scaled_width / 2;
-    y_pos = WIN_H - scaled_height + 20;
-    scale_and_copy_img_to_buffer(&game->screen, texture_to_draw, x_pos, y_pos, scaled_width, scaled_height);
+	if (!src || !dest)
+		return ;
+	ctx.s_x = (double)src->width / w;
+	ctx.s_y = (double)src->height / h;
+	ctx.x_off = x_off;
+	ctx.y_off = y_off;
+	ctx.w = w;
+	ctx.h = h;
+	y_dest = 0;
+	while (y_dest < h)
+	{
+		draw_scaled_line(dest, src, &ctx, y_dest);
+		y_dest++;
+	}
 }
 
-
-
-void handle_shoot(t_game *game)
+void	render_weapon(t_game *game)
 {
-    if (game->weapon.is_firing)
-        return;
-    game->weapon.is_firing = 1;
-    game->weapon.current_frame = 1;
-    game->weapon.last_frame_time = get_current_time_ms();
+	t_img	*tex;
+	int		s_w;
+	int		s_h;
+	int		x;
+	int		y;
 
-    check_enemy_hit(game); 
+	tex = &game->weapon.textures[game->weapon.current_frame];
+	if (!tex->img)
+		return ;
+	s_w = (int)(WIN_W * 0.4);
+	s_h = (int)(tex->height * ((double)s_w / tex->width));
+	x = WIN_W / 2 - s_w / 2;
+	y = WIN_H - s_h + 20;
+	scale_and_copy_img_to_buffer(&game->screen, tex, x, y, s_w, s_h);
+}
+
+void	handle_shoot(t_game *game)
+{
+	if (game->weapon.is_firing)
+		return ;
+	game->weapon.is_firing = 1;
+	game->weapon.current_frame = 1;
+	game->weapon.last_frame_time = get_current_time_ms();
+	check_enemy_hit(game);
 }

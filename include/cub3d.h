@@ -212,6 +212,41 @@ typedef struct s_draw_vars {
 	int		draw_end_x;
 }	t_draw_vars;
 
+typedef struct s_wall_ctx {
+	int		wall_height;
+	int		draw_start;
+	int		draw_end;
+	int		tex_x;
+	double	step;
+	double	tex_pos;
+	t_img	*tex;
+}	t_wall_ctx;
+
+typedef struct s_dda
+{
+	int		map_x;
+	int		map_y;
+	double	delta_x;
+	double	delta_y;
+	double	side_x;
+	double	side_y;
+	double	r_dir_x;
+	double	r_dir_y;
+	int		step_x;
+	int		step_y;
+	int		side;
+}	t_dda;
+
+typedef struct s_scale_ctx
+{
+	double	s_x;
+	double	s_y;
+	int		x_off;
+	int		y_off;
+	int		w;
+	int		h;
+}	t_scale_ctx;
+
 typedef struct s_game
 {
 	void			*mlx;
@@ -236,6 +271,7 @@ typedef struct s_game
 
 /* ---------------------------- Events (events/) ---------------------------- */
 int					handle_keys(t_game *g);
+void				handle_render(t_game *g);
 int					key_press(int key, t_game *g);
 int					key_release(int key, t_game *g);
 void				move_strafe(t_game *g, int dir);

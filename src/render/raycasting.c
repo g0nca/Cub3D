@@ -3,139 +3,124 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrade <andrade@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:36 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/14 18:18:38 by andrade          ###   ########.fr       */
+/*   Updated: 2025/11/24 12:32:49 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-// Algoritmo DDA (Digital Differential Analyzer) para raycasting preciso
-static void cast_ray_dda(t_game *g, t_ray *ray, double angle)
+/* Inicializa direções, deltas e distâncias iniciais (side_dist) */
+static void	init_dda(t_game *g, t_dda *d, double angle)
 {
-    // Posição inicial
-    int map_x = (int)g->player.x;
-    int map_y = (int)g->player.y;
-
-    // Direção do raio
-    double ray_dir_x = cos(angle);
-    double ray_dir_y = sin(angle);
-
-    // Distância que o raio tem que percorrer para ir de uma linha x/y à próxima
-    double delta_dist_x = (ray_dir_x == 0) ? 1e30 : fabs(1 / ray_dir_x);
-    double delta_dist_y = (ray_dir_y == 0) ? 1e30 : fabs(1 / ray_dir_y);
-
-    // Direção do passo e distância inicial até próxima linha
-    int step_x;
-    int step_y;
-    double side_dist_x;
-    double side_dist_y;
-
-    // Calcula step e side_dist inicial
-    if (ray_dir_x < 0)
-    {
-        step_x = -1;
-        side_dist_x = (g->player.x - map_x) * delta_dist_x;
-    }
-    else
-    {
-        step_x = 1;
-        side_dist_x = (map_x + 1.0 - g->player.x) * delta_dist_x;
-    }
-
-    if (ray_dir_y < 0)
-    {
-        step_y = -1;
-        side_dist_y = (g->player.y - map_y) * delta_dist_y;
-    }
-    else
-    {
-        step_y = 1;
-        side_dist_y = (map_y + 1.0 - g->player.y) * delta_dist_y;
-    }
-
-    // Executa DDA
-    int hit = 0;
-    int side = 0;  // 0 = vertical (NS), 1 = horizontal (EW)
-
-    while (!hit)
-    {
-        // Avança para próximo quadrado do mapa
-        if (side_dist_x < side_dist_y)
-        {
-            side_dist_x += delta_dist_x;
-            map_x += step_x;
-            side = 0;  // Hit numa parede vertical
-        }
-        else
-        {
-            side_dist_y += delta_dist_y;
-            map_y += step_y;
-            side = 1;  // Hit numa parede horizontal
-        }
-
-        // Verifica se bateu numa parede
-        if (is_wall_at(g, map_x, map_y))
-            hit = 1;
-    }
-
-    // Calcula distância da parede
-    if (side == 0)
-        ray->distance = (side_dist_x - delta_dist_x);
-    else
-        ray->distance = (side_dist_y - delta_dist_y);
-
-    // Calcula onde exatamente a parede foi atingida
-    if (side == 0)
-        ray->wall_x = g->player.y + ray->distance * ray_dir_y;
-    else
-        ray->wall_x = g->player.x + ray->distance * ray_dir_x;
-
-    ray->wall_x -= floor(ray->wall_x);
-
-    // Determina se foi parede vertical ou horizontal
-    ray->hit_vertical = (side == 0);
-    ray->ray_angle = angle;
+	d->map_x = (int)g->player.x;
+	d->map_y = (int)g->player.y;
+	d->r_dir_x = cos(angle);
+	d->r_dir_y = sin(angle);
+	d->delta_x = 1e30;
+	if (d->r_dir_x != 0)
+		d->delta_x = fabs(1 / d->r_dir_x);
+	d->delta_y = 1e30;
+	if (d->r_dir_y != 0)
+		d->delta_y = fabs(1 / d->r_dir_y);
+	d->step_x = 1;
+	d->side_x = (d->map_x + 1.0 - g->player.x) * d->delta_x;
+	if (d->r_dir_x < 0)
+	{
+		d->step_x = -1;
+		d->side_x = (g->player.x - d->map_x) * d->delta_x;
+	}
+	d->step_y = 1;
+	d->side_y = (d->map_y + 1.0 - g->player.y) * d->delta_y;
+	if (d->r_dir_y < 0)
+	{
+		d->step_y = -1;
+		d->side_y = (g->player.y - d->map_y) * d->delta_y;
+	}
 }
 
-t_img *get_texture(t_game *g, t_ray *ray, double angle)
+/* Executa o loop principal do DDA até encontrar parede */
+static void	run_dda_loop(t_game *g, t_dda *d)
 {
-    if (ray->hit_vertical)
-    {
-        // Parede vertical (Norte/Sul)
-        if (cos(angle) > 0)
-            return (&g->textures.east);
-        else
-            return (&g->textures.west);
-    }
-    else
-    {
-        // Parede horizontal (Este/Oeste)
-        if (sin(angle) > 0)
-            return (&g->textures.south);
-        else
-            return (&g->textures.north);
-    }
+	int	hit;
+
+	hit = 0;
+	while (!hit)
+	{
+		if (d->side_x < d->side_y)
+		{
+			d->side_x += d->delta_x;
+			d->map_x += d->step_x;
+			d->side = 0;
+		}
+		else
+		{
+			d->side_y += d->delta_y;
+			d->map_y += d->step_y;
+			d->side = 1;
+		}
+		if (is_wall_at(g, d->map_x, d->map_y))
+			hit = 1;
+	}
 }
 
-void render_3d_view(t_game *g)
+/* Função Principal de Raycasting: Faz o DDA e calcula resultados */
+static void	cast_ray_dda(t_game *g, t_ray *ray, double angle)
 {
-    double fov = M_PI / 3;  // 60 graus
-    double angle_step = fov / WIN_W;
-    double ray_angle = g->player.angle - fov / 2;
+	t_dda	d;
 
-    int x = 0;
-    while (x < WIN_W)
-    {
-        t_ray ray;
-        cast_ray_dda(g, &ray, ray_angle);
-        draw_wall_stripe(g, x, &ray);
-        // Save perpendicular distance to z-buffer for sprite occlusion
-        if (x >= 0 && x < WIN_W)
-            g->z_buffer[x] = ray.distance;
-        ray_angle += angle_step;
-        x++;
-    }
+	init_dda(g, &d, angle);
+	run_dda_loop(g, &d);
+	if (d.side == 0)
+		ray->distance = (d.side_x - d.delta_x);
+	else
+		ray->distance = (d.side_y - d.delta_y);
+	if (d.side == 0)
+		ray->wall_x = g->player.y + ray->distance * d.r_dir_y;
+	else
+		ray->wall_x = g->player.x + ray->distance * d.r_dir_x;
+	ray->wall_x -= floor(ray->wall_x);
+	ray->hit_vertical = (d.side == 0);
+	ray->ray_angle = angle;
+}
+
+/* Seleciona a textura baseada na direção e colisão */
+t_img	*get_texture(t_game *g, t_ray *ray, double angle)
+{
+	if (ray->hit_vertical)
+	{
+		if (cos(angle) > 0)
+			return (&g->textures.east);
+		return (&g->textures.west);
+	}
+	else
+	{
+		if (sin(angle) > 0)
+			return (&g->textures.south);
+		return (&g->textures.north);
+	}
+}
+
+/* Loop principal de renderização da visão 3D */
+void	render_3d_view(t_game *g)
+{
+	double	fov;
+	double	ray_angle;
+	t_ray	ray;
+	int		x;
+
+	fov = M_PI / 3;
+	ray_angle = g->player.angle - fov / 2;
+	x = 0;
+	while (x < WIN_W)
+	{
+		cast_ray_dda(g, &ray, ray_angle);
+		draw_wall_stripe(g, x, &ray);
+		if (x >= 0 && x < WIN_W)
+			g->z_buffer[x] = ray.distance;
+		ray_angle += (fov / WIN_W);
+		x++;
+	}
 }

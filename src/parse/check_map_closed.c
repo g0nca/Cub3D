@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:55:26 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 10:57:20 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:13:23 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,18 @@ char	**copy_map_grid(t_map *map)
 	map_copy[i] = NULL;
 	return (map_copy);
 }
-
+static int		flood_fill_util(char **map_copy, int x, int y, int width, int height)
+{
+	if (!flood_fill(map_copy, x, y - 1, width, height))
+		return (0);
+	if (!flood_fill(map_copy, x, y + 1, width, height))
+		return (0);
+	if (!flood_fill(map_copy, x - 1, y, width, height))
+		return (0);
+	if (!flood_fill(map_copy, x + 1, y, width, height))
+		return (0);
+	return (0);
+}
 int		flood_fill(char **map_copy, int x, int y, int width, int height)
 {
 	char	c;
@@ -51,14 +62,7 @@ int		flood_fill(char **map_copy, int x, int y, int width, int height)
 			return (0);
 	}
 	map_copy[y][x] = 'V';
-	if (!flood_fill(map_copy, x, y - 1, width, height))
-		return (0);
-	if (!flood_fill(map_copy, x, y + 1, width, height))
-		return (0);
-	if (!flood_fill(map_copy, x - 1, y, width, height))
-		return (0);
-	if (!flood_fill(map_copy, x + 1, y, width, height))
-		return (0);
+	flood_fill_util(map_copy, x, y, width, height);
 	return (1);
 }
 

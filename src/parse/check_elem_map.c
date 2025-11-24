@@ -34,27 +34,23 @@ bool	verify_color_elements(t_map *map)
 void	check_texture(t_map *map, char *line, int type)
 {
 	struct stat info;
-	int len;
 
-	len = ft_strlen(line);
-	if (len <= 0)
+	if (ft_strlen(line) <= 0)
 	{
 		print_texture(type);
 		print_error_and_exit_FREE("Texture Not Found", 1, map);
 	}
-	if (ft_strcmp(&line[len - 4], ".xpm") != 0)
+	if (ft_strcmp(&line[ft_strlen(line) - 4], ".xpm") != 0)
         print_error_and_exit_FREE("Invalid file extension \"Example.xpm\"", 1, map);
     if (stat(line, &info) == -1)
     {
         print_error_and_exit_FREE("Invalid Path", 1, map);
         return ;
     }
-
     if (S_ISDIR(info.st_mode))
 	{
         print_error_and_exit_FREE("Is a Directory", 1, map);
 	}
-	
 	if (access(line, F_OK) == -1)
 		print_error_and_exit_FREE("Texture Not Found", 1, map);
 	if (access(line, R_OK) == -1)
@@ -62,7 +58,6 @@ void	check_texture(t_map *map, char *line, int type)
 		print_texture(type);
 		print_error_and_exit_FREE("Permission denied", 1, map);
 	}
-	
 }
 
 bool	verify_texture_elements(t_map *map)

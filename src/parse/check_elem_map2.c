@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 09:40:44 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 13:09:53 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:10:36 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,36 +35,40 @@ void save_color_values(char *color_str, t_map *map, int floor_or_ceiling,
         map->ceiling_rgb[index] = value;
 }
 
-void colors_check(char **colors, t_map *map, int floor_or_ceiling,
-                         char **floor_split, char **ceiling_split)
+/* Valida o formato de uma string individual (verifica pontos e digitos) */
+static void	check_color_format(char *s, t_map *map, char **f_sp, char **c_sp)
 {
-    int     i;
-    int     j;
-    bool    num_exist;
-    
-    i = 0;
-    while (colors[i])
-    {
-        j = 0;
-        num_exist = false;
-        while (colors[i][j])
-        {
-            if (colors[i][j] == '.')
-                safe_exit_with_splits("Invalid decimal numbers", 
-                                      map, floor_split, ceiling_split);
-            if (colors[i][j] == ' ' && num_exist == false 
-                && colors[i][j + 1] == '\0')
-                safe_exit_with_splits("Missing numbers", 
-                                      map, floor_split, ceiling_split);
-            if (colors[i][j] >= '0' && colors[i][j] <= '9')
-                num_exist = true;
-            j++;
-        }
-        save_color_values(colors[i], map, floor_or_ceiling, i, 
-                         floor_split, ceiling_split);
-        i++;
-    }
-    if (i != 3)
-        safe_exit_with_splits("Only 3 numbers are accepted", 
-                              map, floor_split, ceiling_split);
+	int		j;
+	bool	num_exist;
+
+	j = 0;
+	num_exist = false;
+	while (s[j])
+	{
+		if (s[j] == '.')
+			safe_exit_with_splits("Invalid decimal numbers", map, f_sp, c_sp);
+		if (s[j] == ' ' && num_exist == false && s[j + 1] == '\0')
+			safe_exit_with_splits("Missing numbers", map, f_sp, c_sp);
+		if (s[j] >= '0' && s[j] <= '9')
+			num_exist = true;
+		j++;
+	}
+}
+
+/* Percorre os 3 canais de cor */
+void	colors_check(char **colors, t_map *map, int f_or_c,
+			char **f_split, char **c_split)
+{
+	int	i;
+
+	i = 0;
+	while (colors[i])
+	{
+		check_color_format(colors[i], map, f_split, c_split);
+		save_color_values(colors[i], map, f_or_c, i, f_split, c_split);
+		i++;
+	}
+	if (i != 3)
+		safe_exit_with_splits("Only 3 numbers are accepted",
+			map, f_split, c_split);
 }

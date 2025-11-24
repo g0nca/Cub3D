@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_control.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 15:00:00 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/20 13:03:52 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/24 11:57:27 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,7 @@ int	mouse_move(int x, int y, t_game *g)
 		draw_game_over(g);
 		return (0);
 	}
-	render_3d_view(g);
-	render_weapon(g);
-	render_enemies(g);
-	draw_minimap(g);
-	draw_player(g);
-	mlx_put_image_to_window(g->mlx, g->win, g->screen.img, 0, 0);
-	draw_enemy_counter(g);
+	handle_render(g);
 	return (0);
 }
 

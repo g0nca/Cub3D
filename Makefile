@@ -36,11 +36,13 @@ SRC = main.c \
         events/handle_keys.c \
         events/move_player.c \
         events/rotate_player.c \
+		events/handle_keys_press_close_window.c \
         events/mouse_control.c \
 		events/gun_animation.c \
         init/init_game.c \
         init/load_textures.c \
         render/draw_minimap.c \
+		render/draw_minimap_utils.c \
         render/draw_player.c \
         render/draw_walls.c \
         render/raycasting.c \
@@ -55,6 +57,7 @@ SRC = main.c \
         enemy_system/enemy_init.c \
         enemy_system/enemy_spawn.c \
         enemy_system/enemy_render.c \
+
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 

@@ -6,43 +6,54 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:48 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 15:20:26 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:04:06 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-void init_weapon_assets(t_game *game)
+/* Helper: Apenas define os caminhos das texturas */
+static void	setup_weapon_paths(char **paths)
 {
-    int i;
+	paths[0] = "assets/gun_textures/gun0.xpm";
+	paths[1] = "assets/gun_textures/gun1.xpm";
+	paths[2] = "assets/gun_textures/gun2.xpm";
+	paths[3] = "assets/gun_textures/gun3.xpm";
+	paths[4] = "assets/gun_textures/gun4.xpm";
+}
 
-    char *paths[WEAPON_FRAMES] = {
-        "assets/gun_textures/gun0.xpm", // Muda para os teus caminhos reais
-        "assets/gun_textures/gun1.xpm",
-        "assets/gun_textures/gun2.xpm",
-        "assets/gun_textures/gun3.xpm",
-        "assets/gun_textures/gun4.xpm"
-    };
-    i = 0;
+/* Helper: Carrega uma frame específica e verifica erros */
+static void	load_weapon_frame(t_game *g, int i, char *path)
+{
+	t_img	*tex;
 
-    while (i < WEAPON_FRAMES)
-    {
-        game->weapon.textures[i].img = mlx_xpm_file_to_image(game->mlx, paths[i], 
-                                                &game->weapon.textures[i].width, 
-                                                &game->weapon.textures[i].height);
-        if (!game->weapon.textures[i].img)
-        {
-            print_error_and_exit_without_free("Failed loading weapon textures", 0, game->cub.map);
-            close_window(game);
-        }
-        game->weapon.textures[i].addr = mlx_get_data_addr(game->weapon.textures[i].img, 
-                                            &game->weapon.textures[i].bpp, 
-                                            &game->weapon.textures[i].line_len, 
-                                            &game->weapon.textures[i].endian);
-        i++;
-    }
-    game->weapon.is_firing = 0;
-    game->weapon.current_frame = 0;
+	tex = &g->weapon.textures[i];
+	tex->img = mlx_xpm_file_to_image(g->mlx, path, &tex->width, &tex->height);
+	if (!tex->img)
+	{
+		print_error_and_exit_without_free("Failed loading weapon textures",
+			0, g->cub.map);
+		close_window(g);
+	}
+	tex->addr = mlx_get_data_addr(tex->img, &tex->bpp,
+			&tex->line_len, &tex->endian);
+}
+
+/* Carrega as texturas da arma */
+void	init_weapon_assets(t_game *game)
+{
+	char	*paths[WEAPON_FRAMES];
+	int		i;
+
+	setup_weapon_paths(paths);
+	i = 0;
+	while (i < WEAPON_FRAMES)
+	{
+		load_weapon_frame(game, i, paths[i]);
+		i++;
+	}
+	game->weapon.is_firing = 0;
+	game->weapon.current_frame = 0;
 }
 static void     init_keys(t_game *game)
 {
