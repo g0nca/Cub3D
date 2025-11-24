@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:53:56 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 12:14:22 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:36:18 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,18 @@ void	print_texture(int type)
 		printf("West Texture --> ");
 	else if (type == EA)
 		printf("East Texture --> ");
+}
+
+int	return_fd(char **av, t_map *map)
+{
+	int	fd;
+
+	fd = open(av[1], O_RDONLY);
+	if (fd < 0)
+	{
+		free(map->grid);
+		free(map);
+		return (-1);
+	}
+	return (fd);
 }

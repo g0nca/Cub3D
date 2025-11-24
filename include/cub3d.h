@@ -237,6 +237,14 @@ typedef struct s_dda
 	int		side;
 }	t_dda;
 
+typedef struct s_parse_ctx
+{
+	t_map	*map;
+	char	**f_split;
+	char	**c_split;
+	int		mode;
+}	t_parse_ctx;
+
 typedef struct s_scale_ctx
 {
 	double	s_x;
@@ -311,6 +319,7 @@ t_map				*read_file_parse(char **av, t_cub *cub);
 t_map				*separate_map_info(t_map *map);
 void				check_if_all_elements_exists(t_map *map);
 int					check_map_closed(t_map *map);
+int					return_fd(char **av, t_map *map);
 
 /* ----------------------- Map Initialization (parse/) ---------------------- */
 t_map				*init_map_struct(void);
@@ -318,7 +327,7 @@ t_map				*init_map_struct(void);
 /* ----------------------- Map Validation (parse/) -------------------------- */
 int					find_player_position_parse(t_map *map, int *x, int *y);
 char				**copy_map_grid(t_map *map);
-int					flood_fill(char **map_copy, int x, int y, int w, int h);
+int					flood_fill(t_map *map, char **map_copy, int x, int y);
 
 /* ----------------------- Map Processing (parse/) -------------------------- */
 t_map				*save_only_map_lines(t_map *map);
@@ -348,13 +357,10 @@ bool				verify_texture_elements(t_map *map);
 bool				check_elements(t_map *map);
 
 /* --------------- Element Validation Helpers (parse/) ---------------------- */
-void				safe_exit_with_splits(char *msg, t_map *map,
-						char **floor_split, char **ceiling_split);
-void				save_color_values(char *color_str, t_map *map,
-						int floor_or_ceiling, int index,
-						char **floor_split, char **ceiling_split);
-void				colors_check(char **colors, t_map *map, int floor_or_ceiling,
-						char **floor_split, char **ceiling_split);
+void				safe_exit_ctx(char *msg, t_parse_ctx *ctx);
+void				save_color_val(char *s, int i, t_parse_ctx *ctx);
+void				colors_check(char **colors, t_parse_ctx *ctx);
+
 
 /* ------------------------- File Utilities (utils/) ------------------------ */
 int					ft_strcmp(const char *s1, const char *s2);

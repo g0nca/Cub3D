@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:52:57 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 11:00:17 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:31:47 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_map	*save_only_map_lines(t_map *map)
 	int		i;
 	int		j;
 	char	**only_map;
-	
+
 	if (map->start == 0 && map->end == 0)
 		return (map);
 	only_map = malloc(sizeof(char *) * (map->end - map->start + 2));

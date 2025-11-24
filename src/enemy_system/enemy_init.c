@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:28:44 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/24 12:51:00 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:57:53 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	count_floor_tiles(t_game *g)
 	int	y;
 	int	x;
 
+	if (!g || !g->map.grid)
+		return (0);
 	count = 0;
 	y = 0;
 	while (g->map.grid[y])

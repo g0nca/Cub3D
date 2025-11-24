@@ -6,15 +6,15 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:43:22 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 12:14:20 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:41:48 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-int		map_height(t_map *map)
+int	map_height(t_map *map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (map->grid[i])
@@ -22,14 +22,15 @@ int		map_height(t_map *map)
 	return (i);
 }
 
-int		delete_spaces(char *line, int info_status)
+int	delete_spaces(char *line, int info_status)
 {
 	int	i;
 
 	i = 0;
 	while (line[i] && info_status >= 1 && info_status <= 6)
 	{
-		if ((info_status >= 1 && info_status <= 4) && (line[i] == '.' && line[i + 1] == '/'))
+		if ((info_status >= 1 && info_status <= 4)
+			&& (line[i] == '.' && line[i + 1] == '/'))
 			return (i);
 		if (info_status == 5 || info_status == 6)
 		{
@@ -46,7 +47,7 @@ int		delete_spaces(char *line, int info_status)
 
 void	trim_newline_center(t_map *map, int flag)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (flag == 0)
@@ -70,7 +71,7 @@ void	trim_newline_center(t_map *map, int flag)
 
 void	trim_newline(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)
@@ -86,7 +87,7 @@ void	trim_newline(char *str)
 	}
 }
 
-int		ft_line_count(char **av, t_map *map)
+int	ft_line_count(char **av, t_map *map)
 {
 	int		line_count;
 	int		fd;
@@ -94,10 +95,7 @@ int		ft_line_count(char **av, t_map *map)
 
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
-	{
-		free(map);
 		return (-1);
-	}
 	line_count = 1;
 	line = get_next_line(fd);
 	if (!line)
@@ -106,8 +104,9 @@ int		ft_line_count(char **av, t_map *map)
 		print_error_and_exit_FREE("Empty File", 1, map);
 	}
 	free(line);
-	while ((line = get_next_line(fd)) != NULL)
+	while (line != NULL)
 	{
+		line = get_next_line(fd);
 		line_count++;
 		free(line);
 	}

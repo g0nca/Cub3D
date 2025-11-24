@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:20:28 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 14:51:20 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:31:36 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ t_map	*read_file_parse(char **av, t_cub *cub)
 {
 	t_map	*map;
 	int		line_count;
-	
 
 	map = init_map_struct();
 	map->cub_struct = cub;
@@ -45,7 +44,7 @@ t_map	*read_file_parse(char **av, t_cub *cub)
 
 t_map	*separate_map_info(t_map *map)
 {
-	int i;
+	int	i;
 	int	info_status;
 
 	i = 0;
@@ -73,27 +72,28 @@ t_map	*separate_map_info(t_map *map)
 
 static int	copy_to_struct(char **av, t_map *map)
 {
-	int fd;
-	int i;
-	char *line;
+	int		fd;
+	int		i;
+	char	*line;
 
-	fd = open(av[1], O_RDONLY);
-	if (fd < 0)
+	fd = return_fd(av, map);
+	line = get_next_line(fd);
+	if (!line)
 	{
-		free(map->grid);
-		free(map);
+		close(fd);
 		return (-1);
 	}
 	i = 0;
-	while ((line = get_next_line(fd)) != NULL)
+	while (line != NULL)
 	{
 		map->grid[i] = line;
 		if ((int)ft_strlen(line) > map->width)
 			map->width = ft_strlen(line);
+		line = get_next_line(fd);
 		i++;
 	}
 	map->grid[i] = NULL;
-	close(fd);	
+	close(fd);
 	return (0);
 }
 
@@ -111,7 +111,6 @@ void	check_if_all_elements_exists(t_map *map)
 		print_error_and_exit_FREE("Missing Floor Color", 1, map);
 	if (!map->ceiling_color)
 		print_error_and_exit_FREE("Missing Ceiling Color", 1, map);
-
 }
 
 int	check_map_closed(t_map *map)
@@ -133,10 +132,9 @@ int	check_map_closed(t_map *map)
 		ft_free_map(map_copy);
 		print_error_and_exit_FREE("No player position founded", 1, map);
 	}
-	result = flood_fill(map_copy, start_x, start_y, map->width, map->height);	
+	result = flood_fill(map, map_copy, start_x, start_y);
 	ft_free_map(map_copy);
 	if (!result)
 		print_error_and_exit_FREE("Map is not closed by walls", 1, map);
 	return (0);
 }
-
