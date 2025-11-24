@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_keys_movement.c                             :+:      :+:    :+:   */
+/*   handle_keys_press_close_window.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:52:07 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 11:52:49 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:37:17 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,10 @@ int	key_press(int key, t_game *g)
 {
 	if (key == KEY_ESC)
 		close_window(g);
-
 	if (key >= 0 && key < 256)
 		g->keys[key] = 1;
-
 	if (key == 49 || key == 32)
 		handle_shoot(g);
-
 	if (key == KEY_LEFT)
 		g->key_left = 1;
 	if (key == KEY_RIGHT)
@@ -35,7 +32,6 @@ int	key_release(int key, t_game *g)
 {
 	if (key >= 0 && key < 256)
 		g->keys[key] = 0;
-
 	if (key == KEY_LEFT)
 		g->key_left = 0;
 	if (key == KEY_RIGHT)

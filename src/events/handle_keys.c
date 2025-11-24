@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 11:56:41 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:36:48 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	handle_render(t_game *g)
 	if (g->enemy_sys.game_over)
 	{
 		draw_game_over(g);
-		return;
+		return ;
 	}
 	update_weapon_animation(g);
 	render_3d_view(g);
@@ -78,8 +78,19 @@ void	handle_render(t_game *g)
 /**
  * Esta função é chamada continuamente pelo mlx_loop
  * AGORA OS INIMIGOS ATUALIZAM SEMPRE, NÃO SÓ QUANDO O PLAYER SE MOVE
- */	
-int handle_keys(t_game *g)
+ */
+int	handle_keys(t_game *g)
+{
+	handle_movement(g);
+	handle_rotation(g);
+	update_enemies(g);
+	handle_render(g);
+	if (g->win_game == g->enemy_sys.enemy_count)
+		draw_game_win(g);
+	return (0);
+}
+
+/* int handle_keys(t_game *g)
 {
     //int movement_moved;
     //int rotation_moved;
@@ -94,4 +105,4 @@ int handle_keys(t_game *g)
 	if (g->win_game == g->enemy_sys.enemy_count)
 		draw_game_win(g);
     return (0);
-}
+} */
