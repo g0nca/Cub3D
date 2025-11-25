@@ -428,7 +428,7 @@ int					is_valid_spawn_position(t_game *g, double x, double y);
 void				spawn_enemies(t_game *g);
 void				update_enemies(t_game *g);
 void				render_enemies(t_game *g);
-//int					is_transparent(int color);
+int					is_transparent(int color);
 void				check_enemy_collision(t_game *g);
 void				draw_game_over(t_game *g);
 void				draw_enemy_counter(t_game *g);

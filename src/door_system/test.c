@@ -122,11 +122,7 @@ static int	get_texture_color(t_img *texture, int tex_x, int tex_y)
 	return (*(int *)pixel);
 }
 
-// Verifica se a cor é transparente
-static int	is_transparent(int color)
-{
-	return ((color & 0x00FFFFFF) == 0);
-}
+
 
 // Desenha uma coluna vertical do sprite
 static void	draw_sprite_column(t_game *g, int x, double distance, 
@@ -182,7 +178,6 @@ static void	render_single_sprite(t_game *g, t_unified_sprite *sprite)
 		return;
 	
 	int		sprite_screen_x = (int)((WIN_W / 2) * (1 + transform_x / transform_y));
-	//int		sprite_height = abs((int)(WIN_H / transform_y));
 	int		sprite_width = abs((int)(WIN_H / transform_y));
 	int		draw_start_x = -sprite_width / 2 + sprite_screen_x;
 	int		draw_end_x = sprite_width / 2 + sprite_screen_x;

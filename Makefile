@@ -52,7 +52,7 @@ SRC = main.c \
 		enemy_system/check_enemy_coallision.c \
 		enemy_system/enemy_validate_spawn.c \
 		enemy_system/enemy_gui.c \
-		enemy_system/enemy_render.utils.c \
+		enemy_system/enemy_render_utils.c \
 		enemy_system/enemy_update.c \
 		enemy_system/enemy_los.c \
         enemy_system/enemy_init.c \
