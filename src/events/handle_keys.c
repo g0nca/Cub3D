@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_keys.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 13:36:48 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/25 09:59:04 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	handle_render(t_game *g)
 	update_weapon_animation(g);
 	render_3d_view(g);
 	render_enemies(g);
+	render_doors(g);
 	render_weapon(g);
 	draw_minimap(g);
 	draw_player(g);
@@ -84,6 +85,7 @@ int	handle_keys(t_game *g)
 	handle_movement(g);
 	handle_rotation(g);
 	update_enemies(g);
+	update_doors(g);
 	handle_render(g);
 	if (g->win_game == g->enemy_sys.enemy_count)
 		draw_game_win(g);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:48 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 15:48:59 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/25 09:42:06 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	init_game(t_game *game)
 			&game->screen.bpp, &game->screen.line_len, &game->screen.endian);
 	init_images(game);
 	init_weapon_assets(game);
+	init_door_system(game);
 	game->win_game = 0;
 	game->player.x = 0.0;
 	game->player.y = 0.0;

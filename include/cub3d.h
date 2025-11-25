@@ -57,6 +57,7 @@
 # define KEY_RIGHT		65363
 # define MOUSE_SENS		0.002
 # define MOUSE_DEAD_ZONE	1
+# define KEY_E			101
 
 /* Math constants */
 # ifndef M_PI
@@ -81,6 +82,11 @@
 #define ENEMY_SIZE 0.3
 #define ENEMY_SPEED 0.001
 #define ENEMY_ANIM_SPEED 100    // Milissegundos entre frames
+
+# define MAX_DOORS 50
+# define DOOR_FRAMES 8
+# define DOOR_ANIM_SPEED 3
+# define MIN_DOOR_DISTANCE 2
 
 /* ========================================================================== */
 /*                               STRUCTURES                                   */
@@ -261,6 +267,32 @@ typedef struct s_pos
 	double	y;
 }	t_pos;
 
+typedef enum e_door_state
+{
+	DOOR_CLOSED,
+	DOOR_OPENING,
+	DOOR_OPEN,
+	DOOR_CLOSING
+}	t_door_state;
+
+typedef struct s_door
+{
+	int				x;
+	int				y;
+	t_door_state	state;
+	int				frame;
+	int				anim_counter;
+	int				is_vertical;
+}	t_door;
+
+typedef struct s_door_system
+{
+	t_door	doors[MAX_DOORS];
+	int		door_count;
+	t_img	closed_textures[DOOR_FRAMES];
+	t_img	opening_textures[DOOR_FRAMES];
+	int		textures_loaded;
+}	t_door_system;
 
 typedef struct s_game
 {
@@ -278,6 +310,7 @@ typedef struct s_game
 	t_weapon		weapon;
 	t_img			screen;
 	t_enemy_system	enemy_sys;
+	t_door_system	door_sys;
 }					t_game;
 
 /* ========================================================================== */
@@ -414,5 +447,17 @@ void				free_enemy_system(t_game *g);
 void check_enemy_hit(t_game *g);
 int compare_sprites_nearest_first(const void *a, const void *b);
 void	draw_game_win(t_game *g);
+
+void	init_door_system(t_game *g);
+void	place_doors_randomly(t_game *g);
+void	update_doors(t_game *g);
+void	interact_with_door(t_game *g);
+void	render_doors(t_game *g);
+void	free_door_system(t_game *g);
+
+int		is_valid_door_position(t_game *g, int x, int y);
+int		get_door_at_position(t_game *g, int x, int y);
+int		is_door_blocking(t_game *g, int x, int y);
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
 #endif

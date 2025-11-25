@@ -58,6 +58,10 @@ SRC = main.c \
         enemy_system/enemy_init.c \
         enemy_system/enemy_spawn.c \
         enemy_system/enemy_render.c \
+		door_system/door_init.c \
+		door_system/door_interaction.c \
+		door_system/door_placement.c \
+		door_system/door_rendering.c \
 
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
@@ -72,7 +76,7 @@ RESET = \033[0m
 all: $(SUPP_FILE) $(NAME)
 
 
-sup_file: 
+sup_file:
 	$(file > sup, $(SUP_BODY))
 	@echo "${BOLD_YELLOW}Suppressing mousemove leaks${END}"
 
