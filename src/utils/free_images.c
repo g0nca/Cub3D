@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_images.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 10:56:14 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/19 14:42:50 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:51:51 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	free_enemy_system(t_game *g)
 		while (frame < FRAMES_PER_ENEMY)
 		{
 			if (g->enemy_sys.enemy_textures[enemy_type][frame].img)
-				mlx_destroy_image(g->mlx, g->enemy_sys.enemy_textures[enemy_type][frame].img);
+				mlx_destroy_image(g->mlx,
+					g->enemy_sys.enemy_textures[enemy_type][frame].img);
 			frame++;
 		}
 		enemy_type++;

@@ -6,33 +6,38 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:45:43 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 14:51:00 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:49:28 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-int		is_map_line(char *line, t_map *map)
+int	is_map_line(char *line, t_map *map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!line)
 		return (0);
 	while (line[i])
 	{
-		if (map->player_p == false && (line[i] == 'N' || line[i] == 'S' || line[i] == 'W' || line[i] == 'E'))
+		if (map->player_p == false && (line[i] == 'N'
+				|| line[i] == 'S' || line[i] == 'W' || line[i] == 'E'))
 			map->player_p = true;
-		else if (map->player_p == true && (line[i] == 'N' || line[i] == 'S' || line[i] == 'W' || line[i] == 'E'))
-			print_error_and_exit_FREE("Only SinglePlayer Game, NOT MULTIPLAYER", 1, map);
- 		if (line[i] != '0' && line[i] != '1' && line[i] != 'N' && line[i] != 'S' && line[i] != 'E' && line[i] != 'W' && line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
+		else if (map->player_p == true && (line[i] == 'N'
+				|| line[i] == 'S' || line[i] == 'W' || line[i] == 'E'))
+			print_error_and_exit_free(
+				"Only SinglePlayer Game, NOT MULTIPLAYER", 1, map);
+		if (line[i] != '0' && line[i] != '1' && line[i] != 'N' && line[i] != 'S'
+			&& line[i] != 'E' && line[i] != 'W' && line[i] != ' '
+			&& line[i] != '\t' && line[i] != '\n')
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-int		check_map(t_map *map, int *i)
+int	check_map(t_map *map, int *i)
 {
 	if (map->grid[*i][0] == '\n' || map->grid[*i] == NULL)
 		return (0);
@@ -46,19 +51,19 @@ int		check_map(t_map *map, int *i)
 		else
 		{
 			if (*i != map->last_map_line + 1)
-				print_error_and_exit_FREE("Invalid Map", 1, map);
+				print_error_and_exit_free("Invalid Map", 1, map);
 			map->last_map_line = *i;
 		}
 		map->end = *i;
 	}
 	else if (map->start != 0)
-		print_error_and_exit_FREE("Invalid Map", 1, map);
+		print_error_and_exit_free("Invalid Map", 1, map);
 	return (0);
 }
 
-int		check_info(char *line)
+int	check_info(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!line)

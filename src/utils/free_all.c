@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:27 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/11 12:53:05 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:51:32 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,35 +24,32 @@ void	free_images(t_game *g)
 		mlx_destroy_image(g->mlx, g->textures.east.img);
 }
 
-#include "../../include/cub3d.h"
-
-void free_split_array(char **array)
+void	free_split_array(char **array)
 {
-    int i;
-    
-    if (!array)
-        return;
-    
-    i = 0;
-    while (array[i])
-    {
-        free(array[i]);
-        i++;
-    }
-    free(array);
+	int	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
 }
 
 void	ft_free_all(t_cub *cub)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	free(cub->map->no_texture);
-    free(cub->map->so_texture);
-    free(cub->map->we_texture);
-    free(cub->map->ea_texture);
-    free(cub->map->floor_color);
-    free(cub->map->ceiling_color);
+	free(cub->map->so_texture);
+	free(cub->map->we_texture);
+	free(cub->map->ea_texture);
+	free(cub->map->floor_color);
+	free(cub->map->ceiling_color);
 	while (cub->map->grid[i])
 	{
 		free(cub->map->grid[i]);
@@ -65,7 +62,7 @@ void	ft_free_all(t_cub *cub)
 
 void	ft_free_map(char **map)
 {
-	int     i;
+	int	i;
 
 	i = 0;
 	if (!map)

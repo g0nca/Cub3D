@@ -6,18 +6,21 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 09:30:55 by joaomart          #+#    #+#             */
-/*   Updated: 2025/11/11 15:43:23 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 16:10:38 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
+
+int		is_inside_circle(int x, int y, int *center, int radius);
+int		calc_pixel_color(t_game *g, int dx, int dy);
 
 void	put_pixel_to_img(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
 	if (x < 0 || x >= WIN_W || y < 0 || y >= WIN_H)
-		return;
+		return ;
 	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
 	*(unsigned int *)dst = color;
 }
@@ -37,5 +40,23 @@ void	clear_image(t_img *img, int color)
 			x++;
 		}
 		y++;
+	}
+}
+
+void	put_map_pixel(t_game *g, int sx, int sy)
+{
+	int	center[2];
+	int	dx;
+	int	dy;
+	int	color;
+
+	center[0] = MINIMAP_X;
+	center[1] = MINIMAP_Y;
+	if (is_inside_circle(sx, sy, center, MINIMAP_RADIUS))
+	{
+		dx = sx - center[0];
+		dy = sy - center[1];
+		color = calc_pixel_color(g, dx, dy);
+		put_pixel_to_img(&g->screen, sx, sy, color);
 	}
 }

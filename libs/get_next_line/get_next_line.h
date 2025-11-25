@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 13:16:09 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/04 14:37:27 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:38:24 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
-char	*ft_strjoinGNL(char *s1, char *s2);
+char	*ft_strjoingnl(char *s1, char *s2);
 char	*ft_strjoin_second(char *s1, char *s2, char *str1);
 #endif

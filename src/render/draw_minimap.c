@@ -3,157 +3,105 @@
 /*                                                        :::      ::::::::   */
 /*   draw_minimap.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/29 15:53:33 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/18 09:21:33 by joaomart         ###   ########.fr       */
+/*   Created: 2025/11/24 12:22:32 by ggomes-v          #+#    #+#             */
+/*   Updated: 2025/11/24 16:10:22 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-static int is_inside_circle(int x, int y, int cx, int cy, int radius)
+/* Protótipos de draw_minimap_utils.c */
+int		is_inside_circle(int x, int y, int *center, int radius);
+int		get_minimap_color(t_game *g, double world_x, double world_y);
+void	draw_enemy_marker(t_game *g, int cx, int cy, int color);
+void	put_map_pixel(t_game *g, int sx, int sy);
+
+static void	draw_minimap_border(t_game *g)
 {
-    int dx = x - cx;
-    int dy = y - cy;
-    return (dx * dx + dy * dy <= radius * radius);
+	int	sx;
+	int	sy;
+	int	dist_sq;
+
+	sy = MINIMAP_Y - MINIMAP_RADIUS - 2;
+	while (sy <= MINIMAP_Y + MINIMAP_RADIUS + 2)
+	{
+		sx = MINIMAP_X - MINIMAP_RADIUS - 2;
+		while (sx <= MINIMAP_X + MINIMAP_RADIUS + 2)
+		{
+			dist_sq = pow(sx - MINIMAP_X, 2) + pow(sy - MINIMAP_Y, 2);
+			if (dist_sq <= pow(MINIMAP_RADIUS + 2, 2)
+				&& dist_sq >= pow(MINIMAP_RADIUS, 2))
+			{
+				put_pixel_to_img(&g->screen, sx, sy, 0x000000);
+			}
+			sx++;
+		}
+		sy++;
+	}
 }
 
-static int get_map_tile(t_game *g, int map_x, int map_y)
+int	calc_pixel_color(t_game *g, int dx, int dy)
 {
-    int     rows;
-    char    tile;
-    if (map_y < 0 || map_x < 0)
-        return (1);    /* conta linhas de forma segura se não houver campo height */
-    rows = 0;
-    while (g->map.grid[rows])
-        rows++;
-    if (map_y >= rows)
-        return (1);
-    if (map_x >= (int)ft_strlen(g->map.grid[map_y]))
-        return (1);
-    tile = g->map.grid[map_y][map_x];
-    if (tile == '1' || tile == ' ' || tile == '\t')
-        return (1);
-    return (g->map.grid[map_y][map_x] == '1');
+	double	wx;
+	double	wy;
+	int		color;
+
+	wx = g->player.x + (double)dx / MINIMAP_SCALE;
+	wy = g->player.y + (double)dy / MINIMAP_SCALE;
+	color = get_minimap_color(g, wx, wy);
+	if ((dx * dx + dy * dy) > pow(MINIMAP_RADIUS - 5, 2))
+		return ((color >> 1) & 0x7F7F7F);
+	return (color);
 }
 
-
-static int get_minimap_color(t_game *g, double world_x, double world_y)
+static void	draw_map_background(t_game *g)
 {
-    int map_x = (int)world_x;
-    int map_y = (int)world_y;
+	int	sx;
+	int	sy;
 
-    if (get_map_tile(g, map_x, map_y))
-        return (0x333333);  // Parede - cinzento escuro
-    return (0xCCCCCC);      // Chão - cinzento claro
+	sy = MINIMAP_Y - MINIMAP_RADIUS;
+	while (sy <= MINIMAP_Y + MINIMAP_RADIUS)
+	{
+		sx = MINIMAP_X - MINIMAP_RADIUS;
+		while (sx <= MINIMAP_X + MINIMAP_RADIUS)
+		{
+			put_map_pixel(g, sx, sy);
+			sx++;
+		}
+		sy++;
+	}
 }
 
-/* Desenha um marcador preenchido no minimapa (círculo pequeno) */
-static void draw_enemy_marker(t_game *g, int cx, int cy, int color)
+static void	draw_minimap_enemies(t_game *g)
 {
-    int r = 2; // raio do marcador em pixels
-    int x = -r;
-    while (x <= r)
-    {
-        int y = -r;
-        while (y <= r)
-        {
-            if (x * x + y * y <= r * r)
-            {
-                int px = cx + x;
-                int py = cy + y;
-                if (px >= 0 && px < WIN_W && py >= 0 && py < WIN_H)
-                    put_pixel_to_img(&g->screen, px, py, color);
-            }
-            y++;
-        }
-        x++;
-    }
+	int	i;
+	int	mx;
+	int	my;
+	int	center[2];
+
+	center[0] = MINIMAP_X;
+	center[1] = MINIMAP_Y;
+	i = 0;
+	while (i < g->enemy_sys.enemy_count)
+	{
+		if (g->enemy_sys.enemies[i].active)
+		{
+			mx = MINIMAP_X + (int)((g->enemy_sys.enemies[i].x - g->player.x)
+					* MINIMAP_SCALE);
+			my = MINIMAP_Y + (int)((g->enemy_sys.enemies[i].y - g->player.y)
+					* MINIMAP_SCALE);
+			if (is_inside_circle(mx, my, center, MINIMAP_RADIUS))
+				draw_enemy_marker(g, mx, my, 0xFF0000);
+		}
+		i++;
+	}
 }
 
-void draw_minimap(t_game *g)
+void	draw_minimap(t_game *g)
 {
-    int screen_x;
-    int screen_y;
-    int dx, dy;
-    double world_x, world_y;
-
-    // Desenha o círculo do minimapa
-    screen_y = MINIMAP_Y - MINIMAP_RADIUS;
-    while (screen_y <= MINIMAP_Y + MINIMAP_RADIUS)
-    {
-        screen_x = MINIMAP_X - MINIMAP_RADIUS;
-        while (screen_x <= MINIMAP_X + MINIMAP_RADIUS)
-        {
-            if (is_inside_circle(screen_x, screen_y, MINIMAP_X, MINIMAP_Y, MINIMAP_RADIUS))
-            {
-                // Calcula offset do centro do minimapa
-                dx = screen_x - MINIMAP_X;
-                dy = screen_y - MINIMAP_Y;
-
-                // Converte para coordenadas do mundo (centrado no jogador)
-                world_x = g->player.x + (double)dx / MINIMAP_SCALE;
-                world_y = g->player.y + (double)dy / MINIMAP_SCALE;
-
-                // Obtém cor do tile
-                int color = get_minimap_color(g, world_x, world_y);
-
-                // Escurece pixels próximos da borda do círculo (efeito de vinheta)
-                int dist_from_center = dx * dx + dy * dy;
-                if (dist_from_center > (MINIMAP_RADIUS - 5) * (MINIMAP_RADIUS - 5))
-                {
-                    color = (color >> 1) & 0x7F7F7F;  // Escurece 50%
-                }
-
-                put_pixel_to_img(&g->screen, screen_x, screen_y, color);
-            }
-            screen_x++;
-        }
-        screen_y++;
-    }
-
-    // Desenha borda do minimapa
-    screen_y = MINIMAP_Y - MINIMAP_RADIUS - 2;
-    while (screen_y <= MINIMAP_Y + MINIMAP_RADIUS + 2)
-    {
-        screen_x = MINIMAP_X - MINIMAP_RADIUS - 2;
-        while (screen_x <= MINIMAP_X + MINIMAP_RADIUS + 2)
-        {
-            dx = screen_x - MINIMAP_X;
-            dy = screen_y - MINIMAP_Y;
-            int dist_sq = dx * dx + dy * dy;
-
-            // Desenha borda com 2 pixels de largura
-            if (dist_sq <= (MINIMAP_RADIUS + 2) * (MINIMAP_RADIUS + 2) &&
-                dist_sq >= (MINIMAP_RADIUS) * (MINIMAP_RADIUS))
-            {
-                put_pixel_to_img(&g->screen, screen_x, screen_y, 0x000000);
-            }
-            screen_x++;
-        }
-        screen_y++;
-    }
-
-    /* Desenha inimigos no minimapa (pequenos pontos vermelhos) */
-    int i = 0;
-    while (i < g->enemy_sys.enemy_count)
-    {
-        if (g->enemy_sys.enemies[i].active)
-        {
-            double ex = g->enemy_sys.enemies[i].x;
-            double ey = g->enemy_sys.enemies[i].y;
-
-            // Converte coordenadas do mundo para tela do minimapa
-            int mx = MINIMAP_X + (int)((ex - g->player.x) * MINIMAP_SCALE);
-            int my = MINIMAP_Y + (int)((ey - g->player.y) * MINIMAP_SCALE);
-
-            // Só desenha se estiver dentro do círculo do minimapa
-            if (is_inside_circle(mx, my, MINIMAP_X, MINIMAP_Y, MINIMAP_RADIUS))
-            {
-                draw_enemy_marker(g, mx, my, 0xFF0000);
-            }
-        }
-        i++;
-    }
+	draw_map_background(g);
+	draw_minimap_border(g);
+	draw_minimap_enemies(g);
 }

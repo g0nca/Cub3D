@@ -6,59 +6,11 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:28:44 by andrade           #+#    #+#             */
-/*   Updated: 2025/11/19 15:10:22 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:57:53 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
-
-/**
- * Carrega todas as texturas dos inimigos (5 tipos x 8 frames cada)
- */
-void	load_enemy_textures(t_game *g)
-{
-	char	path[256];
-	int		enemy_type;
-	int		frame;
-	int		loaded_count;
-
-	loaded_count = 0;
-	enemy_type = 0;
-	while (enemy_type < ENEMY_TYPES)
-	{
-		frame = 0;
-		while (frame < FRAMES_PER_ENEMY)
-		{
-			// Caminho: assets/enemies/enemy0/enemy0_0.xpm até enemy4/enemy4_7.xpm
-			snprintf(path, sizeof(path), "assets/enemies/enemy%d/enemy%d_%d.xpm",
-				enemy_type, enemy_type, frame);
-
-			g->enemy_sys.enemy_textures[enemy_type][frame].img = mlx_xpm_file_to_image(
-				g->mlx, path,
-				&g->enemy_sys.enemy_textures[enemy_type][frame].width,
-				&g->enemy_sys.enemy_textures[enemy_type][frame].height);
-
-			if (!g->enemy_sys.enemy_textures[enemy_type][frame].img)
-			{
-				g->enemy_sys.enemy_textures[enemy_type][frame].addr = NULL;
-				g->enemy_sys.enemy_textures[enemy_type][frame].bpp = 0;
-				g->enemy_sys.enemy_textures[enemy_type][frame].line_len = 0;
-				g->enemy_sys.enemy_textures[enemy_type][frame].endian = 0;
-			}
-			else
-			{
-				loaded_count++;
-				g->enemy_sys.enemy_textures[enemy_type][frame].addr = mlx_get_data_addr(
-					g->enemy_sys.enemy_textures[enemy_type][frame].img,
-					&g->enemy_sys.enemy_textures[enemy_type][frame].bpp,
-					&g->enemy_sys.enemy_textures[enemy_type][frame].line_len,
-					&g->enemy_sys.enemy_textures[enemy_type][frame].endian);
-			}
-			frame++;
-		}
-		enemy_type++;
-	}
-}
 
 /**
  * Conta o número de tiles '0' (chão) no mapa
@@ -69,6 +21,8 @@ int	count_floor_tiles(t_game *g)
 	int	y;
 	int	x;
 
+	if (!g || !g->map.grid)
+		return (0);
 	count = 0;
 	y = 0;
 	while (g->map.grid[y])
@@ -83,6 +37,24 @@ int	count_floor_tiles(t_game *g)
 		y++;
 	}
 	return (count);
+}
+
+/*
+    Compare sprites by nearest distance first
+*/
+int	compare_sprites_nearest_first(const void *a, const void *b)
+{
+	double	distance_a;
+	double	distance_b;
+
+	distance_a = ((t_sprite_data *)a)->distance;
+	distance_b = ((t_sprite_data *)b)->distance;
+	if (distance_a < distance_b)
+		return (-1);
+	else if (distance_a > distance_b)
+		return (1);
+	else
+		return (0);
 }
 
 /**
@@ -106,6 +78,16 @@ int	get_enemy_count_by_tiles(int tile_count)
 		return (1 + tile_count / 20);
 }
 
+static void	init_enemy_system_var(t_game *g, int i)
+{
+	g->enemy_sys.enemies[i].active = 0;
+	g->enemy_sys.enemies[i].x = 0.0;
+	g->enemy_sys.enemies[i].y = 0.0;
+	g->enemy_sys.enemies[i].enemy_type = 0;
+	g->enemy_sys.enemies[i].current_frame = 0;
+	g->enemy_sys.enemies[i].last_frame_time = 0;
+}
+
 /**
  * Inicializa o sistema de inimigos
  */
@@ -115,18 +97,10 @@ void	init_enemy_system(t_game *g)
 	int	j;
 
 	srand(time(NULL));
-
-	// Zera todos os inimigos
 	i = 0;
 	while (i < MAX_ENEMIES)
 	{
-		g->enemy_sys.enemies[i].active = 0;
-		g->enemy_sys.enemies[i].x = 0.0;
-		g->enemy_sys.enemies[i].y = 0.0;
-		g->enemy_sys.enemies[i].enemy_type = 0;
-		g->enemy_sys.enemies[i].current_frame = 0;
-		g->enemy_sys.enemies[i].last_frame_time = 0;
-		// Inicializa array de frames
+		init_enemy_system_var(g, i);
 		j = 0;
 		while (j < FRAMES_PER_ENEMY)
 		{
@@ -138,10 +112,6 @@ void	init_enemy_system(t_game *g)
 	}
 	g->enemy_sys.enemy_count = 0;
 	g->enemy_sys.game_over = 0;
-
-	// Carrega texturas
 	load_enemy_textures(g);
-
-	// Spawn dos inimigos
 	spawn_enemies(g);
 }

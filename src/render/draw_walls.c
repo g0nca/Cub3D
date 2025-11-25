@@ -3,84 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   draw_walls.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:35 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/12 09:59:54 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:43:52 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-int is_wall_at(t_game *g, int x, int y)
+int	is_wall_at(t_game *g, int x, int y)
 {
-    if (y < 0 || x < 0 || !g->map.grid[y] || x >= (int)ft_strlen(g->map.grid[y]))
-        return (1);
-    return (g->map.grid[y][x] == '1');
+	if (y < 0 || x < 0)
+		return (1);
+	if (!g->map.grid[y])
+		return (1);
+	if (x >= (int)ft_strlen(g->map.grid[y]))
+		return (1);
+	return (g->map.grid[y][x] == '1');
 }
 
-void draw_wall_stripe(t_game *g, int x, t_ray *ray)
+/* 
+    Realiza todos os cálculos geométricos 
+    e de textura antes do loop de desenho 
+*/
+static void	calc_wall_info(t_game *g, t_ray *ray, t_wall_ctx *ctx)
 {
-    /* Corrige distorção do olho de peixe */
-    double ang_diff = ray->ray_angle - g->player.angle;
-    double corrected_dist = ray->distance * cos(ang_diff);
+	double	corrected_dist;
 
-    /* Proteção contra distâncias muito pequenas (evita heights gigantes e div por zero) */
-    if (corrected_dist < 0.0001)
-        corrected_dist = 0.0001;
+	corrected_dist = ray->distance * cos(ray->ray_angle - g->player.angle);
+	if (corrected_dist < 0.0001)
+		corrected_dist = 0.0001;
+	ctx->wall_height = (int)((double)WIN_H / corrected_dist);
+	ctx->draw_start = (WIN_H - ctx->wall_height) / 2;
+	ctx->draw_end = ctx->draw_start + ctx->wall_height;
+	if (ctx->draw_start < 0)
+		ctx->draw_start = 0;
+	if (ctx->draw_end >= WIN_H)
+		ctx->draw_end = WIN_H - 1;
+	ctx->tex = get_texture(g, ray, ray->ray_angle);
+	ctx->tex_x = (int)(ray->wall_x * (double)ctx->tex->width);
+	if (ctx->tex_x < 0)
+		ctx->tex_x = 0;
+	if (ctx->tex_x >= ctx->tex->width)
+		ctx->tex_x = ctx->tex->width - 1;
+	ctx->step = (double)ctx->tex->height / (double)ctx->wall_height;
+	ctx->tex_pos = (ctx->draw_start - (WIN_H - ctx->wall_height) / 2.0)
+		* ctx->step;
+}
 
-    /* Calcula altura da parede na tela (como double para evitar truncamento prematuro) */
-    int wall_height = (int)((double)WIN_H / corrected_dist);
+/* Loop específico para desenhar os pixels da textura da parede */
+static void	draw_wall_pixels(t_game *g, int x, t_wall_ctx *c)
+{
+	int	y;
+	int	tex_y;
+	int	color;
 
-    int draw_start = (WIN_H - wall_height) / 2;
-    int draw_end = draw_start + wall_height;
+	y = c->draw_start;
+	while (y < c->draw_end)
+	{
+		y++;
+		tex_y = (int)c->tex_pos;
+		if (tex_y < 0)
+			tex_y = 0;
+		if (tex_y >= c->tex->height)
+			tex_y = c->tex->height - 1;
+		color = *(int *)(c->tex->addr + (tex_y * c->tex->line_len
+					+ c->tex_x * (c->tex->bpp / 8)));
+		put_pixel_to_img(&g->screen, x, y, color);
+		c->tex_pos += c->step;
+	}
+}
 
-    if (draw_start < 0) draw_start = 0;
-    if (draw_end >= WIN_H) draw_end = WIN_H - 1;
+/* Função principal orquestradora */
+void	draw_wall_stripe(t_game *g, int x, t_ray *ray)
+{
+	t_wall_ctx	ctx;
+	int			y;
 
-    /* Seleciona textura */
-    t_img *texture = get_texture(g, ray, ray->ray_angle);
-
-    /* tex_x em double -> depois convert para int; garante que não excede limites */
-    int tex_x = (int)(ray->wall_x * (double)texture->width);
-    if (tex_x < 0) tex_x = 0;
-    if (tex_x >= texture->width) tex_x = texture->width - 1;
-
-    /* Desenha teto */
-    int y = 0;
-    while (y < draw_start)
-    {
-        y++;
-        put_pixel_to_img(&g->screen, x, y, get_ceiling_color(g));
-    }
-
-    /* Cálculo de passo para a textura (double!) */
-    double step = (double)texture->height / (double)wall_height;
-    /* Posição inicial na textura: o primeiro texel correspondente ao y = draw_start */
-    double tex_pos = (draw_start - (WIN_H - wall_height) / 2.0) * step;
-    /* alternativa clássica: tex_pos = (draw_start - WIN_H/2 + wall_height/2) * step; ambos equivalem */
-
-    /* Desenha parede com amostragem correta */
-    y = draw_start;
-    while (y < draw_end)
-    {
-        y++;
-        int tex_y = (int)tex_pos;
-        if (tex_y < 0) tex_y = 0;
-        if (tex_y >= texture->height) tex_y = texture->height - 1;
-
-        int color = *(int *)(texture->addr +
-                    (tex_y * texture->line_len + tex_x * (texture->bpp / 8)));
-
-        put_pixel_to_img(&g->screen, x, y, color);
-        tex_pos += step;
-    }
-
-    /* Desenha chão */
-    y = draw_end;
-    while (y < WIN_H)
-    {
-        y++;
-        put_pixel_to_img(&g->screen, x, y, get_floor_color(g));
-    }
+	calc_wall_info(g, ray, &ctx);
+	y = 0;
+	while (y < ctx.draw_start)
+	{
+		y++;
+		put_pixel_to_img(&g->screen, x, y, get_ceiling_color(g));
+	}
+	draw_wall_pixels(g, x, &ctx);
+	y = ctx.draw_end;
+	while (y < WIN_H)
+	{
+		y++;
+		put_pixel_to_img(&g->screen, x, y, get_floor_color(g));
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:58:08 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 11:58:28 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:14:07 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	save_texture_or_color1(t_map *map, char *value, int info)
 			map->exit_flag = 1;
 	}
 }
+
 void	save_texture_or_color2(t_map *map, char *value, int info_status)
 {
 	if (info_status == EA)

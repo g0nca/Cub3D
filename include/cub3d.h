@@ -188,6 +188,80 @@ typedef struct s_weapon
 	long	last_frame_time;
 }	t_weapon;
 
+typedef struct s_ray_vars {
+	double	dx;
+	double	dy;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	int		step_x;
+	int		step_y;
+	int		map_x;
+	int		map_y;
+}	t_ray_vars;
+
+typedef struct s_draw_vars {
+	double	transform_y;
+	int		sprite_screen_x;
+	int		sprite_h;
+	int		sprite_w;
+	int		draw_start_y;
+	int		draw_end_y;
+	int		draw_start_x;
+	int		draw_end_x;
+}	t_draw_vars;
+
+typedef struct s_wall_ctx {
+	int		wall_height;
+	int		draw_start;
+	int		draw_end;
+	int		tex_x;
+	double	step;
+	double	tex_pos;
+	t_img	*tex;
+}	t_wall_ctx;
+
+typedef struct s_dda
+{
+	int		map_x;
+	int		map_y;
+	double	delta_x;
+	double	delta_y;
+	double	side_x;
+	double	side_y;
+	double	r_dir_x;
+	double	r_dir_y;
+	int		step_x;
+	int		step_y;
+	int		side;
+}	t_dda;
+
+typedef struct s_parse_ctx
+{
+	t_map	*map;
+	char	**f_split;
+	char	**c_split;
+	int		mode;
+}	t_parse_ctx;
+
+typedef struct s_scale_ctx
+{
+	double	s_x;
+	double	s_y;
+	int		x_off;
+	int		y_off;
+	int		w;
+	int		h;
+}	t_scale_ctx;
+
+typedef struct s_pos
+{
+	double	x;
+	double	y;
+}	t_pos;
+
+
 typedef struct s_game
 {
 	void			*mlx;
@@ -212,6 +286,7 @@ typedef struct s_game
 
 /* ---------------------------- Events (events/) ---------------------------- */
 int					handle_keys(t_game *g);
+void				handle_render(t_game *g);
 int					key_press(int key, t_game *g);
 int					key_release(int key, t_game *g);
 void				move_strafe(t_game *g, int dir);
@@ -244,6 +319,7 @@ t_map				*read_file_parse(char **av, t_cub *cub);
 t_map				*separate_map_info(t_map *map);
 void				check_if_all_elements_exists(t_map *map);
 int					check_map_closed(t_map *map);
+int					return_fd(char **av, t_map *map);
 
 /* ----------------------- Map Initialization (parse/) ---------------------- */
 t_map				*init_map_struct(void);
@@ -251,7 +327,7 @@ t_map				*init_map_struct(void);
 /* ----------------------- Map Validation (parse/) -------------------------- */
 int					find_player_position_parse(t_map *map, int *x, int *y);
 char				**copy_map_grid(t_map *map);
-int					flood_fill(char **map_copy, int x, int y, int w, int h);
+int					flood_fill(t_map *map, char **map_copy, int x, int y);
 
 /* ----------------------- Map Processing (parse/) -------------------------- */
 t_map				*save_only_map_lines(t_map *map);
@@ -281,13 +357,10 @@ bool				verify_texture_elements(t_map *map);
 bool				check_elements(t_map *map);
 
 /* --------------- Element Validation Helpers (parse/) ---------------------- */
-void				safe_exit_with_splits(char *msg, t_map *map,
-						char **floor_split, char **ceiling_split);
-void				save_color_values(char *color_str, t_map *map,
-						int floor_or_ceiling, int index,
-						char **floor_split, char **ceiling_split);
-void				colors_check(char **colors, t_map *map, int floor_or_ceiling,
-						char **floor_split, char **ceiling_split);
+void				safe_exit_ctx(char *msg, t_parse_ctx *ctx);
+void				save_color_val(char *s, int i, t_parse_ctx *ctx);
+void				colors_check(char **colors, t_parse_ctx *ctx);
+
 
 /* ------------------------- File Utilities (utils/) ------------------------ */
 int					ft_strcmp(const char *s1, const char *s2);
@@ -309,11 +382,13 @@ int					get_floor_color(t_game *g);
 /* ------------------------- Error Handling (errors/) ----------------------- */
 void				print_error_and_exit_without_free(const char *message,
 						int exit_flag, t_map *map);
-void				print_error_and_exit_FREE(const char *message,
+void				print_error_and_exit_free(const char *message,
 						int exit_flag, t_map *map);
 
 /* ------------------------ Enimies (enimy_system/) ------------------------- */
 void				init_enemy_system(t_game *g);
+void				load_enemy_textures(t_game *g);
+int					is_valid_spawn_position(t_game *g, double x, double y);
 void				spawn_enemies(t_game *g);
 void				update_enemies(t_game *g);
 void				render_enemies(t_game *g);

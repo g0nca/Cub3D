@@ -6,13 +6,13 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 09:45:04 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/17 09:56:03 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:16:11 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-static void		set_rgb_color(t_map *map)
+static void	set_rgb_color(t_map *map)
 {
 	map->floor_rgb[0] = -1;
 	map->floor_rgb[1] = -1;
@@ -25,9 +25,7 @@ static void		set_rgb_color(t_map *map)
 t_map	*init_map_struct(void)
 {
 	t_map	*map;
-	int		i;
 
-	i = 0;
 	map = malloc(sizeof(t_map));
 	if (!map)
 		return (NULL);
