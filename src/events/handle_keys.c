@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/25 13:08:28 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/25 14:58:50 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@ void	handle_render(t_game *g)
 	}
 	update_weapon_animation(g);
 	render_3d_view(g);
-	render_enemies(g);
-	render_doors(g);
+	//render_enemies(g);
+	//render_doors(g);
+	render_all_sprites(g);
 	render_weapon(g);
 	draw_minimap(g);
 	draw_player(g);

@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 09:37:46 by joaomart          #+#    #+#             */
-/*   Updated: 2025/11/25 13:24:59 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/25 14:50:55 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,25 +63,18 @@ static void	draw_door_stripe_column(t_game *g, int x, double distance, t_img *te
 	int		d;
 	int		color;
 
-	// Calcular altura da linha (projeção básica)
 	line_height = (int)(WIN_H / distance);
-	
 	draw_start = -line_height / 2 + WIN_H / 2;
 	if (draw_start < 0) draw_start = 0;
 	
 	draw_end = line_height / 2 + WIN_H / 2;
 	if (draw_end >= WIN_H) draw_end = WIN_H - 1;
-
 	y = draw_start;
 	while (y < draw_end)
 	{
-		// Fórmula para encontrar a coordenada Y da textura sem distorção
 		d = (y) * 256 - WIN_H * 128 + line_height * 128;
 		tex_y = ((d * texture->height) / line_height) / 256;
-		
 		color = get_texture_color(texture, tex_x, tex_y);
-		
-		// Cor preta transparente ou alpha
 		if ((color & 0x00FFFFFF) != 0) 
 			my_mlx_pixel_put(&g->screen, x, y, color);
 		y++;
@@ -122,6 +115,7 @@ void	render_doors(t_game *g)
 		inv_det = 1.0 / (plane_x * dir_y - dir_x * plane_y);
 		transform_x = inv_det * (dir_y * sprite_x - dir_x * sprite_y);
 		transform_y = inv_det * (-plane_y * sprite_x + plane_x * sprite_y);
+
 		if (transform_y > 0)
 		{
 			sprite_screen_x = (int)((WIN_W / 2) * (1 + transform_x / transform_y));

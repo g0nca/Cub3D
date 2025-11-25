@@ -59,6 +59,7 @@ SRC = main.c \
         enemy_system/enemy_spawn.c \
         enemy_system/enemy_render.c \
 		door_system/door_init.c \
+		door_system/test.c \
 		door_system/door_interaction.c \
 		door_system/door_placement.c \
 		door_system/door_rendering.c \

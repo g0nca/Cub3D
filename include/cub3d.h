@@ -428,7 +428,7 @@ int					is_valid_spawn_position(t_game *g, double x, double y);
 void				spawn_enemies(t_game *g);
 void				update_enemies(t_game *g);
 void				render_enemies(t_game *g);
-int					is_transparent(int color);
+//int					is_transparent(int color);
 void				check_enemy_collision(t_game *g);
 void				draw_game_over(t_game *g);
 void				draw_enemy_counter(t_game *g);
@@ -462,5 +462,6 @@ int		is_valid_door_position(t_game *g, int x, int y);
 int		get_door_at_position(t_game *g, int x, int y);
 int		is_door_blocking(t_game *g, int x, int y);
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void	render_all_sprites(t_game *g);
 
 #endif
