@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   door_placement.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 00:00:00 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/25 10:11:19 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/25 13:05:11 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,11 +142,6 @@ void	place_doors_randomly(t_game *g)
 		max_doors = MAX_DOORS;
 	if (max_doors < 1)
 		max_doors = 1;
-
-	printf("\n=== DOOR PLACEMENT DEBUG ===\n");
-	printf("Empty spaces: %d\n", empty_spaces);
-	printf("Max doors to place: %d\n", max_doors);
-
 	attempts = 0;
 	y = 1;
 	while (g->map.grid[y + 1] && g->door_sys.door_count < max_doors && attempts < 1000)
@@ -157,7 +152,6 @@ void	place_doors_randomly(t_game *g)
 			attempts++;
 			if (is_valid_door_position(g, x, y))
 			{
-				// 50% de chance de colocar porta em posição válida
 				if ((rand() % 100) < 50)
 				{
 					g->door_sys.doors[g->door_sys.door_count].x = x;
@@ -167,11 +161,7 @@ void	place_doors_randomly(t_game *g)
 					g->door_sys.doors[g->door_sys.door_count].anim_counter = 0;
 					g->door_sys.doors[g->door_sys.door_count].is_vertical =
 						is_door_vertical(g, x, y);
-
-					printf("Door %d placed at (%d, %d) - Vertical: %d\n",
-						g->door_sys.door_count, x, y,
-						g->door_sys.doors[g->door_sys.door_count].is_vertical);
-
+					g->map.grid[y][x] = 'D';
 					g->door_sys.door_count++;
 				}
 			}
@@ -179,8 +169,4 @@ void	place_doors_randomly(t_game *g)
 		}
 		y++;
 	}
-
-	printf("Total doors placed: %d\n", g->door_sys.door_count);
-	printf("Total attempts: %d\n", attempts);
-	printf("============================\n\n");
 }

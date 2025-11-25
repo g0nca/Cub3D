@@ -285,14 +285,17 @@ typedef struct s_door
 	int				is_vertical;
 }	t_door;
 
+
+
 typedef struct s_door_system
 {
-	t_door	doors[MAX_DOORS];
-	int		door_count;
-	t_img	closed_textures[DOOR_FRAMES];
-	t_img	opening_textures[DOOR_FRAMES];
-	int		textures_loaded;
-}	t_door_system;
+    t_door  doors[MAX_DOORS];
+    int     door_count;
+    t_img   closed_textures[DOOR_FRAMES];
+    t_img   opening_textures[DOOR_FRAMES];
+    t_img   frame_texture;
+    int     textures_loaded;
+}   t_door_system;
 
 typedef struct s_game
 {

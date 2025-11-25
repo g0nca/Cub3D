@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 16:17:05 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/25 13:14:46 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	print_map_struct(t_cub *cub, t_map *map)
 		}
 	}
 }
-//hide_mouse_cursor(&game);
 
 int	main(int ac, char **av)
 {
@@ -84,3 +83,5 @@ int	main(int ac, char **av)
 	mlx_loop(game.mlx);
 	return (0);
 }
+//hide_mouse_cursor(&game);
+

@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:40:08 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/24 13:11:25 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/25 13:29:46 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int	check_wall_col(t_game *g, t_pos *p, int tx, int ty)
 	double	c_x;
 	double	c_y;
 
-	if (g->map.grid[ty][tx] == '1')
+	if (g->map.grid[ty][tx] == '1' || (g->map.grid[ty][tx] == 'D' && g->door_sys.doors->state == DOOR_CLOSED))
 	{
 		c_x = p->x;
 		if (c_x < (double)tx)
