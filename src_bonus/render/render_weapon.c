@@ -6,13 +6,11 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:01:46 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/26 14:31:28 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/26 15:41:37 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d_bonus.h"
-
-#include "../../include/cub3d.h"
 
 /*
 ** Removemos a variavel 'pixel' para ficar apenas com 4 variaveis.
