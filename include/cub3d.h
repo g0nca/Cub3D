@@ -73,16 +73,18 @@
 # define F				5
 # define C				6
 
-#define WEAPON_FRAMES 5
-/* Enemy animation settings */
-#define MAX_ENEMIES 50
-#define ENEMY_TYPES 5           // enemy0 a enemy4
-#define FRAMES_PER_ENEMY 5      // Número de frames de animação por inimigo
-#define COLLISION_DISTANCE 0.5
-#define ENEMY_SIZE 0.3
-#define ENEMY_SPEED 0.001
-#define ENEMY_ANIM_SPEED 100    // Milissegundos entre frames
+# define WEAPON_FRAMES 5
 
+/* Enemy animation settings */
+# define MAX_ENEMIES 50
+# define ENEMY_TYPES 5
+# define FRAMES_PER_ENEMY 5
+# define COLLISION_DISTANCE 0.5
+# define ENEMY_SIZE 0.3
+# define ENEMY_SPEED 0.001
+# define ENEMY_ANIM_SPEED 100
+
+/* Doors Setting */
 # define MAX_DOORS 50
 # define DOOR_FRAMES 8
 # define DOOR_ANIM_SPEED 3
@@ -154,11 +156,11 @@ typedef struct s_enemy
 {
 	double	x;
 	double	y;
-	int		enemy_type;         // 0-4 (qual pasta enemy)
+	int		enemy_type;
 	int		active;
-	int		current_frame;      // Frame atual da animação (0-7)
-	long	last_frame_time;    // Timestamp da última mudança de frame
-	t_img	frames[FRAMES_PER_ENEMY]; // Array com todos os frames
+	int		current_frame;
+	long	last_frame_time;
+	t_img	frames[FRAMES_PER_ENEMY];
 }			t_enemy;
 
 typedef struct s_sprite_data
@@ -194,7 +196,8 @@ typedef struct s_weapon
 	long	last_frame_time;
 }	t_weapon;
 
-typedef struct s_ray_vars {
+typedef struct s_ray_vars
+{
 	double	dx;
 	double	dy;
 	double	delta_dist_x;
@@ -207,7 +210,8 @@ typedef struct s_ray_vars {
 	int		map_y;
 }	t_ray_vars;
 
-typedef struct s_draw_vars {
+typedef struct s_draw_vars
+{
 	double	transform_y;
 	int		sprite_screen_x;
 	int		sprite_h;
@@ -218,7 +222,8 @@ typedef struct s_draw_vars {
 	int		draw_end_x;
 }	t_draw_vars;
 
-typedef struct s_wall_ctx {
+typedef struct s_wall_ctx
+{
 	int		wall_height;
 	int		draw_start;
 	int		draw_end;
@@ -285,7 +290,6 @@ typedef struct s_door
 	int				is_vertical;
 }	t_door;
 
-
 typedef enum e_sprite_type
 {
 	SPRITE_ENEMY,
@@ -317,18 +321,18 @@ typedef struct s_unified_sprite
 	double			x;
 	double			y;
 	double			distance;
-	int				index;  // índice no array de enemies ou doors
+	int				index;
 }	t_unified_sprite;
 
 typedef struct s_door_system
 {
-    t_door  doors[MAX_DOORS];
-    int     door_count;
-    t_img   closed_textures[DOOR_FRAMES];
-    t_img   opening_textures[DOOR_FRAMES];
-    t_img   frame_texture;
-    int     textures_loaded;
-}   t_door_system;
+	int		textures_loaded;
+	int		door_count;
+	t_door	doors[MAX_DOORS];
+	t_img	closed_textures[DOOR_FRAMES];
+	t_img	opening_textures[DOOR_FRAMES];
+	t_img	frame_texture;
+}	t_door_system;
 
 typedef struct s_game
 {
@@ -405,7 +409,8 @@ t_map				*save_only_map_lines(t_map *map);
 int					check_map(t_map *map, int *i);
 int					is_map_line(char *line, t_map *map);
 int					check_info(char *line);
-void				save_texture_or_color1(t_map *map, char *value, int info_status);
+void				save_texture_or_color1(t_map *map,
+						char *value, int info_status);
 void				save_texture_or_color2(t_map *map, char *value, int info);
 t_map				*save_info_to_map_struct(t_map *map, char *line, int info);
 
@@ -429,7 +434,6 @@ bool				check_elements(t_map *map);
 void				safe_exit_ctx(char *msg, t_parse_ctx *ctx);
 void				save_color_val(char *s, int i, t_parse_ctx *ctx);
 void				colors_check(char **colors, t_parse_ctx *ctx);
-
 
 /* ------------------------- File Utilities (utils/) ------------------------ */
 int					ft_strcmp(const char *s1, const char *s2);
@@ -471,30 +475,24 @@ int					get_enemy_count_by_tiles(int tile_count);
 /* ----------------------------- Main (main.c) ------------------------------ */
 int					main(int ac, char **av);
 void				print_map_struct(t_cub *cub, t_map *map);
-
-
-void init_weapon_assets(t_game *game);
-void update_weapon_animation(t_game *game);
-long get_current_time_ms();
-void render_weapon(t_game *game);
-void handle_shoot(t_game *game);
-void	free_weapon_texture_system(t_game *g);
+void				init_weapon_assets(t_game *game);
+void				update_weapon_animation(t_game *game);
+long				get_current_time_ms(void);
+void				render_weapon(t_game *game);
+void				handle_shoot(t_game *game);
+void				free_weapon_texture_system(t_game *g);
 void				free_enemy_system(t_game *g);
-void check_enemy_hit(t_game *g);
-int compare_sprites_nearest_first(const void *a, const void *b);
-void	draw_game_win(t_game *g);
-
-void	init_door_system(t_game *g);
-void	place_doors_randomly(t_game *g);
-void	update_doors(t_game *g);
-void	interact_with_door(t_game *g);
-void	render_doors(t_game *g);
-void	free_door_system(t_game *g);
-
-int		is_valid_door_position(t_game *g, int x, int y);
-int		get_door_at_position(t_game *g, int x, int y);
-int		is_door_blocking(t_game *g, int x, int y);
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
-void	render_all_sprites(t_game *g);
-
+void				check_enemy_hit(t_game *g);
+int					compare_sprites_nearest_first(const void *a, const void *b);
+void				draw_game_win(t_game *g);
+void				init_door_system(t_game *g);
+void				place_doors_randomly(t_game *g);
+void				update_doors(t_game *g);
+void				interact_with_door(t_game *g);
+void				free_door_system(t_game *g);
+int					is_valid_door_position(t_game *g, int x, int y);
+int					get_door_at_position(t_game *g, int x, int y);
+int					is_door_blocking(t_game *g, int x, int y);
+void				my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void				render_all_sprites(t_game *g);
 #endif
