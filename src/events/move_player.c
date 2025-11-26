@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:55 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/25 09:40:25 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/26 12:21:32 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,8 @@ static int	is_wall(t_game *g, double x, double y)
 	if (map_y < 0 || map_x < 0 || !g->map.grid[map_y]
 		|| map_x >= (int)ft_strlen(g->map.grid[map_y]))
 		return (1);
-
-	// Verificar se é uma porta bloqueando
 	if (is_door_blocking(g, map_x, map_y))
 		return (1);
-
 	return (g->map.grid[map_y][map_x] == '1');
 }
 

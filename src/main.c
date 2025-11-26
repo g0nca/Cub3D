@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/25 15:03:20 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/26 12:21:53 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	main(int ac, char **av)
 	init_enemy_system(&game);
 	render_weapon(&game);
 	render_3d_view(&game);
-	//render_enemies(&game);
 	draw_minimap(&game);
 	draw_player(&game);
 	mlx_put_image_to_window(game.mlx, game.win, game.screen.img, 0, 0);
@@ -84,4 +83,3 @@ int	main(int ac, char **av)
 	return (0);
 }
 //hide_mouse_cursor(&game);
-

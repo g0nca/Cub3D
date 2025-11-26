@@ -6,15 +6,12 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 09:37:46 by joaomart          #+#    #+#             */
-/*   Updated: 2025/11/26 12:07:32 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/26 12:20:15 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* ************************************************************************** */
-/* door_rendering.c                                   :+:      :+:    :+:   */
-/* ************************************************************************** */
-
 #include "../../include/cub3d.h"
+
 int	count_neighbor_walls(t_game *g, int x, int y);
 
 /* Verifica padrão: O tile deve ser '1' e ter exatamente 2 paredes vizinhas */
@@ -90,4 +87,3 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
 	*(unsigned int *)dst = color;
 }
-
