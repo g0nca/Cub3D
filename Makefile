@@ -41,6 +41,7 @@ SRC = main.c \
         render/raycasting.c \
 
 SRC_B = main.c \
+        main_aux.c \
         parse/parsing_input.c \
         parse/parsing_player.c \
         parse/read_file.c \

@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 /* ========================================================================== */
 /*                               INCLUDES                                     */
@@ -474,6 +474,11 @@ int					get_enemy_count_by_tiles(int tile_count);
 
 /* ----------------------------- Main (main.c) ------------------------------ */
 int					main(int ac, char **av);
+int					init_cub_struct(t_cub **cub, char **av);
+void				setup_game_data(t_game *game, t_cub *cub);
+void				init_player_if_needed(t_game *game);
+void				init_game_render(t_game *game);
+void				init_hooks(t_game *game);
 void				print_map_struct(t_cub *cub, t_map *map);
 void				init_weapon_assets(t_game *game);
 void				update_weapon_animation(t_game *game);

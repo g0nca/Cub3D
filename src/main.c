@@ -6,7 +6,7 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/26 14:46:58 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/26 15:31:45 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,39 @@ void	print_map_struct(t_cub *cub, t_map *map)
 	}
 }
 
+static int	init_cub(t_cub **cub, char **av)
+{
+	*cub = malloc(sizeof(t_cub));
+	if (!*cub)
+		return (1);
+	(*cub)->map = read_file_parse(av, *cub);
+	if ((*cub)->map->exit_flag == 1 || !check_elements((*cub)->map))
+	{
+		print_error_and_exit_without_free("Loading Elements", 0, (*cub)->map);
+		ft_free_all(*cub);
+		free(*cub);
+		return (1);
+	}
+	return (0);
+}
+
+static void	setup_game(t_game *game, t_cub *cub)
+{
+	game->map = *(cub->map);
+	game->cub = *cub;
+	free(cub);
+}
+
+static void	init_player_if_missing(t_game *game)
+{
+	if (!find_player_position(game))
+	{
+		game->player.x = 2.5;
+		game->player.y = 2.5;
+		game->player.angle = 3 * M_PI / 2;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	t_cub	*cub;
@@ -42,28 +75,11 @@ int	main(int ac, char **av)
 
 	ft_bzero(&game, sizeof(t_game));
 	parsing_input(ac, av);
-	cub = malloc(sizeof(t_cub));
-	if (!cub)
+	if (init_cub(&cub, av))
 		return (1);
-	cub->map = read_file_parse(av, cub);
-	if (cub->map->exit_flag == 1 || check_elements(cub->map) == false)
-	{
-		print_error_and_exit_without_free("Loading Elements", 0, cub->map);
-		ft_free_all(cub);
-		free(cub);
-		return (1);
-	}
-	game.map = *(cub->map);
-	game.cub = *(cub);
-	free(cub);
-	cub = NULL;
+	setup_game(&game, cub);
 	init_game(&game);
-	if (!find_player_position(&game))
-	{
-		game.player.x = 2.5;
-		game.player.y = 2.5;
-		game.player.angle = 3 * M_PI / 2;
-	}
+	init_player_if_missing(&game);
 	render_3d_view(&game);
 	mlx_put_image_to_window(game.mlx, game.win, game.screen.img, 0, 0);
 	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
@@ -75,4 +91,3 @@ int	main(int ac, char **av)
 	mlx_loop(game.mlx);
 	return (0);
 }
-//hide_mouse_cursor(&game);
