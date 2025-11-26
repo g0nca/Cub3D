@@ -286,6 +286,39 @@ typedef struct s_door
 }	t_door;
 
 
+typedef enum e_sprite_type
+{
+	SPRITE_ENEMY,
+	SPRITE_DOOR
+}	t_sprite_type;
+
+typedef struct s_spr_calc
+{
+	double	inv_det;
+	double	transform_y;
+	int		screen_x;
+	int		width;
+	int		start_x;
+	int		end_x;
+	t_img	*tex;
+}	t_spr_calc;
+
+typedef struct s_spr_draw
+{
+	int		line_h;
+	int		start_y;
+	int		end_y;
+	int		tex_x;
+}	t_spr_draw;
+
+typedef struct s_unified_sprite
+{
+	t_sprite_type	type;
+	double			x;
+	double			y;
+	double			distance;
+	int				index;  // índice no array de enemies ou doors
+}	t_unified_sprite;
 
 typedef struct s_door_system
 {

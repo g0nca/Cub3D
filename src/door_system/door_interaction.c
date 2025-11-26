@@ -3,90 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   door_interaction.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 09:38:12 by joaomart          #+#    #+#             */
-/*   Updated: 2025/11/25 09:38:20 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/26 12:12:32 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-int	get_door_at_position(t_game *g, int x, int y)
-{
-	int	i;
-
-	i = 0;
-	while (i < g->door_sys.door_count)
-	{
-		if (g->door_sys.doors[i].x == x && g->door_sys.doors[i].y == y)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-/* Verifica se uma porta está bloqueando o movimento */
-int	is_door_blocking(t_game *g, int x, int y)
-{
-	int	door_idx;
-
-	door_idx = get_door_at_position(g, x, y);
-	if (door_idx == -1)
-		return (0);
-	return (g->door_sys.doors[door_idx].state == DOOR_CLOSED ||
-			g->door_sys.doors[door_idx].state == DOOR_CLOSING);
-}
-
-/* Encontra a porta mais próxima do jogador */
+/* Encontra a porta mais próxima usando cálculo direto para poupar variáveis */
 static int	find_nearest_door(t_game *g)
 {
 	int		i;
 	int		nearest;
-	double	min_dist;
-	double	dist;
-	double	dx;
-	double	dy;
+	double	min;
+	double	d;
 
-	i = 0;
+	i = -1;
 	nearest = -1;
-	min_dist = 2.0;
-	while (i < g->door_sys.door_count)
+	min = 2.0;
+	while (++i < g->door_sys.door_count)
 	{
-		dx = g->door_sys.doors[i].x + 0.5 - g->player.x;
-		dy = g->door_sys.doors[i].y + 0.5 - g->player.y;
-		dist = sqrt(dx * dx + dy * dy);
-		if (dist < min_dist)
+		d = sqrt(pow(g->door_sys.doors[i].x + 0.5 - g->player.x, 2)
+				+ pow(g->door_sys.doors[i].y + 0.5 - g->player.y, 2));
+		if (d < min)
 		{
-			min_dist = dist;
+			min = d;
 			nearest = i;
 		}
-		i++;
 	}
 	return (nearest);
 }
 
+/* Gere a interação (E) */
 void	interact_with_door(t_game *g)
 {
-	int	door_idx;
+	int		idx;
+	t_door	*d;
 
-	door_idx = find_nearest_door(g);
-	if (door_idx == -1)
+	idx = find_nearest_door(g);
+	if (idx == -1)
 		return ;
-	if (g->door_sys.doors[door_idx].state == DOOR_CLOSED)
+	d = &g->door_sys.doors[idx];
+	if (d->state == DOOR_CLOSED)
 	{
-		g->door_sys.doors[door_idx].state = DOOR_OPENING;
-		g->door_sys.doors[door_idx].frame = 0;
-		g->door_sys.doors[door_idx].anim_counter = 0;
+		d->state = DOOR_OPENING;
+		d->frame = 0;
+		d->anim_counter = 0;
 	}
-	else if (g->door_sys.doors[door_idx].state == DOOR_OPEN)
+	else if (d->state == DOOR_OPEN)
 	{
-		g->door_sys.doors[door_idx].state = DOOR_CLOSING;
-		g->door_sys.doors[door_idx].frame = DOOR_FRAMES - 1;
-		g->door_sys.doors[door_idx].anim_counter = 0;
+		d->state = DOOR_CLOSING;
+		d->frame = DOOR_FRAMES - 1;
+		d->anim_counter = 0;
 	}
 }
 
+/* Auxiliar: Lógica de abrir porta */
+static void	process_opening(t_door *d)
+{
+	d->anim_counter++;
+	if (d->anim_counter >= DOOR_ANIM_SPEED)
+	{
+		d->frame++;
+		d->anim_counter = 0;
+		if (d->frame >= DOOR_FRAMES)
+		{
+			d->state = DOOR_OPEN;
+			d->frame = DOOR_FRAMES - 1;
+		}
+	}
+}
+
+/* Auxiliar: Lógica de fechar porta */
+static void	process_closing(t_door *d)
+{
+	d->anim_counter++;
+	if (d->anim_counter >= DOOR_ANIM_SPEED)
+	{
+		d->frame--;
+		d->anim_counter = 0;
+		if (d->frame <= 0)
+		{
+			d->state = DOOR_CLOSED;
+			d->frame = 0;
+		}
+	}
+}
+
+/* Loop principal de atualização */
 void	update_doors(t_game *g)
 {
 	int	i;
@@ -95,33 +101,9 @@ void	update_doors(t_game *g)
 	while (i < g->door_sys.door_count)
 	{
 		if (g->door_sys.doors[i].state == DOOR_OPENING)
-		{
-			g->door_sys.doors[i].anim_counter++;
-			if (g->door_sys.doors[i].anim_counter >= DOOR_ANIM_SPEED)
-			{
-				g->door_sys.doors[i].frame++;
-				g->door_sys.doors[i].anim_counter = 0;
-				if (g->door_sys.doors[i].frame >= DOOR_FRAMES)
-				{
-					g->door_sys.doors[i].state = DOOR_OPEN;
-					g->door_sys.doors[i].frame = DOOR_FRAMES - 1;
-				}
-			}
-		}
+			process_opening(&g->door_sys.doors[i]);
 		else if (g->door_sys.doors[i].state == DOOR_CLOSING)
-		{
-			g->door_sys.doors[i].anim_counter++;
-			if (g->door_sys.doors[i].anim_counter >= DOOR_ANIM_SPEED)
-			{
-				g->door_sys.doors[i].frame--;
-				g->door_sys.doors[i].anim_counter = 0;
-				if (g->door_sys.doors[i].frame <= 0)
-				{
-					g->door_sys.doors[i].state = DOOR_CLOSED;
-					g->door_sys.doors[i].frame = 0;
-				}
-			}
-		}
+			process_closing(&g->door_sys.doors[i]);
 		i++;
 	}
 }

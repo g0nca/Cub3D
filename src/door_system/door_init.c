@@ -6,67 +6,47 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 09:39:08 by joaomart          #+#    #+#             */
-/*   Updated: 2025/11/25 13:05:08 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/11/26 12:17:09 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/* door_init.c                                                              */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-static void	load_door_textures(t_game *g)
+/* Helper genérico para carregar uma textura XPM */
+static void	load_asset(t_game *g, t_img *img, char *path)
 {
-	char	path[256];
+	img->img = mlx_xpm_file_to_image(g->mlx, path, &img->width, &img->height);
+	if (!img->img)
+	{
+		printf("Error: Failed to load texture: %s\n", path);
+		print_error_and_exit_without_free("Asset Error", 0, g->cub.map);
+		close_window(g);
+	}
+	img->addr = mlx_get_data_addr(img->img, &img->bpp,
+			&img->line_len, &img->endian);
+}
+
+/* Carrega um array de texturas (animação) dado um padrão de nome */
+static void	load_frames(t_game *g, t_img *arr, char *base_path)
+{
 	int		i;
+	char	path[256];
 
 	i = 0;
 	while (i < DOOR_FRAMES)
 	{
-		snprintf(path, sizeof(path), "assets/door_textures/door_closed%d.xpm", i);
-		g->door_sys.closed_textures[i].img = mlx_xpm_file_to_image(g->mlx,
-			path, &g->door_sys.closed_textures[i].width,
-			&g->door_sys.closed_textures[i].height);
-		if (!g->door_sys.closed_textures[i].img)
-		{
-			print_error_and_exit_without_free("Failed loading door textures",
-				0, g->cub.map);
-			close_window(g);
-		}
-		g->door_sys.closed_textures[i].addr = mlx_get_data_addr(
-			g->door_sys.closed_textures[i].img,
-			&g->door_sys.closed_textures[i].bpp,
-			&g->door_sys.closed_textures[i].line_len,
-			&g->door_sys.closed_textures[i].endian);
+		snprintf(path, sizeof(path), base_path, i);
+		load_asset(g, &arr[i], path);
 		i++;
 	}
 }
 
-static void	load_opening_textures(t_game *g)
-{
-	char	path[256];
-	int		i;
-
-	i = 0;
-	while (i < DOOR_FRAMES)
-	{
-		snprintf(path, sizeof(path), "assets/door_textures/door_open%d.xpm", i);
-		g->door_sys.opening_textures[i].img = mlx_xpm_file_to_image(g->mlx,
-			path, &g->door_sys.opening_textures[i].width,
-			&g->door_sys.opening_textures[i].height);
-		if (!g->door_sys.opening_textures[i].img)
-		{
-			print_error_and_exit_without_free("Failed loading door textures",
-				0, g->cub.map);
-			close_window(g);
-		}
-		g->door_sys.opening_textures[i].addr = mlx_get_data_addr(
-			g->door_sys.opening_textures[i].img,
-			&g->door_sys.opening_textures[i].bpp,
-			&g->door_sys.opening_textures[i].line_len,
-			&g->door_sys.opening_textures[i].endian);
-		i++;
-	}
-}
-
-void	init_door_system(t_game *g)
+/* Inicializa os dados das portas na estrutura */
+static void	reset_doors(t_game *g)
 {
 	int	i;
 
@@ -83,18 +63,29 @@ void	init_door_system(t_game *g)
 	}
 	g->door_sys.door_count = 0;
 	g->door_sys.textures_loaded = 0;
-	load_door_textures(g);
-	load_opening_textures(g);
+}
+
+/* Função Principal de Inicialização */
+void	init_door_system(t_game *g)
+{
+	reset_doors(g);
+	load_frames(g, g->door_sys.closed_textures,
+		"assets/door_textures/door_closed%d.xpm");
+	load_frames(g, g->door_sys.opening_textures,
+		"assets/door_textures/door_open%d.xpm");
 	g->door_sys.textures_loaded = 1;
 	place_doors_randomly(g);
 }
 
+/* Liberta a memória */
 void	free_door_system(t_game *g)
 {
 	int	i;
 
 	if (!g->door_sys.textures_loaded)
 		return ;
+	if (g->door_sys.frame_texture.img)
+		mlx_destroy_image(g->mlx, g->door_sys.frame_texture.img);
 	i = 0;
 	while (i < DOOR_FRAMES)
 	{

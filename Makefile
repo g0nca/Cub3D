@@ -10,9 +10,6 @@ GNL = $(GNL_DIR)/get_next_line.a
 SRC_DIR = src
 OBJ_DIR = obj
 
-# Valgrind suppression file
-SUPP_FILE = mlx_leaks.supp
-
 # Lista todos os ficheiros .c na pasta src (adiciona os teus ficheiros aqui)
 SRC = main.c \
         parse/parsing_input.c \
@@ -59,10 +56,11 @@ SRC = main.c \
         enemy_system/enemy_spawn.c \
         enemy_system/enemy_render.c \
 		door_system/door_init.c \
-		door_system/test.c \
+		door_system/render_utilities.c \
 		door_system/door_interaction.c \
+		door_system/door_interaction_utils.c \
 		door_system/door_placement.c \
-		door_system/door_rendering.c \
+		door_system/render_all_sprites.c \
 
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
@@ -74,46 +72,8 @@ RED = \033[0;31m
 YELLOW = \033[0;33m
 RESET = \033[0m
 
-all: $(SUPP_FILE) $(NAME)
+all: $(NAME)
 
-
-sup_file:
-	$(file > sup, $(SUP_BODY))
-	@echo "${BOLD_YELLOW}Suppressing mousemove leaks${END}"
-
-# Cria arquivo de supressão para leaks do MLX
-define SUP_BODY
-{
-	mlx_mouse_hide_leak
-	Memcheck:Leak
-	match-leak-kinds: reachable
-	fun:mlx_mouse_hide
-}
-{
-	XrmGetStringDatabase_leak
-	Memcheck:Leak
-	match-leak-kinds: reachable
-	fun:XrmGetStringDatabase
-}
-{
-	_dl_open_leak
-	Memcheck:Leak
-	match-leak-kinds: reachable
-	fun:_dl_open
-}
-{
-	_XrmInitParseInfo_leak
-	Memcheck:Leak
-	match-leak-kinds: reachable
-	fun:_XrmInitParseInfo
-}
-endef
-
-
-$(SUPP_FILE):
-	@echo "$(YELLOW)A criar ficheiro de supressão Valgrind...$(RESET)"
-	@echo "$$SUP_BODY" > $(SUPP_FILE)
-	@echo "$(GREEN)✓ Ficheiro de supressão criado: $(SUPP_FILE)$(RESET)"
 # Compila a minilibx primeiro
 $(MLX_DIR)/libmlx.a:
 	@echo "$(BLUE)A compilar MinilibX...$(RESET)"
@@ -144,7 +104,6 @@ $(LIBFT):
 clean:
 	@echo "$(RED)A remover objetos...$(RESET)"
 	@rm -rf $(OBJ_DIR)
-	@rm -f $(SUPP_FILE)
 	@make -C $(MLX_DIR) clean
 	@$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
 	@$(MAKE) -C $(GNL_DIR) fclean --no-print-directory
@@ -154,27 +113,12 @@ clean:
 fclean: clean
 	@echo "$(RED)A remover executável...$(RESET)"
 	@rm -f $(NAME)
-	@rm -f $(SUPP_FILE)
 	@$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory
 	@$(MAKE) -C $(GNL_DIR) fclean --no-print-directory
 	@echo "$(GREEN)Limpeza completa!$(RESET)"
 
 # Recompila tudo
 re: fclean all
-
-# Verifica norminette
-norm:
-	@echo "$(BLUE)A verificar norminette...$(RESET)"
-	@norminette src include | grep -v OK || true
-
-# Compila e executa
-run: all
-	@if [ -z "$(MAP)" ]; then \
-		echo "$(RED)Erro: Especifica um mapa com MAP=caminho/mapa.cub$(RESET)"; \
-		echo "$(YELLOW)Exemplo: make run MAP=maps/test.cub$(RESET)"; \
-		exit 1; \
-	fi
-	./$(NAME) $(MAP)
 
 # Executa com Valgrind usando supressões
 valgrind: $(NAME) $(SUPP_FILE)
@@ -187,7 +131,6 @@ valgrind: $(NAME) $(SUPP_FILE)
 	@valgrind --leak-check=full \
 			  --show-leak-kinds=all \
 			  --track-origins=yes \
-			  --suppressions=$(SUPP_FILE) \
 			  ./$(NAME) $(MAP)
 
-.PHONY: all clean fclean re norm run valgrind valgrind-full
+.PHONY: all clean fclean re valgrind 
