@@ -6,11 +6,11 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:55 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/26 14:43:19 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/26 14:30:28 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3d.h"
+#include "../../include/cub3d_bonus.h"
 
 static int	is_wall(t_game *g, double x, double y)
 {
@@ -21,6 +21,8 @@ static int	is_wall(t_game *g, double x, double y)
 	map_y = (int)y;
 	if (map_y < 0 || map_x < 0 || !g->map.grid[map_y]
 		|| map_x >= (int)ft_strlen(g->map.grid[map_y]))
+		return (1);
+	if (is_door_blocking(g, map_x, map_y))
 		return (1);
 	return (g->map.grid[map_y][map_x] == '1');
 }

@@ -6,11 +6,11 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:16 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/26 14:46:58 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/26 14:31:55 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../include/cub3d_bonus.h"
 
 void	print_map_struct(t_cub *cub, t_map *map)
 {
@@ -64,11 +64,18 @@ int	main(int ac, char **av)
 		game.player.y = 2.5;
 		game.player.angle = 3 * M_PI / 2;
 	}
+	init_enemy_system(&game);
+	render_weapon(&game);
 	render_3d_view(&game);
+	draw_minimap(&game);
+	draw_player(&game);
 	mlx_put_image_to_window(game.mlx, game.win, game.screen.img, 0, 0);
+	draw_enemy_counter(&game);
 	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game);
 	mlx_hook(game.win, 17, 0, close_window, &game);
+	if (game.win_game != game.enemy_sys.enemy_count)
+		mlx_hook(game.win, 6, 1L << 6, mouse_move, &game);
 	mlx_mouse_move(game.mlx, game.win, WIN_W / 2, WIN_H / 2);
 	mlx_loop_hook(game.mlx, handle_keys, &game);
 	print_map_struct(&game.cub, NULL);

@@ -6,11 +6,11 @@
 /*   By: joaomart <joaomart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:53:35 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/11/26 14:53:02 by joaomart         ###   ########.fr       */
+/*   Updated: 2025/11/26 14:31:23 by joaomart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3d.h"
+#include "../../include/cub3d_bonus.h"
 
 int	is_wall_at(t_game *g, int x, int y)
 {
@@ -95,14 +95,4 @@ void	draw_wall_stripe(t_game *g, int x, t_ray *ray)
 		y++;
 		put_pixel_to_img(&g->screen, x, y, get_floor_color(g));
 	}
-}
-
-void	put_pixel_to_img(t_img *img, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x < 0 || x >= WIN_W || y < 0 || y >= WIN_H)
-		return ;
-	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
-	*(unsigned int *)dst = color;
 }
