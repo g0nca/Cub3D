@@ -163,6 +163,8 @@ fclean: clean
 # Recompila tudo
 re: fclean all
 
+re_bonus: fclean bonus
+
 # Executa com Valgrind usando supressões
 valgrind: $(NAME) $(SUPP_FILE)
 	@if [ -z "$(MAP)" ]; then \
@@ -188,4 +190,4 @@ valgrind_b: $(NAME_B) $(SUPP_FILE)
 			  --track-origins=yes \
 			  ./$(NAME_B) $(MAP)
 
-.PHONY: all clean fclean re bonus valgrind valgrind_b
+.PHONY: all clean fclean re bonus re_bonus valgrind valgrind_b
